@@ -1,141 +1,148 @@
 # MohammadAmir-PompNet-Nexus
 
-# POMP NET
+# 🚀 POMP NET
 
 ## MR: Mohammad Pomp NetPanel
 
 ### Mohammad & Amir
 
-This project keeps the original AHBPanel core and applies
-POMP NET branding.
+پنل POMP NET بر پایه هسته اصلی AHBPanel.
 
-## ADMIN LOGIN
+هدف پروژه:
 
-Username:
+- حفظ هسته اصلی AHBPanel
+- حفظ قابلیت‌های اصلی
+- تغییر برند و مشخصات به POMP NET
+- آماده‌سازی برای Deploy روی Railway
+- بدون بازنویسی فیک پنل
 
-admin
+---
 
-Password:
-
-admin
-
-## SUPPORT
-
-@NovaTunneli
-
-## AMIR
-
-@vpnstan2
-
-Telegram:
-https://t.me/vpnstan1
+# 👑 BRAND
 
 ## POMP NET
 
+### MR: Mohammad Pomp NetPanel
+
+### Mohammad & Amir
+
+---
+
+## 👤 AMIR
+
+Telegram:
+
+@vpnstan2
+
 Channel:
+
+https://t.me/vpnstan1
+
+---
+
+## 🚀 POMP NET
+
+Channel:
+
 https://t.me/pompnet
 
 Group:
+
 https://t.me/+UV34C7Ohs9hiZTc0
 
-## GITHUB
+---
+
+## 🛟 SUPPORT
+
+@NovaTunneli
+
+Support:
+
+https://t.me/NovaTunneli
+
+---
+
+## 💻 GITHUB
 
 https://github.com/uxurx7rh7e7xr73uue73e8
 
-## PROJECT
+---
+
+# 📦 PROJECT
+
+Repository:
 
 MohammadAmir-PompNet-Nexus
 
-## DEPLOYMENT
-
-Designed for Railway.
-
-No Railway Volume is required for the initial deployment.
-
-The original application is downloaded during the Docker build.
-
-## IMPORTANT
-
-The original application logic and features are preserved.
-
-Only branding, support information and visible project identity
-are customized for Mohammad & Amir / POMP NET.
-
-🚀 آموزش کامل Fork → Railway → POMP NET
-
-📌 پروژه
-
-MohammadAmir-PompNet-Nexus
-
-مبنای پروژه:
+Base:
 
 AHBPanel
 
 ---
 
-🟣 مرحله 1 — Fork کردن پروژه
+# ⚠️ معماری پروژه
 
-اول وارد پروژه اصلی AHBPanel در GitHub شو.
+این Repository یک Fork کامل از سورس AHBPanel نیست.
 
-بالای صفحه روی:
+برای جلوگیری از کپی و نگهداری چند نسخه از هسته اصلی، Docker هنگام Build نسخه مشخص‌شده AHBPanel را دریافت می‌کند.
 
-Fork
+سپس:
 
-بزن.
+1. سورس اصلی دریافت می‌شود.
+2. نسخه مشخص AHBPanel استفاده می‌شود.
+3. فایل Branding اجرا می‌شود.
+4. فقط مشخصات نمایشی POMP NET تغییر می‌کند.
+5. برنامه اصلی اجرا می‌شود.
 
-در صفحه‌ای که باز می‌شود:
-
-Owner
-
-اکانت GitHub خودت
-
-Repository name
-
-MohammadAmir-PompNet-Nexus
-
-بعد:
-
-Create fork
-
-را بزن.
+بنابراین هسته اصلی پنل بازنویسی یا شبیه‌سازی نمی‌شود.
 
 ---
 
-🟣 مرحله 2 — بررسی Fork
+# 🧩 فایل‌های Repository
 
-بعد از Fork باید وارد Repository خودت شوی.
+فایل‌های اصلی این Repository:
 
-فایل‌های اصلی پروژه باید همچنان وجود داشته باشند.
+- Dockerfile
+- railway.json
+- requirements.txt
+- pompnet_brand.py
+- README.md
 
-تقریباً:
+هسته اصلی AHBPanel در زمان Docker Build دریافت می‌شود.
 
-main.py
-pages.py
-requirements.txt
-relay_vless.py
-speed_limit.py
-telegram_bot.py
-xhttp_siz10.py
-news.json
-README.md
-
-❗ هیچ فایل اصلی را حذف نکن.
-
-❗ پوشه یا فایل جدید را بدون نیاز اضافه نکن.
-
-هدف:
-
-همان پنل اصلی + تغییر برندینگ POMP NET
+بنابراین نباید فایل‌های اصلی AHBPanel را به صورت فیک یا ناقص به Repository اضافه کرد.
 
 ---
 
-🟣 مرحله 3 — تغییر برند
+# 🛡️ حفظ هسته اصلی
 
-در فایل‌های اصلی فقط قسمت‌های مربوط به برندینگ را تغییر بده.
+فایل‌های اصلی AHBPanel نباید حذف یا بازنویسی شوند.
 
-نام:
+از جمله:
+
+- main.py
+- pages.py
+- relay_vless.py
+- speed_limit.py
+- telegram_bot.py
+- xhttp_siz10.py
+- news.json
+
+این فایل‌ها توسط Docker از نسخه اصلی پروژه دریافت می‌شوند.
+
+---
+
+# 🎨 BRANDING
+
+هویت پروژه:
+
+AHBPanel
+
+به:
 
 POMP NET
+
+تغییر داده می‌شود.
 
 عنوان:
 
@@ -145,47 +152,45 @@ MR: Mohammad Pomp NetPanel
 
 Mohammad & Amir
 
-امیر:
-
-@vpnstan2
-
-کانال امیر:
-
-https://t.me/vpnstan1
-
-کانال POMP NET:
-
-https://t.me/pompnet
-
-گروه:
-
-https://t.me/+UV34C7Ohs9hiZTc0
-
 پشتیبانی:
 
 @NovaTunneli
 
-GitHub:
+کانال:
 
-https://github.com/uxurx7rh7e7xr73uue73e8
-
----
-
-🟣 مرحله 4 — Commit
-
-بعد از تغییرات:
-
-Commit changes
-
-پیام Commit:
-
-POMP NET branding
+https://t.me/pompnet
 
 ---
 
-🚂 مرحله 5 — اتصال GitHub به Railway
+# 🔐 ADMIN LOGIN
 
-وارد Railway شو.
+برای ورود اولیه:
+
+Username:
+
+admin
+
+Password:
+
+admin
+
+مقدار رمز از متغیر زیر دریافت می‌شود:
+
+ADMIN_PASSWORD
+
+برای تست اولیه Railway:
+
+ADMIN_PASSWORD=admin
+
+بعد از ورود اولیه بهتر است رمز تغییر داده شود.
+
+---
+
+# 🚂 RAILWAY DEPLOYMENT
+
+## مرحله 1
+
+وارد Railway شوید.
 
 New Project
 
@@ -193,144 +198,160 @@ New Project
 
 Deploy from GitHub Repo
 
-را انتخاب کن.
+را انتخاب کنید.
 
 Repository:
 
 MohammadAmir-PompNet-Nexus
 
-را انتخاب کن.
-
-اگر Railway درخواست دسترسی GitHub کرد:
-
-Configure GitHub App
-
-را بزن و دسترسی Repository را فعال کن.
-
 ---
 
-⚙️ مرحله 6 — تنظیمات Railway
+# ⚙️ مرحله 2 — Variables
 
-بعد از ساخته شدن Service:
+در Railway وارد:
+
+Service
+
+↓
 
 Variables
 
-اگر پروژه نیاز داشت، متغیرها را اینجا قرار بده.
+شوید.
 
-برای ورود مالک:
+برای ورود اولیه:
 
 ADMIN_PASSWORD=admin
 
-اگر خود سورس پروژه مقدار پیش‌فرض رمز را مدیریت می‌کند، همان تنظیمات سورس را نگه دار.
+قرار دهید.
 
 ---
 
-🔌 مرحله 7 — Port
+# 🔌 مرحله 3 — PORT
 
-در Railway نباید یک Port ثابت مثل:
+برنامه باید روی Port اختصاص داده‌شده توسط Railway اجرا شود.
+
+Dockerfile پروژه از:
+
+0.0.0.0
+
+و:
+
+$PORT
+
+استفاده می‌کند.
+
+بنابراین نباید Port ثابت مثل:
 
 443
 
-برای Web Service تنظیم کنی.
-
-برنامه باید روی:
-
-0.0.0.0:$PORT
-
-گوش بدهد.
-
-Railway مقدار "$PORT" را خودش مشخص می‌کند.
+تنظیم شود.
 
 ---
 
-▶️ مرحله 8 — Deploy
+# ▶️ مرحله 4 — DEPLOY
 
-برو:
+بعد از اتصال GitHub:
 
-Deployments
+Deploy
 
-و منتظر بمان تا:
+را انجام دهید.
+
+مراحل:
 
 BUILD
-   ↓
+
+↓
+
 DEPLOY
-   ↓
-SUCCESS
 
-نمایش داده شود.
+↓
 
-اگر:
-
-FAILED
-
-شد، وارد:
-
-View Logs
-
-شو.
+RUNNING
 
 ---
 
-🌐 مرحله 9 — ساخت Domain
+# 🩺 HEALTH CHECK
+
+پنل دارای Health Check است:
+
+/health
+
+در صورت موفق بودن:
+
+HTTP 200
+
+برمی‌گردد.
+
+Railway از این مسیر برای بررسی وضعیت سرویس استفاده می‌کند.
+
+---
+
+# 🌐 مرحله 5 — DOMAIN
 
 بعد از Deploy موفق:
 
 Service
+
 ↓
+
 Settings
+
 ↓
+
 Networking
+
 ↓
+
 Generate Domain
 
-Railway یک Domain HTTPS می‌دهد.
+را انتخاب کنید.
+
+Railway یک Domain HTTPS ایجاد می‌کند.
 
 مثلاً:
 
 https://xxxxx.up.railway.app
 
-این آدرس پنل است.
-
 ---
 
-🔐 مرحله 10 — ورود به پنل
+# 🔐 مرحله 6 — LOGIN
 
-اطلاعات اولیه:
+بعد از باز شدن پنل:
 
-Username: admin
-Password: admin
-
-اگر پنل فقط Password خواست:
+Username:
 
 admin
 
-را وارد کن.
+Password:
 
-بعد از اولین ورود، رمز را تغییر بده.
+admin
+
+اگر ADMIN_PASSWORD در Railway تغییر کرده باشد، همان رمز جدید استفاده می‌شود.
 
 ---
 
-🧪 مرحله 11 — چک کردن پنل
+# 🧪 بررسی پنل
 
-بعد از باز شدن پنل این قسمت‌ها را تست کن:
+بعد از Deploy باید قابلیت‌های موجود در نسخه اصلی بررسی شوند.
 
-Dashboard
+## Dashboard
 
-- باز شدن داشبورد
-- آمار
+- Dashboard
 - وضعیت سرویس
+- آمار موجود در نسخه اصلی
 
-Users
+## Users
 
-- ساخت کاربر
-- حذف/ویرایش
+- ایجاد کاربر
+- ویرایش
+- حذف
 - حجم
 - تاریخ انقضا
 - وضعیت کاربر
 
-Protocols
+## Protocols
 
-باید قابلیت‌های اصلی پروژه را بررسی کنی:
+قابلیت‌های موجود در نسخه اصلی مانند:
 
 - VLESS
 - VMess
@@ -339,195 +360,240 @@ Protocols
 - XHTTP
 - Xray
 
-Subscription
+## Subscription
 
-- ساخت لینک
-- نمایش Subscription
-- کپی لینک
+- Subscription
+- لینک اتصال
+- Copy
 - QR
 
-Traffic
+## Traffic
 
 - مصرف ترافیک
+- Volume
 - محدودیت حجم
-- وضعیت اتصال
 
-Expiry
+## Expiry
 
 - تاریخ انقضا
 - محدودیت زمانی
 
-Speed
+## Speed
 
-- محدودیت سرعت
+- Speed Limit
 
-Telegram
+## Telegram
 
-- تنظیمات Telegram
+- Telegram
 - Bot
-- اعلان‌ها/امکانات موجود در نسخه اصلی
+- امکانات موجود در نسخه اصلی
 
-Admin
+## Admin
 
-- حساب مالک
-- حساب‌های مدیریتی
-- تنظیمات مدیریت
+- Owner
+- Admin
+- مدیریت کاربران مدیریتی در صورت وجود در نسخه اصلی
 
----
+## News
 
-🟢 قابلیت‌هایی که باید در نسخه POMP NET حفظ شوند
-
-این پروژه قرار نیست پنل جدید و فیک باشد.
-
-قابلیت‌های اصلی نسخه پایه باید حفظ شوند:
-
-✅ Dashboard
-✅ User Management
-✅ VLESS
-✅ VMess
-✅ Trojan
-✅ Shadowsocks
-✅ XHTTP
-✅ Xray
-✅ Subscription
-✅ QR Code
-✅ Traffic
-✅ Volume
-✅ Expiry
-✅ Speed Limit
-✅ Telegram
-✅ Admin Management
-✅ News
+- News
 
 ---
 
-❌ چه چیزهایی نباید حذف شوند؟
+# 🟢 اصل مهم پروژه
 
-❌ main.py
-❌ pages.py
-❌ relay_vless.py
-❌ speed_limit.py
-❌ telegram_bot.py
-❌ xhttp_siz10.py
-❌ requirements.txt
-❌ news.json
+POMP NET قرار نیست یک پنل فیک باشد.
 
-این فایل‌ها بخشی از سورس اصلی هستند و نباید برای تغییر ظاهر حذف شوند.
+هدف:
 
----
+AHBPanel Core
 
-🎨 چیزهایی که قرار است تغییر کنند
++
 
-فقط هویت پروژه:
+POMP NET Branding
 
-AHBPanel
-↓
-POMP NET
+است.
 
-و اطلاعات برند:
-
-Mohammad & Amir
-
-پشتیبانی:
-
-@NovaTunneli
-
-و لینک‌های Telegram مربوط به POMP NET.
-
-منطق اصلی پنل نباید برای این تغییرات بازنویسی شود.
+منطق اصلی برنامه نباید برای تغییر برند بازنویسی شود.
 
 ---
 
-🔄 مرحله 12 — آپدیت خودکار
+# 🔄 AUTO DEPLOY
 
-اگر Railway به GitHub وصل باشد:
+در صورت اتصال صحیح GitHub به Railway:
 
 GitHub
-   ↓
+
+↓
+
 Commit
-   ↓
+
+↓
+
 Railway
-   ↓
+
+↓
+
 Automatic Deploy
 
-یعنی هر بار تغییرات را Push/Commit کنی، Railway می‌تواند نسخه جدید را Deploy کند.
+بنابراین تغییرات جدید Repository می‌توانند به صورت خودکار Deploy شوند.
 
 ---
 
-💾 نکته مهم Storage
+# 💾 STORAGE
 
-اگر Railway Volume اضافه نکنی، اطلاعاتی که برنامه فقط روی فایل‌های محلی کانتینر ذخیره می‌کند ممکن است با تعویض/حذف کانتینر باقی نماند.
+در Deploy اولیه Railway Volume الزامی نیست.
 
-برای تست اولیه:
+اما توجه کنید:
+
+اطلاعاتی که برنامه فقط روی فایل‌های محلی کانتینر ذخیره می‌کند ممکن است بعد از تعویض یا حذف Container باقی نماند.
+
+برای تست:
 
 Volume لازم نیست.
 
-برای استفاده دائمی و جدی:
+برای استفاده دائمی:
 
-Storage دائمی باید بررسی شود.
+Persistent Storage
+
+باید در نظر گرفته شود.
 
 ---
 
-🛠️ اگر پنل باز نشد
+# 🛠️ اگر پنل باز نشد
 
-اول این موارد را بررسی کن:
+اول:
 
 Railway
+
 ↓
+
 Service
+
 ↓
+
 Deployments
+
 ↓
+
 View Logs
 
-اگر Build موفق بود ولی سایت باز نشد:
+را بررسی کنید.
+
+اگر Build موفق شد ولی پنل باز نشد:
 
 Settings
+
 ↓
+
 Networking
+
 ↓
+
 Domain
 
-را بررسی کن.
+را بررسی کنید.
 
-اگر خطا وجود داشت، کل Logs را ارسال کن تا مشخص شود مشکل از Build، Port، Dependency یا Runtime است.
+همچنین Health Check:
+
+/health
+
+را بررسی کنید.
 
 ---
 
-🎯 نتیجه نهایی
+# ❌ کارهایی که نباید انجام شوند
 
-مسیر کامل:
+❌ حذف هسته اصلی AHBPanel
+
+❌ ساخت main.py فیک
+
+❌ ساخت pages.py فیک
+
+❌ حذف requirements اصلی
+
+❌ تغییر منطق اصلی فقط برای Branding
+
+❌ تغییر Port به 443
+
+❌ حذف Dockerfile
+
+❌ حذف railway.json
+
+---
+
+# 🎯 ساختار نهایی
 
 AHBPanel
-   ↓
-Fork
-   ↓
-MohammadAmir-PompNet-Nexus
-   ↓
-Branding POMP NET
-   ↓
-GitHub
-   ↓
+
+↓
+
+Docker Build
+
+↓
+
+دریافت نسخه اصلی
+
+↓
+
+POMP NET Branding
+
+↓
+
+FastAPI / Uvicorn
+
+↓
+
 Railway
-   ↓
-Build
-   ↓
-Deploy
-   ↓
-Generate Domain
-   ↓
+
+↓
+
+HTTPS Domain
+
+↓
+
 POMP NET Panel
 
-🔐 ورود اولیه
+---
 
-Username: admin
-Password: admin
-
-👑 برند نهایی
+# 👑 FINAL BRAND
 
 POMP NET
+
 MR: Mohammad Pomp NetPanel
 
 Mohammad & Amir
 
-هدف این است که هسته و قابلیت‌های اصلی پنل حفظ شوند و فقط مشخصات و برندینگ موردنظر تغییر کند.
+Support:
+
+@NovaTunneli
+
+Telegram:
+
+https://t.me/pompnet
+
+GitHub:
+
+https://github.com/uxurx7rh7e7xr73uue73e8
+
+---
+
+# 🔐 INITIAL LOGIN
+
+Username:
+
+admin
+
+Password:
+
+admin
+
+---
+
+## هدف نهایی
+
+حفظ هسته واقعی AHBPanel و تمام قابلیت‌های موجود در نسخه اصلی، همراه با برندینگ اختصاصی:
+
+POMP NET
+
+Mohammad & Amir

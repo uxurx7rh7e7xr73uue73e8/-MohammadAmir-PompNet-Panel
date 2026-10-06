@@ -1,814 +1,234 @@
-/* =========================================================
-   POMP NET — Neon Glassmorphism Theme
-   Mohammad Pomp NetPanel
-   Mohammad & Amir
-   ========================================================= */
-
-:root {
-    --pn-bg: #050509;
-    --pn-bg-2: #090812;
-    --pn-card: rgba(16, 14, 28, 0.72);
-    --pn-card-strong: rgba(20, 17, 36, 0.88);
-
-    --pn-purple: #8b35ff;
-    --pn-purple-2: #b15cff;
-    --pn-blue: #168cff;
-    --pn-blue-2: #35b7ff;
-    --pn-pink: #ff3dbb;
-
-    --pn-text: #f7f4ff;
-    --pn-text-soft: #b8b1c9;
-    --pn-muted: #817a91;
-
-    --pn-border: rgba(255,255,255,.10);
-    --pn-border-purple: rgba(139,53,255,.35);
-    --pn-border-blue: rgba(22,140,255,.30);
-
-    --pn-radius: 18px;
-
-    --pn-shadow:
-        0 10px 35px rgba(0,0,0,.38),
-        0 0 35px rgba(108,38,255,.10);
-
-    --pn-glow-purple:
-        0 0 15px rgba(139,53,255,.35),
-        0 0 40px rgba(139,53,255,.12);
-
-    --pn-glow-blue:
-        0 0 15px rgba(22,140,255,.35),
-        0 0 40px rgba(22,140,255,.12);
-}
-
-
-/* =========================================================
-   GLOBAL
-   ========================================================= */
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    min-height: 100vh;
-
-    background:
-        radial-gradient(
-            circle at 10% 5%,
-            rgba(139,53,255,.18),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 90% 10%,
-            rgba(22,140,255,.15),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 50% 100%,
-            rgba(255,61,187,.08),
-            transparent 30%
-        ),
-        var(--pn-bg);
-
-    color: var(--pn-text);
-
-    font-family:
-        Vazirmatn,
-        IRANSans,
-        Tahoma,
-        Arial,
-        sans-serif;
-
-    direction: rtl;
-
-    overflow-x: hidden;
-}
-
-
-/* =========================================================
-   BACKGROUND GLOW
-   ========================================================= */
-
-body::before,
-body::after {
-    content: "";
-    position: fixed;
-    pointer-events: none;
-    z-index: -1;
-}
-
-body::before {
-    width: 420px;
-    height: 420px;
-
-    top: -160px;
-    right: -120px;
-
-    background: rgba(139,53,255,.16);
-
-    filter: blur(100px);
-    border-radius: 50%;
-}
-
-body::after {
-    width: 400px;
-    height: 400px;
-
-    bottom: -160px;
-    left: -120px;
-
-    background: rgba(22,140,255,.13);
-
-    filter: blur(100px);
-    border-radius: 50%;
-}
-
-
-/* =========================================================
-   TEXT
-   ========================================================= */
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    color: var(--pn-text);
-}
-
-p,
-small,
-label {
-    color: var(--pn-text-soft);
-}
-
-a {
-    color: var(--pn-blue-2);
-    transition:
-        color .2s ease,
-        text-shadow .2s ease;
-}
-
-a:hover {
-    color: var(--pn-purple-2);
-
-    text-shadow:
-        0 0 10px rgba(177,92,255,.55);
-}
-
-
-/* =========================================================
-   GLASS
-   ========================================================= */
-
-.card,
-.panel,
-.box,
-.modal,
-.modal-content,
-.container-card,
-.dashboard-card,
-.stat-card,
-.user-card,
-.server-card,
-.settings-card,
-.form-card,
-.table-container,
-header,
-nav,
-aside,
-footer {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.045),
-            rgba(255,255,255,.012)
-        ),
-        var(--pn-card);
-
-    border: 1px solid var(--pn-border);
-
-    border-radius: var(--pn-radius);
-
-    box-shadow: var(--pn-shadow);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    transition:
-        transform .22s ease,
-        border-color .22s ease,
-        box-shadow .22s ease,
-        background .22s ease;
-}
-
-
-/* =========================================================
-   CARD HOVER
-   ========================================================= */
-
-.card:hover,
-.panel:hover,
-.box:hover,
-.dashboard-card:hover,
-.stat-card:hover,
-.user-card:hover,
-.server-card:hover,
-.settings-card:hover {
-    border-color: var(--pn-border-purple);
-
-    box-shadow:
-        var(--pn-shadow),
-        0 0 28px rgba(139,53,255,.12);
-
-    transform: translateY(-2px);
-}
-
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
-header {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(139,53,255,.10),
-            rgba(22,140,255,.07)
-        ),
-        rgba(8,8,15,.82);
-
-    border-color: rgba(139,53,255,.22);
-
-    box-shadow:
-        0 10px 40px rgba(0,0,0,.35),
-        0 0 35px rgba(139,53,255,.10);
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
-
-
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
-
-nav,
-.navbar,
-.sidebar,
-aside {
-    background:
-        rgba(7,7,13,.82);
-
-    border-color:
-        rgba(139,53,255,.16);
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
-
-nav a,
-.navbar a,
-.sidebar a,
-aside a {
-    color: var(--pn-text-soft);
-
-    border-radius: 12px;
-
-    transition:
-        background .2s ease,
-        color .2s ease,
-        box-shadow .2s ease;
-}
-
-nav a:hover,
-.navbar a:hover,
-.sidebar a:hover,
-aside a:hover,
-nav a.active,
-.navbar a.active,
-.sidebar a.active,
-aside a.active {
-    color: #fff;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(139,53,255,.18),
-            rgba(22,140,255,.10)
-        );
-
-    box-shadow:
-        inset 0 0 0 1px rgba(139,53,255,.16),
-        0 0 20px rgba(139,53,255,.10);
-}
-
-
-/* =========================================================
-   BUTTONS
-   ========================================================= */
-
-button,
-.btn,
-.button,
-input[type="submit"],
-input[type="button"] {
-    border: 1px solid rgba(255,255,255,.10);
-
-    border-radius: 12px;
-
-    color: #fff;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--pn-purple),
-            var(--pn-blue)
-        );
-
-    box-shadow:
-        0 7px 25px rgba(91,37,190,.25);
-
-    cursor: pointer;
-
-    transition:
-        transform .18s ease,
-        box-shadow .18s ease,
-        filter .18s ease;
-}
-
-button:hover,
-.btn:hover,
-.button:hover,
-input[type="submit"]:hover,
-input[type="button"]:hover {
-    transform: translateY(-1px);
-
-    filter: brightness(1.10);
-
-    box-shadow:
-        0 8px 30px rgba(139,53,255,.35),
-        0 0 25px rgba(22,140,255,.15);
-}
-
-button:active,
-.btn:active,
-.button:active {
-    transform: scale(.98);
-}
-
-
-/* =========================================================
-   SECONDARY BUTTON
-   ========================================================= */
-
-.btn-secondary,
-button.secondary,
-.secondary {
-    background:
-        rgba(255,255,255,.055);
-
-    border-color:
-        rgba(255,255,255,.12);
-
-    color:
-        var(--pn-text-soft);
-
-    box-shadow:
-        none;
-}
-
-.btn-secondary:hover,
-button.secondary:hover,
-.secondary:hover {
-    background:
-        rgba(139,53,255,.12);
-
-    border-color:
-        var(--pn-border-purple);
-
-    color:
-        #fff;
-}
-
-
-/* =========================================================
-   INPUTS
-   ========================================================= */
-
-input,
-textarea,
-select {
-    width: 100%;
-
-    color: var(--pn-text);
-
-    background:
-        rgba(4,4,10,.62);
-
-    border:
-        1px solid rgba(255,255,255,.10);
-
-    border-radius:
-        12px;
-
-    outline:
-        none;
-
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease,
-        background .2s ease;
-}
-
-input::placeholder,
-textarea::placeholder {
-    color: #716b7e;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-    border-color:
-        var(--pn-purple);
-
-    background:
-        rgba(10,8,18,.82);
-
-    box-shadow:
-        0 0 0 3px rgba(139,53,255,.10),
-        0 0 22px rgba(139,53,255,.12);
-}
-
-
-/* =========================================================
-   TABLE
-   ========================================================= */
-
-table {
-    width: 100%;
-
-    border-collapse: separate;
-    border-spacing: 0;
-
-    color: var(--pn-text);
-}
-
-thead {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(139,53,255,.12),
-            rgba(22,140,255,.08)
-        );
-}
-
-th {
-    color: #ddd7eb;
-    font-weight: 700;
-}
-
-td {
-    color: var(--pn-text-soft);
-
-    border-top:
-        1px solid rgba(255,255,255,.055);
-}
-
-tbody tr {
-    transition:
-        background .18s ease;
-}
-
-tbody tr:hover {
-    background:
-        rgba(139,53,255,.055);
-}
-
-
-/* =========================================================
-   BADGES / STATUS
-   ========================================================= */
-
-.badge,
-.status,
-.tag,
-.chip {
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 999px;
-
-    border: 1px solid rgba(255,255,255,.10);
-
-    background:
-        rgba(255,255,255,.045);
-
-    color:
-        #ddd8ea;
-}
-
-.status-online,
-.online,
-.success {
-    color: #6ee7a0;
-
-    background:
-        rgba(34,197,94,.10);
-
-    border-color:
-        rgba(34,197,94,.25);
-
-    box-shadow:
-        0 0 15px rgba(34,197,94,.08);
-}
-
-.status-offline,
-.offline,
-.danger {
-    color: #ff7c9d;
-
-    background:
-        rgba(255,61,100,.08);
-
-    border-color:
-        rgba(255,61,100,.22);
-}
-
-.warning {
-    color: #ffd166;
-
-    background:
-        rgba(255,209,102,.08);
-
-    border-color:
-        rgba(255,209,102,.20);
-}
-
-
-/* =========================================================
-   STAT NUMBERS
-   ========================================================= */
-
-.stat,
-.stat-value,
-.number,
-.counter {
-    color: #fff;
-
-    text-shadow:
-        0 0 18px rgba(139,53,255,.28);
-}
-
-
-/* =========================================================
-   LINKS / COPY
-   ========================================================= */
-
-.copy,
-.copy-btn,
-.copy-link {
-    color:
-        var(--pn-blue-2);
-
-    cursor: pointer;
-}
-
-.copy:hover,
-.copy-btn:hover,
-.copy-link:hover {
-    color:
-        var(--pn-purple-2);
-
-    text-shadow:
-        0 0 12px rgba(177,92,255,.50);
-}
-
-
-/* =========================================================
-   MODALS
-   ========================================================= */
-
-.modal,
-.modal-content {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(18,14,30,.94),
-            rgba(7,10,20,.94)
-        );
-
-    border:
-        1px solid rgba(139,53,255,.22);
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.65),
-        0 0 45px rgba(139,53,255,.13);
-
-    backdrop-filter:
-        blur(25px);
-
-    -webkit-backdrop-filter:
-        blur(25px);
-}
-
-
-/* =========================================================
-   DIVIDERS
-   ========================================================= */
-
-hr {
-    border: 0;
-
-    height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(139,53,255,.35),
-            rgba(22,140,255,.35),
-            transparent
-        );
-}
-
-
-/* =========================================================
-   SCROLLBAR
-   ========================================================= */
-
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #06060b;
-}
-
-::-webkit-scrollbar-thumb {
-    background:
-        linear-gradient(
-            180deg,
-            var(--pn-purple),
-            var(--pn-blue)
-        );
-
-    border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background:
-        linear-gradient(
-            180deg,
-            var(--pn-purple-2),
-            var(--pn-blue-2)
-        );
-}
-
-
-/* =========================================================
-   POMP NET BRAND BANNER
-   ========================================================= */
-
-#pompnet-brand-banner {
-    width: 100%;
-
-    text-align: center;
-
-    padding: 9px 14px;
-
-    margin: 0 0 12px;
-
-    border-radius: 14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(139,53,255,.16),
-            rgba(22,140,255,.12)
-        );
-
-    border:
-        1px solid rgba(139,53,255,.22);
-
-    color:
-        #e9e2ff;
-
-    font-size:
-        12px;
-
-    line-height:
-        1.8;
-
-    box-shadow:
-        0 0 25px rgba(100,40,255,.10),
-        inset 0 1px rgba(255,255,255,.06);
-
-    backdrop-filter:
-        blur(14px);
-
-    -webkit-backdrop-filter:
-        blur(14px);
-}
-
-#pompnet-brand-banner b {
-    color:
-        #bd8cff;
-
-    text-shadow:
-        0 0 12px rgba(139,53,255,.35);
-}
-
-
-/* =========================================================
-   POMP NET LOGO EFFECT
-   ========================================================= */
-
-.pompnet-logo,
-.logo,
-.brand-logo {
-    border-radius: 16px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--pn-purple),
-            var(--pn-blue)
-        );
-
-    box-shadow:
-        0 0 20px rgba(139,53,255,.25),
-        0 0 35px rgba(22,140,255,.12);
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 800px) {
-
-    .card,
-    .panel,
-    .box,
-    .dashboard-card,
-    .stat-card,
-    .user-card,
-    .server-card {
-        border-radius: 16px;
+from pathlib import Path
+import re
+
+APP_DIR = Path("/app")
+CSS_SOURCE = Path("/tmp/pompnet.css")
+CSS_TARGET = APP_DIR / "pompnet.css"
+
+# =========================================================
+# POMP NET BRAND
+# =========================================================
+
+BRAND = "POMP NET"
+TITLE = "MR: Mohammad Pomp NetPanel"
+TEAM = "Mohammad & Amir"
+
+AMIR_USERNAME = "@vpnstan2"
+AMIR_CHANNEL = "https://t.me/vpnstan1"
+
+POMPNET_CHANNEL = "https://t.me/pompnet"
+POMPNET_GROUP = "https://t.me/+UV34C7Ohs9hiZTc0"
+
+SUPPORT_USERNAME = "@NovaTunneli"
+SUPPORT_URL = "https://t.me/NovaTunneli"
+
+GITHUB_URL = "https://github.com/uxurx7rh7e7xr73uue73e8"
+
+BANNER = (
+    "⚡ توسعه و طراحی توسط تیم POMP NET • "
+    "با همکاری ویژه آقا امیر | Mohammad & Amir • "
+    "ساخته‌شده برای یک تجربه سریع، مدرن و حرفه‌ای"
+)
+
+
+# =========================================================
+# COPY CSS
+# =========================================================
+
+def install_css():
+    """
+    انتقال pompnet.css به /app
+    بدون تغییر در فایل‌های اصلی AHBPanel
+    """
+
+    if CSS_SOURCE.exists():
+        CSS_TARGET.write_text(
+            CSS_SOURCE.read_text(encoding="utf-8"),
+            encoding="utf-8"
+        )
+        print("[POMP NET] pompnet.css installed.")
+    else:
+        print("[POMP NET] pompnet.css source not found.")
+
+
+# =========================================================
+# INJECT CSS INTO HTML
+# =========================================================
+
+def inject_css_into_html():
+    css_link = '<link rel="stylesheet" href="/static/pompnet.css">'
+
+    for html_file in APP_DIR.rglob("*.html"):
+
+        try:
+            content = html_file.read_text(encoding="utf-8")
+
+            if "/static/pompnet.css" in content:
+                continue
+
+            if re.search(r"</head>", content, re.IGNORECASE):
+
+                content = re.sub(
+                    r"</head>",
+                    f"    {css_link}\n</head>",
+                    content,
+                    count=1,
+                    flags=re.IGNORECASE
+                )
+
+                html_file.write_text(
+                    content,
+                    encoding="utf-8"
+                )
+
+                print(
+                    f"[POMP NET] CSS linked: {html_file}"
+                )
+
+        except Exception as e:
+            print(
+                f"[POMP NET] HTML error: {html_file} -> {e}"
+            )
+
+
+# =========================================================
+# BRAND BANNER
+# =========================================================
+
+def inject_banner():
+
+    banner_html = f"""
+<div id="pompnet-brand-banner">
+    ⚡ توسعه و طراحی توسط تیم
+    <b>POMP NET</b>
+    • با همکاری ویژه آقا امیر
+    • Mohammad &amp; Amir
+    • ساخته‌شده برای یک تجربه سریع، مدرن و حرفه‌ای
+</div>
+"""
+
+    for html_file in APP_DIR.rglob("*.html"):
+
+        try:
+            content = html_file.read_text(
+                encoding="utf-8"
+            )
+
+            if "pompnet-brand-banner" in content:
+                continue
+
+            if re.search(
+                r"<body[^>]*>",
+                content,
+                re.IGNORECASE
+            ):
+
+                content = re.sub(
+                    r"(<body[^>]*>)",
+                    r"\1\n" + banner_html,
+                    content,
+                    count=1,
+                    flags=re.IGNORECASE
+                )
+
+                html_file.write_text(
+                    content,
+                    encoding="utf-8"
+                )
+
+                print(
+                    f"[POMP NET] Banner added: {html_file}"
+                )
+
+        except Exception as e:
+            print(
+                f"[POMP NET] Banner error: {html_file} -> {e}"
+            )
+
+
+# =========================================================
+# VISIBLE BRANDING ONLY
+# =========================================================
+
+def replace_visible_branding():
+
+    replacements = {
+        "AHBPanel": BRAND,
+        "AHB Panel": BRAND,
+        "ahb panel": BRAND,
+        "@ahb_panel": SUPPORT_USERNAME,
+        "https://t.me/ahbpanel": SUPPORT_URL,
     }
 
-    button,
-    .btn,
-    .button {
-        min-height: 42px;
-    }
-}
-
-
-@media (max-width: 520px) {
-
-    body {
-        font-size: 13px;
+    extensions = {
+        ".html",
+        ".htm",
+        ".py",
+        ".json",
+        ".js",
+        ".txt",
     }
 
-    .container,
-    .wrapper,
-    .content {
-        width: 100%;
-        max-width: 100%;
-    }
+    for file_path in APP_DIR.rglob("*"):
 
-    .glass,
-    .card,
-    .panel,
-    .box {
-        border-radius: 15px;
-    }
+        if not file_path.is_file():
+            continue
 
-    #pompnet-brand-banner {
-        font-size: 10px;
-        padding: 8px 10px;
-    }
-}
+        if file_path.suffix.lower() not in extensions:
+            continue
+
+        try:
+            content = file_path.read_text(
+                encoding="utf-8"
+            )
+
+            original = content
+
+            for old, new in replacements.items():
+                content = content.replace(old, new)
+
+            if content != original:
+                file_path.write_text(
+                    content,
+                    encoding="utf-8"
+                )
+
+                print(
+                    f"[POMP NET] Branding updated: {file_path}"
+                )
+
+        except Exception:
+            # فایل‌های غیرمتنی یا فایل‌هایی که قابل تغییر نیستند
+            # دست‌کاری نمی‌شوند.
+            pass
 
 
-/* =========================================================
-   REDUCE MOTION
-   ========================================================= */
+# =========================================================
+# MAIN
+# =========================================================
 
-@media (prefers-reduced-motion: reduce) {
+def main():
 
-    *,
-    *::before,
-    *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-        scroll-behavior: auto !important;
-    }
-}
+    print("=" * 60)
+    print("POMP NET BRANDING INSTALLER")
+    print("=" * 60)
+
+    print(f"Brand: {BRAND}")
+    print(f"Title: {TITLE}")
+    print(f"Team: {TEAM}")
+    print(f"Amir: {AMIR_USERNAME}")
+    print(f"Support: {SUPPORT_USERNAME}")
+    print(f"GitHub: {GITHUB_URL}")
+
+    install_css()
+    replace_visible_branding()
+    inject_css_into_html()
+    inject_banner()
+
+    print("=" * 60)
+    print("POMP NET branding completed.")
+    print("=" * 60)
+
+
+if __name__ == "__main__":
+    main()

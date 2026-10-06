@@ -7,23 +7,17 @@ CSS = ROOT / "pompnet.css"
 
 
 def main():
-
     if not MAIN.exists():
-        raise RuntimeError("main.py پیدا نشد")
+        raise RuntimeError("ERROR: /app/main.py پیدا نشد")
 
     if not CSS.exists():
-        raise RuntimeError("pompnet.css پیدا نشد")
+        raise RuntimeError("ERROR: /app/pompnet.css پیدا نشد")
 
-    data = MAIN.read_text(
-        encoding="utf-8"
-    )
-
-    css = CSS.read_text(
-        encoding="utf-8"
-    )
+    data = MAIN.read_text(encoding="utf-8")
+    css = CSS.read_text(encoding="utf-8")
 
     # =====================================================
-    # تنظیمات اصلی POMP NET
+    # POMP NET
     # =====================================================
 
     data = re.sub(
@@ -55,26 +49,24 @@ def main():
     )
 
     # =====================================================
-    # فقط متن‌های نمایشی
-    # منطق داخلی پنل تغییر نمی‌کند
+    # تغییر نام‌های نمایشی
     # =====================================================
 
-    data = data.replace(
-        "Created By Ahb",
-        "Created By POMP NET"
-    )
+    replacements = {
+        "Created By Ahb": "Created By POMP NET",
+        "Created By AHB": "Created By POMP NET",
+        "AHB Panel": "POMP NET",
+        "AHB PANEL": "POMP NET",
+        "ahbpanel": "POMP NET",
+        "@ahb_panel": "@NovaTunneli",
+        "https://t.me/ahbpanel": "https://t.me/NovaTunneli",
+    }
 
-    data = data.replace(
-        "AHB Panel",
-        "POMP NET"
-    )
+    for old, new in replacements.items():
+        data = data.replace(old, new)
 
     # =====================================================
-    # تزریق CSS
-    #
-    # چون AHBPanel صفحه‌ها را داخل main.py
-    # به صورت HTML داخلی دارد، CSS مستقیماً
-    # داخل همان HTML قرار می‌گیرد.
+    # CSS
     # =====================================================
 
     style = (
@@ -84,14 +76,14 @@ def main():
     )
 
     if 'id="pompnet-css"' not in data:
-
         data = data.replace(
             "</head>",
-            style + "\n</head>"
+            style + "\n</head>",
+            1,
         )
 
     # =====================================================
-    # بنر POMP NET
+    # Banner
     # =====================================================
 
     banner = """
@@ -105,27 +97,27 @@ def main():
 """
 
     if 'id="pompnet-brand-banner"' not in data:
-
         data = data.replace(
             "<body>",
             "<body>\n" + banner,
-            1
+            1,
         )
 
     # =====================================================
-    # ذخیره main.py اصلاح‌شده
+    # ذخیره
     # =====================================================
 
     MAIN.write_text(
         data,
-        encoding="utf-8"
+        encoding="utf-8",
     )
 
     print("=" * 60)
-    print("POMP NET BRANDING OK")
-    print("CSS injected successfully")
-    print("Banner injected successfully")
-    print("Original panel logic preserved")
+    print("POMP NET BUILD PREPARATION OK")
+    print("main.py ........ OK")
+    print("CSS ............ OK")
+    print("Branding ....... OK")
+    print("Original core .. PRESERVED")
     print("=" * 60)
 
 

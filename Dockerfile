@@ -13,55 +13,36 @@ RUN apt-get update \
        ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# =========================================================
-# دریافت نسخه ثابت هسته اصلی پنل
-# =========================================================
-
-RUN set -eux; \
-    git clone \
-      --depth 1 \
+# دریافت هسته اصلی پنل از نسخه ثابت
+RUN git clone \
       https://github.com/uxurx7rh7e7xr73uue73e8/ahbpanel.git \
-      /tmp/ahbpanel; \
-    cd /tmp/ahbpanel; \
-    git fetch --depth 1 origin f95c118169fd6c66e6e5b155a716cbdfc6e330c7; \
-    git checkout f95c118169fd6c66e6e5b155a716cbdfc6e330c7; \
-    cp -a . /app/; \
-    rm -rf /app/.git /tmp/ahbpanel
+      /tmp/ahbpanel \
+    && cd /tmp/ahbpanel \
+    && git checkout f95c118169fd6c66e6e5b155a716cbdfc6e330c7 \
+    && cp -a . /app/ \
+    && rm -rf /tmp/ahbpanel \
+    && test -f /app/main.py
 
-# =========================================================
 # فایل‌های POMP NET
-# =========================================================
-
 COPY pompnet.css /app/pompnet.css
 COPY pompnet_brand.py /tmp/pompnet_brand.py
 COPY requirements.txt /app/requirements.txt
 
-# =========================================================
-# بررسی فایل‌های ضروری
-# =========================================================
-
+# بررسی کامل
 RUN test -f /app/main.py \
-    && test -f /app/requirements.txt \
     && test -f /app/pompnet.css \
-    && python --version
+    && test -f /tmp/pompnet_brand.py \
+    && test -f /app/requirements.txt
 
-# =========================================================
 # اعمال برندینگ
-# =========================================================
-
 RUN python /tmp/pompnet_brand.py
 
-# =========================================================
 # نصب وابستگی‌ها
-# =========================================================
+RUN python -m pip install --upgrade pip \
+    && python -m pip install --no-cache-dir -r /app/requirements.txt
 
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -r /app/requirements.txt
+# پورت پنل
+EXPOSE 8080
 
-# =========================================================
-# Railway
-# =========================================================
-
-EXPOSE 8000
-
-CMD ["sh", "-c", "exec python -m uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# اجرای مستقیم روی 8080
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]

@@ -4,25 +4,11 @@ import re
 ROOT = Path("/app")
 MAIN = ROOT / "main.py"
 
-# فقط موارد نمایشی/برندینگ تغییر می‌کنند.
-# منطق داخلی پنل دست‌کاری نمی‌شود.
-REPLACEMENTS = [
-    ("https://t.me/ahbpanel", "https://t.me/pompnet"),
-    ("https://t.me/ahb_panel", "https://t.me/pompnet"),
-
-    ("@ahb_panel", "@NovaTunneli"),
-
-    ("Created By Ahb", "Created By Mohammad & Amir | POMP NET"),
-    ("Created by Ahb", "Created by Mohammad & Amir | POMP NET"),
-
-    ("AHBPanel", "POMP NET"),
-    ("AHB PANEL", "POMP NET"),
-    ("AHB Panel", "POMP NET"),
-    ("Ahb Panel", "POMP NET"),
-
-    ("پنل AHB", "پنل POMP NET"),
-    ("ای اچ بی پنل", "POMP NET"),
-]
+# =========================================================
+# POMP NET BRANDING
+# فقط موارد نمایشی و تنظیمات برندینگ تغییر می‌کنند.
+# هسته و منطق AHBPanel دستکاری نمی‌شود.
+# =========================================================
 
 TEXT_EXTENSIONS = {
     ".py",
@@ -45,6 +31,20 @@ SKIP_DIRS = {
     "node_modules",
 }
 
+# فقط متن‌های کاملاً مشخص و نمایشی
+REPLACEMENTS = [
+    ("Created By Ahb", "Created By Mohammad & Amir | POMP NET"),
+    ("Created by Ahb", "Created by Mohammad & Amir | POMP NET"),
+
+    ("پنل AHB", "پنل POMP NET"),
+    ("ای اچ بی پنل", "POMP NET"),
+
+    ("@ahb_panel", "@NovaTunneli"),
+
+    ("https://t.me/ahbpanel", "https://t.me/pompnet"),
+    ("https://t.me/ahb_panel", "https://t.me/pompnet"),
+]
+
 
 def replace_file(path: Path):
     try:
@@ -63,7 +63,7 @@ def replace_file(path: Path):
 
 def replace_main_settings():
     if not MAIN.exists():
-        raise RuntimeError("main.py پیدا نشد")
+        raise RuntimeError("main.py پیدا نشد؛ سورس AHBPanel درست دریافت نشده است.")
 
     data = MAIN.read_text(encoding="utf-8")
 
@@ -72,31 +72,35 @@ def replace_main_settings():
         r'APP_NAME\s*=\s*["\'][^"\']*["\']',
         'APP_NAME = "POMP NET"',
         data,
-        count=1
+        count=1,
     )
-
-    # نسخه را دست نمی‌زنیم.
-    # منطق اصلی پنل حفظ می‌شود.
 
     # پشتیبانی
     data = re.sub(
         r'SUPPORT_USERNAME\s*=\s*["\'][^"\']*["\']',
         'SUPPORT_USERNAME = "@NovaTunneli"',
         data,
-        count=1
+        count=1,
     )
 
     data = re.sub(
         r'SUPPORT_URL\s*=\s*["\'][^"\']*["\']',
         'SUPPORT_URL = "https://t.me/NovaTunneli"',
         data,
-        count=1
+        count=1,
     )
 
     MAIN.write_text(data, encoding="utf-8")
 
 
 def main():
+    if not ROOT.exists():
+        raise RuntimeError("/app وجود ندارد.")
+
+    # ابتدا تنظیمات اصلی برنامه
+    replace_main_settings()
+
+    # سپس فقط متن‌های نمایشی مشخص
     for path in ROOT.rglob("*"):
         if not path.is_file():
             continue
@@ -107,18 +111,21 @@ def main():
         if path.suffix.lower() not in TEXT_EXTENSIONS:
             continue
 
+        # main.py جداگانه مدیریت شد
+        if path == MAIN:
+            continue
+
         replace_file(path)
 
-    replace_main_settings()
-
-    print("=" * 55)
-    print(" POMP NET BUILD")
+    print("=" * 60)
+    print(" POMP NET")
+    print(" MR: Mohammad Pomp NetPanel")
     print(" Mohammad & Amir")
     print(" Original AHBPanel core preserved")
-    print(" Admin username: admin")
-    print(" Admin password: admin")
     print(" Support: @NovaTunneli")
-    print("=" * 55)
+    print(" Admin username: admin")
+    print(" Admin password: configured by ADMIN_PASSWORD")
+    print("=" * 60)
 
 
 if __name__ == "__main__":

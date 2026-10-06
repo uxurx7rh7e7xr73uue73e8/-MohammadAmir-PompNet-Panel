@@ -6,7 +6,21 @@ MAIN = ROOT / "main.py"
 CSS = ROOT / "pompnet.css"
 
 
+def replace_once(data, pattern, replacement):
+    return re.sub(
+        pattern,
+        replacement,
+        data,
+        count=1
+    )
+
+
 def main():
+
+    # -----------------------------
+    # بررسی فایل‌ها
+    # -----------------------------
+
     if not MAIN.exists():
         raise RuntimeError("ERROR: /app/main.py پیدا نشد")
 
@@ -16,48 +30,47 @@ def main():
     data = MAIN.read_text(encoding="utf-8")
     css = CSS.read_text(encoding="utf-8")
 
-    # =====================================================
-    # POMP NET
-    # =====================================================
+    # -----------------------------
+    # نام پنل
+    # -----------------------------
 
-    data = re.sub(
+    data = replace_once(
+        data,
         r'APP_NAME\s*=\s*["\'][^"\']*["\']',
-        'APP_NAME = "POMP NET"',
-        data,
-        count=1,
+        'APP_NAME = "POMP NET"'
     )
 
-    data = re.sub(
+    data = replace_once(
+        data,
         r'APP_VERSION\s*=\s*["\'][^"\']*["\']',
-        'APP_VERSION = "POMP NET"',
-        data,
-        count=1,
+        'APP_VERSION = "POMP NET"'
     )
 
-    data = re.sub(
+    # -----------------------------
+    # پشتیبانی
+    # -----------------------------
+
+    data = replace_once(
+        data,
         r'SUPPORT_USERNAME\s*=\s*["\'][^"\']*["\']',
-        'SUPPORT_USERNAME = "@NovaTunneli"',
-        data,
-        count=1,
+        'SUPPORT_USERNAME = "@NovaTunneli"'
     )
 
-    data = re.sub(
+    data = replace_once(
+        data,
         r'SUPPORT_URL\s*=\s*["\'][^"\']*["\']',
-        'SUPPORT_URL = "https://t.me/NovaTunneli"',
-        data,
-        count=1,
+        'SUPPORT_URL = "https://t.me/NovaTunneli"'
     )
 
-    # =====================================================
-    # تغییر نام‌های نمایشی
-    # =====================================================
+    # -----------------------------
+    # برندینگ
+    # -----------------------------
 
     replacements = {
         "Created By Ahb": "Created By POMP NET",
         "Created By AHB": "Created By POMP NET",
         "AHB Panel": "POMP NET",
         "AHB PANEL": "POMP NET",
-        "ahbpanel": "POMP NET",
         "@ahb_panel": "@NovaTunneli",
         "https://t.me/ahbpanel": "https://t.me/NovaTunneli",
     }
@@ -65,28 +78,36 @@ def main():
     for old, new in replacements.items():
         data = data.replace(old, new)
 
-    # =====================================================
+    # -----------------------------
     # CSS
-    # =====================================================
-
-    style = (
-        '<style id="pompnet-css">\n'
-        + css
-        + '\n</style>'
-    )
+    # -----------------------------
 
     if 'id="pompnet-css"' not in data:
+
+        if "</head>" not in data:
+            raise RuntimeError(
+                "ERROR: تگ </head> پیدا نشد"
+            )
+
+        style = (
+            '<style id="pompnet-css">\n'
+            + css +
+            '\n</style>'
+        )
+
         data = data.replace(
             "</head>",
             style + "\n</head>",
-            1,
+            1
         )
 
-    # =====================================================
+    # -----------------------------
     # Banner
-    # =====================================================
+    # -----------------------------
 
-    banner = """
+    if 'id="pompnet-brand-banner"' not in data:
+
+        banner = """
 <div id="pompnet-brand-banner">
     ⚡ توسعه و طراحی توسط تیم
     <b>POMP NET</b>
@@ -96,28 +117,30 @@ def main():
 </div>
 """
 
-    if 'id="pompnet-brand-banner"' not in data:
-        data = data.replace(
-            "<body>",
-            "<body>\n" + banner,
-            1,
-        )
+        if "<body>" in data:
+            data = data.replace(
+                "<body>",
+                "<body>\n" + banner,
+                1
+            )
 
-    # =====================================================
+    # -----------------------------
     # ذخیره
-    # =====================================================
+    # -----------------------------
 
     MAIN.write_text(
         data,
-        encoding="utf-8",
+        encoding="utf-8"
     )
 
     print("=" * 60)
-    print("POMP NET BUILD PREPARATION OK")
+    print("POMP NET BUILD OK")
     print("main.py ........ OK")
     print("CSS ............ OK")
     print("Branding ....... OK")
-    print("Original core .. PRESERVED")
+    print("Port ........... 8080")
+    print("Admin .......... admin / admin")
+    print("Core ........... PRESERVED")
     print("=" * 60)
 
 

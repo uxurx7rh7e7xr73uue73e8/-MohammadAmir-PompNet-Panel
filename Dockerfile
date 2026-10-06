@@ -14,7 +14,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # =========================================================
-# دریافت قالب اصلی AHBPanel
+# دریافت قالب اصلی
 # =========================================================
 
 RUN git clone https://github.com/uxurx7rh7e7xr73uue73e8/ahbpanel.git /tmp/ahbpanel \
@@ -24,31 +24,27 @@ RUN git clone https://github.com/uxurx7rh7e7xr73uue73e8/ahbpanel.git /tmp/ahbpan
     && rm -rf /app/.git /tmp/ahbpanel
 
 # =========================================================
-# POMP NET — فایل‌های اختصاصی
+# فایل‌های POMP NET
 # =========================================================
 
 COPY pompnet.css /tmp/pompnet.css
 COPY pompnet_brand.py /tmp/pompnet_brand.py
 
-# نصب CSS و اعمال برند POMP NET
+# قرار دادن CSS و اعمال برندینگ
 RUN cp /tmp/pompnet.css /app/pompnet.css \
     && python /tmp/pompnet_brand.py
 
 # =========================================================
-# نصب وابستگی‌ها
+# Dependencies
 # =========================================================
 
 RUN pip install --upgrade pip \
     && pip install -r /app/requirements.txt
 
 # =========================================================
-# Railway Port
+# Railway
 # =========================================================
 
 EXPOSE 8000
 
-# =========================================================
-# اجرای پنل
-# =========================================================
-
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port $PORT"]

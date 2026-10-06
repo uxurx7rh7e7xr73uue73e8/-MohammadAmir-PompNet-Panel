@@ -1,234 +1,318 @@
-from pathlib import Path
-import re
+/* =========================================================
+   POMP NET — Neon Glassmorphism
+   ========================================================= */
 
-APP_DIR = Path("/app")
-CSS_SOURCE = Path("/tmp/pompnet.css")
-CSS_TARGET = APP_DIR / "pompnet.css"
+:root {
+    --pn-bg: #050509;
+    --pn-card: rgba(16, 14, 28, .78);
+    --pn-purple: #8b35ff;
+    --pn-purple-2: #b15cff;
+    --pn-blue: #168cff;
+    --pn-blue-2: #35b7ff;
+    --pn-pink: #ff3dbb;
+    --pn-text: #f7f4ff;
+    --pn-soft: #b8b1c9;
+    --pn-border: rgba(255,255,255,.10);
+    --pn-radius: 18px;
+}
 
-# =========================================================
-# POMP NET BRAND
-# =========================================================
+html {
+    scroll-behavior: smooth;
+}
 
-BRAND = "POMP NET"
-TITLE = "MR: Mohammad Pomp NetPanel"
-TEAM = "Mohammad & Amir"
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at 10% 5%,
+            rgba(139,53,255,.18),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(22,140,255,.15),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(255,61,187,.08),
+            transparent 30%
+        ),
+        var(--pn-bg) !important;
 
-AMIR_USERNAME = "@vpnstan2"
-AMIR_CHANNEL = "https://t.me/vpnstan1"
+    color: var(--pn-text);
+    font-family:
+        Vazirmatn,
+        IRANSans,
+        Tahoma,
+        Arial,
+        sans-serif;
 
-POMPNET_CHANNEL = "https://t.me/pompnet"
-POMPNET_GROUP = "https://t.me/+UV34C7Ohs9hiZTc0"
+    direction: rtl;
+    overflow-x: hidden;
+}
 
-SUPPORT_USERNAME = "@NovaTunneli"
-SUPPORT_URL = "https://t.me/NovaTunneli"
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    pointer-events: none;
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(100px);
+}
 
-GITHUB_URL = "https://github.com/uxurx7rh7e7xr73uue73e8"
+body::before {
+    width: 420px;
+    height: 420px;
+    top: -160px;
+    right: -120px;
+    background: rgba(139,53,255,.16);
+}
 
-BANNER = (
-    "⚡ توسعه و طراحی توسط تیم POMP NET • "
-    "با همکاری ویژه آقا امیر | Mohammad & Amir • "
-    "ساخته‌شده برای یک تجربه سریع، مدرن و حرفه‌ای"
-)
+body::after {
+    width: 400px;
+    height: 400px;
+    bottom: -160px;
+    left: -120px;
+    background: rgba(22,140,255,.13);
+}
 
+/* TEXT */
 
-# =========================================================
-# COPY CSS
-# =========================================================
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #f7f4ff !important;
+}
 
-def install_css():
-    """
-    انتقال pompnet.css به /app
-    بدون تغییر در فایل‌های اصلی AHBPanel
-    """
+p,
+small,
+label {
+    color: var(--pn-soft);
+}
 
-    if CSS_SOURCE.exists():
-        CSS_TARGET.write_text(
-            CSS_SOURCE.read_text(encoding="utf-8"),
-            encoding="utf-8"
-        )
-        print("[POMP NET] pompnet.css installed.")
-    else:
-        print("[POMP NET] pompnet.css source not found.")
+a {
+    color: var(--pn-blue-2);
+    transition: .2s;
+}
 
+a:hover {
+    color: var(--pn-purple-2);
+    text-shadow: 0 0 10px rgba(177,92,255,.55);
+}
 
-# =========================================================
-# INJECT CSS INTO HTML
-# =========================================================
+/* GLASS */
 
-def inject_css_into_html():
-    css_link = '<link rel="stylesheet" href="/static/pompnet.css">'
+.card,
+.panel,
+.box,
+.modal,
+.modal-content,
+.container-card,
+.dashboard-card,
+.stat-card,
+.user-card,
+.server-card,
+.settings-card,
+.form-card,
+.table-container,
+header,
+nav,
+aside,
+footer {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.045),
+            rgba(255,255,255,.012)
+        ),
+        var(--pn-card) !important;
 
-    for html_file in APP_DIR.rglob("*.html"):
+    border: 1px solid var(--pn-border);
+    border-radius: var(--pn-radius);
 
-        try:
-            content = html_file.read_text(encoding="utf-8")
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.38),
+        0 0 35px rgba(108,38,255,.10);
 
-            if "/static/pompnet.css" in content:
-                continue
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
 
-            if re.search(r"</head>", content, re.IGNORECASE):
+.card:hover,
+.panel:hover,
+.box:hover,
+.dashboard-card:hover,
+.stat-card:hover,
+.user-card:hover,
+.server-card:hover {
+    border-color: rgba(139,53,255,.35);
 
-                content = re.sub(
-                    r"</head>",
-                    f"    {css_link}\n</head>",
-                    content,
-                    count=1,
-                    flags=re.IGNORECASE
-                )
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.38),
+        0 0 28px rgba(139,53,255,.12);
 
-                html_file.write_text(
-                    content,
-                    encoding="utf-8"
-                )
+    transform: translateY(-2px);
+}
 
-                print(
-                    f"[POMP NET] CSS linked: {html_file}"
-                )
+/* BUTTONS */
 
-        except Exception as e:
-            print(
-                f"[POMP NET] HTML error: {html_file} -> {e}"
-            )
+button,
+.btn,
+.button,
+input[type="submit"],
+input[type="button"] {
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 12px;
 
+    color: #fff;
 
-# =========================================================
-# BRAND BANNER
-# =========================================================
+    background:
+        linear-gradient(
+            135deg,
+            var(--pn-purple),
+            var(--pn-blue)
+        );
 
-def inject_banner():
+    box-shadow:
+        0 7px 25px rgba(91,37,190,.25);
 
-    banner_html = f"""
-<div id="pompnet-brand-banner">
-    ⚡ توسعه و طراحی توسط تیم
-    <b>POMP NET</b>
-    • با همکاری ویژه آقا امیر
-    • Mohammad &amp; Amir
-    • ساخته‌شده برای یک تجربه سریع، مدرن و حرفه‌ای
-</div>
-"""
+    cursor: pointer;
+    transition: .18s;
+}
 
-    for html_file in APP_DIR.rglob("*.html"):
+button:hover,
+.btn:hover,
+.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.10);
 
-        try:
-            content = html_file.read_text(
-                encoding="utf-8"
-            )
+    box-shadow:
+        0 8px 30px rgba(139,53,255,.35),
+        0 0 25px rgba(22,140,255,.15);
+}
 
-            if "pompnet-brand-banner" in content:
-                continue
+/* INPUTS */
 
-            if re.search(
-                r"<body[^>]*>",
-                content,
-                re.IGNORECASE
-            ):
+input,
+textarea,
+select {
+    color: var(--pn-text);
 
-                content = re.sub(
-                    r"(<body[^>]*>)",
-                    r"\1\n" + banner_html,
-                    content,
-                    count=1,
-                    flags=re.IGNORECASE
-                )
+    background:
+        rgba(4,4,10,.62);
 
-                html_file.write_text(
-                    content,
-                    encoding="utf-8"
-                )
+    border:
+        1px solid rgba(255,255,255,.10);
 
-                print(
-                    f"[POMP NET] Banner added: {html_file}"
-                )
+    border-radius: 12px;
+    outline: none;
+}
 
-        except Exception as e:
-            print(
-                f"[POMP NET] Banner error: {html_file} -> {e}"
-            )
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--pn-purple);
 
+    box-shadow:
+        0 0 0 3px rgba(139,53,255,.10),
+        0 0 22px rgba(139,53,255,.12);
+}
 
-# =========================================================
-# VISIBLE BRANDING ONLY
-# =========================================================
+/* TABLE */
 
-def replace_visible_branding():
+thead {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(139,53,255,.12),
+            rgba(22,140,255,.08)
+        );
+}
 
-    replacements = {
-        "AHBPanel": BRAND,
-        "AHB Panel": BRAND,
-        "ahb panel": BRAND,
-        "@ahb_panel": SUPPORT_USERNAME,
-        "https://t.me/ahbpanel": SUPPORT_URL,
+tbody tr:hover {
+    background: rgba(139,53,255,.055);
+}
+
+/* POMP NET BANNER */
+
+#pompnet-brand-banner {
+    box-sizing: border-box;
+
+    width: 100%;
+
+    text-align: center;
+
+    padding: 9px 14px;
+
+    margin: 0 0 12px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(139,53,255,.16),
+            rgba(22,140,255,.12)
+        );
+
+    border:
+        1px solid rgba(139,53,255,.22);
+
+    color: #e9e2ff;
+
+    font-size: 12px;
+    line-height: 1.8;
+
+    box-shadow:
+        0 0 25px rgba(100,40,255,.10),
+        inset 0 1px rgba(255,255,255,.06);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+#pompnet-brand-banner b {
+    color: #bd8cff;
+
+    text-shadow:
+        0 0 12px rgba(139,53,255,.35);
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #06060b;
+}
+
+::-webkit-scrollbar-thumb {
+    background:
+        linear-gradient(
+            180deg,
+            var(--pn-purple),
+            var(--pn-blue)
+        );
+
+    border-radius: 999px;
+}
+
+/* MOBILE */
+
+@media (max-width: 520px) {
+    #pompnet-brand-banner {
+        font-size: 10px;
+        padding: 8px 10px;
     }
-
-    extensions = {
-        ".html",
-        ".htm",
-        ".py",
-        ".json",
-        ".js",
-        ".txt",
-    }
-
-    for file_path in APP_DIR.rglob("*"):
-
-        if not file_path.is_file():
-            continue
-
-        if file_path.suffix.lower() not in extensions:
-            continue
-
-        try:
-            content = file_path.read_text(
-                encoding="utf-8"
-            )
-
-            original = content
-
-            for old, new in replacements.items():
-                content = content.replace(old, new)
-
-            if content != original:
-                file_path.write_text(
-                    content,
-                    encoding="utf-8"
-                )
-
-                print(
-                    f"[POMP NET] Branding updated: {file_path}"
-                )
-
-        except Exception:
-            # فایل‌های غیرمتنی یا فایل‌هایی که قابل تغییر نیستند
-            # دست‌کاری نمی‌شوند.
-            pass
-
-
-# =========================================================
-# MAIN
-# =========================================================
-
-def main():
-
-    print("=" * 60)
-    print("POMP NET BRANDING INSTALLER")
-    print("=" * 60)
-
-    print(f"Brand: {BRAND}")
-    print(f"Title: {TITLE}")
-    print(f"Team: {TEAM}")
-    print(f"Amir: {AMIR_USERNAME}")
-    print(f"Support: {SUPPORT_USERNAME}")
-    print(f"GitHub: {GITHUB_URL}")
-
-    install_css()
-    replace_visible_branding()
-    inject_css_into_html()
-    inject_banner()
-
-    print("=" * 60)
-    print("POMP NET branding completed.")
-    print("=" * 60)
-
-
-if __name__ == "__main__":
-    main()
+}

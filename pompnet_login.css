@@ -1,0 +1,88 @@
+/* =========================================================
+   POMP NET LOGIN BRAND
+   ========================================================= */
+
+#pompnet-login-brand {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto 24px;
+    direction: rtl;
+}
+
+.pompnet-logo-circle {
+    width: 150px;
+    height: 150px;
+
+    margin: 0 auto 16px;
+    padding: 5px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #2563eb,
+        #ec4899
+    );
+
+    box-shadow:
+        0 0 25px rgba(37, 99, 235, 0.65),
+        0 0 50px rgba(124, 58, 237, 0.45);
+
+    overflow: hidden;
+}
+
+.pompnet-logo-circle img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+}
+
+.pompnet-login-title {
+    color: #ffffff;
+
+    font-size: 24px;
+    font-weight: 900;
+
+    margin-top: 8px;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 10px rgba(37, 99, 235, 0.8),
+        0 0 25px rgba(124, 58, 237, 0.5);
+}
+
+.pompnet-login-credit {
+    color: #b8b2c7;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    margin-top: 9px;
+}
+
+@media (max-width: 600px) {
+
+    .pompnet-logo-circle {
+        width: 125px;
+        height: 125px;
+    }
+
+    .pompnet-login-title {
+        font-size: 21px;
+    }
+
+    .pompnet-login-credit {
+        font-size: 12px;
+    }
+}

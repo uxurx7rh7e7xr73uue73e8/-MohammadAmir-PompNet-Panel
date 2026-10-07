@@ -1,4 +1,4 @@
-# MohammadAmir-PompNet-Nexus
+# MohammadAmir-PompNet
 
 # 🚀 POMP NET
 
@@ -6,15 +6,18 @@
 
 ### Mohammad & Amir
 
-پنل POMP NET بر پایه هسته اصلی AHBPanel.
+پنل اختصاصی POMP NET با حفظ هسته و قابلیت‌های اصلی پنل.
 
 هدف پروژه:
 
-- حفظ هسته اصلی AHBPanel
-- حفظ قابلیت‌های اصلی
-- تغییر برند و مشخصات به POMP NET
+- حفظ قابلیت‌های اصلی پنل
+- تغییر کامل برند و مشخصات به POMP NET
+- حفظ Subscription
+- حفظ VLESS
+- حفظ مدیریت کاربران
+- حفظ ترافیک و تاریخ انقضا
 - آماده‌سازی برای Deploy روی Railway
-- بدون بازنویسی فیک پنل
+- بدون ساخت پنل فیک
 
 ---
 
@@ -72,29 +75,30 @@ https://github.com/uxurx7rh7e7xr73uue73e8
 
 Repository:
 
-MohammadAmir-PompNet-Nexus
+MohammadAmir-PompNet
 
 Base:
 
-AHBPanel
+POMP NET Core
 
 ---
 
 # ⚠️ معماری پروژه
 
-این Repository یک Fork کامل از سورس AHBPanel نیست.
+این Repository شامل لایه اختصاصی POMP NET برای برندینگ، ظاهر و تنظیمات نمایشی پنل است.
 
-برای جلوگیری از کپی و نگهداری چند نسخه از هسته اصلی، Docker هنگام Build نسخه مشخص‌شده AHBPanel را دریافت می‌کند.
+در زمان Build، هسته اصلی برنامه دریافت و سپس Branding اختصاصی POMP NET روی آن اعمال می‌شود.
 
-سپس:
+مراحل:
 
-1. سورس اصلی دریافت می‌شود.
-2. نسخه مشخص AHBPanel استفاده می‌شود.
-3. فایل Branding اجرا می‌شود.
-4. فقط مشخصات نمایشی POMP NET تغییر می‌کند.
-5. برنامه اصلی اجرا می‌شود.
+1. دریافت هسته اصلی
+2. استفاده از نسخه مشخص
+3. اجرای فایل Branding
+4. اعمال برندینگ POMP NET
+5. حفظ منطق اصلی برنامه
+6. اجرای برنامه
 
-بنابراین هسته اصلی پنل بازنویسی یا شبیه‌سازی نمی‌شود.
+منطق اصلی پنل برای تغییر برند بازنویسی یا شبیه‌سازی نمی‌شود.
 
 ---
 
@@ -107,28 +111,33 @@ AHBPanel
 - requirements.txt
 - pompnet_brand.py
 - README.md
+- pompnet.css
 
-هسته اصلی AHBPanel در زمان Docker Build دریافت می‌شود.
-
-بنابراین نباید فایل‌های اصلی AHBPanel را به صورت فیک یا ناقص به Repository اضافه کرد.
+فایل Branding وظیفه اعمال ظاهر و مشخصات اختصاصی POMP NET را دارد.
 
 ---
 
-# 🛡️ حفظ هسته اصلی
+# 🛡️ حفظ قابلیت‌های اصلی
 
-فایل‌های اصلی AHBPanel نباید حذف یا بازنویسی شوند.
+قابلیت‌های اصلی پنل نباید حذف یا خراب شوند.
 
 از جمله:
 
-- main.py
-- pages.py
-- relay_vless.py
-- speed_limit.py
-- telegram_bot.py
-- xhttp_siz10.py
-- news.json
-
-این فایل‌ها توسط Docker از نسخه اصلی پروژه دریافت می‌شوند.
+- Dashboard
+- Users
+- VLESS
+- VMess
+- Trojan
+- Shadowsocks
+- XHTTP
+- Xray
+- Subscription
+- Traffic
+- Expiry
+- Speed Limit
+- Telegram
+- Admin
+- News
 
 ---
 
@@ -136,13 +145,7 @@ AHBPanel
 
 هویت پروژه:
 
-AHBPanel
-
-به:
-
 POMP NET
-
-تغییر داده می‌شود.
 
 عنوان:
 
@@ -202,7 +205,7 @@ Deploy from GitHub Repo
 
 Repository:
 
-MohammadAmir-PompNet-Nexus
+MohammadAmir-PompNet
 
 ---
 
@@ -332,13 +335,13 @@ admin
 
 # 🧪 بررسی پنل
 
-بعد از Deploy باید قابلیت‌های موجود در نسخه اصلی بررسی شوند.
+بعد از Deploy باید قابلیت‌های موجود بررسی شوند.
 
 ## Dashboard
 
 - Dashboard
 - وضعیت سرویس
-- آمار موجود در نسخه اصلی
+- آمار
 
 ## Users
 
@@ -350,8 +353,6 @@ admin
 - وضعیت کاربر
 
 ## Protocols
-
-قابلیت‌های موجود در نسخه اصلی مانند:
 
 - VLESS
 - VMess
@@ -386,13 +387,13 @@ admin
 
 - Telegram
 - Bot
-- امکانات موجود در نسخه اصلی
+- امکانات موجود
 
 ## Admin
 
 - Owner
 - Admin
-- مدیریت کاربران مدیریتی در صورت وجود در نسخه اصلی
+- مدیریت کاربران مدیریتی
 
 ## News
 
@@ -402,11 +403,11 @@ admin
 
 # 🟢 اصل مهم پروژه
 
-POMP NET قرار نیست یک پنل فیک باشد.
+POMP NET یک پنل فیک نیست.
 
 هدف:
 
-AHBPanel Core
+حفظ قابلیت‌های واقعی پنل
 
 +
 
@@ -444,9 +445,7 @@ Automatic Deploy
 
 در Deploy اولیه Railway Volume الزامی نیست.
 
-اما توجه کنید:
-
-اطلاعاتی که برنامه فقط روی فایل‌های محلی کانتینر ذخیره می‌کند ممکن است بعد از تعویض یا حذف Container باقی نماند.
+اما اطلاعاتی که برنامه فقط روی فایل‌های محلی Container ذخیره می‌کند ممکن است بعد از تعویض یا حذف Container باقی نماند.
 
 برای تست:
 
@@ -494,7 +493,7 @@ Domain
 
 را بررسی کنید.
 
-همچنین Health Check:
+همچنین:
 
 /health
 
@@ -504,7 +503,7 @@ Domain
 
 # ❌ کارهایی که نباید انجام شوند
 
-❌ حذف هسته اصلی AHBPanel
+❌ حذف هسته اصلی
 
 ❌ ساخت main.py فیک
 
@@ -524,7 +523,7 @@ Domain
 
 # 🎯 ساختار نهایی
 
-AHBPanel
+POMP NET Core
 
 ↓
 
@@ -592,8 +591,8 @@ admin
 
 ## هدف نهایی
 
-حفظ هسته واقعی AHBPanel و تمام قابلیت‌های موجود در نسخه اصلی، همراه با برندینگ اختصاصی:
+حفظ قابلیت‌های واقعی پنل همراه با برندینگ اختصاصی:
 
-POMP NET
+# POMP NET
 
-Mohammad & Amir
+### Mohammad & Amir

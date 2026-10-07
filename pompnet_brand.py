@@ -26,11 +26,10 @@ def replace_info_html(data: str):
 
     if start == -1:
         raise RuntimeError(
-            "ERROR: info_html در هسته AHB پیدا نشد"
+            "ERROR: info_html در هسته اصلی پیدا نشد"
         )
 
     line_start = data.rfind("\n", 0, start) + 1
-
     indent = data[line_start:start]
 
     content_start = start + len(marker)
@@ -567,62 +566,29 @@ __STATUS__
 
 </section>
 
-
 <section class="stats">
 
 <div class="card stat">
-
-<div class="label">
-کاربر
+<div class="label">کاربر</div>
+<div class="value">__LABEL__</div>
 </div>
-
-<div class="value">
-__LABEL__
-</div>
-
-</div>
-
 
 <div class="card stat">
-
-<div class="label">
-حجم مصرف شده
+<div class="label">حجم مصرف شده</div>
+<div class="value">__USED__</div>
 </div>
-
-<div class="value">
-__USED__
-</div>
-
-</div>
-
 
 <div class="card stat">
-
-<div class="label">
-حجم کل
+<div class="label">حجم کل</div>
+<div class="value">__TOTAL__</div>
 </div>
-
-<div class="value">
-__TOTAL__
-</div>
-
-</div>
-
 
 <div class="card stat">
-
-<div class="label">
-حجم باقی مانده
-</div>
-
-<div class="value">
-__REMAINING__
-</div>
-
+<div class="label">حجم باقی مانده</div>
+<div class="value">__REMAINING__</div>
 </div>
 
 </section>
-
 
 <section class="main">
 
@@ -649,7 +615,6 @@ __USAGE__%
 </div>
 
 </div>
-
 
 <div class="card info">
 
@@ -700,13 +665,11 @@ __USAGE__%
 
 </section>
 
-
 <section class="card links">
 
 <div class="section-title">
 لینک‌های اتصال
 </div>
-
 
 <div class="label">
 VLESS
@@ -730,7 +693,6 @@ onclick="copyPomp('pomp-vless',this)"
 
 </div>
 
-
 <div class="label">
 Subscription
 </div>
@@ -753,7 +715,6 @@ onclick="copyPomp('pomp-sub',this)"
 
 </div>
 
-
 <a
 class="support"
 href="https://t.me/NovaTunneli"
@@ -765,13 +726,11 @@ rel="noopener"
 
 </section>
 
-
 <div class="footer">
 POMP NET • Mohammad &amp; Amir
 </div>
 
 </div>
-
 
 <script>
 
@@ -903,8 +862,6 @@ def main():
         encoding="utf-8"
     )
 
-    # بررسی هسته واقعی Subscription قبل از تغییر
-
     sub_before = get_sub_route(data)
 
     if not sub_before:
@@ -915,8 +872,6 @@ def main():
     sub_hash_before = hashlib.sha256(
         sub_before.encode("utf-8")
     ).hexdigest()
-
-    # برندینگ محدود و امن
 
     replacements = {
 
@@ -955,13 +910,7 @@ def main():
     }
 
     for old, new in replacements.items():
-
-        data = data.replace(
-            old,
-            new
-        )
-
-    # فقط تنظیمات نمایشی/پشتیبانی
+        data = data.replace(old, new)
 
     data = re.sub(
         r'SUPPORT_USERNAME\s*=\s*["\'][^"\']*["\']',
@@ -977,11 +926,7 @@ def main():
         count=1
     )
 
-    # صفحه واقعی /info/{uid}
-
     data = replace_info_html(data)
-
-    # CSS اختصاصی POMP NET
 
     css = CSS.read_text(
         encoding="utf-8"
@@ -1007,8 +952,6 @@ def main():
         encoding="utf-8"
     )
 
-    # بررسی Syntax واقعی
-
     try:
 
         py_compile.compile(
@@ -1023,8 +966,6 @@ def main():
             + str(exc)
         )
 
-    # بررسی بعد از تغییر
-
     check = MAIN.read_text(
         encoding="utf-8"
     )
@@ -1032,7 +973,6 @@ def main():
     sub_after = get_sub_route(check)
 
     if not sub_after:
-
         raise RuntimeError(
             "BUILD CHECK FAILED: /sub/{uuid} حذف شده"
         )
@@ -1042,34 +982,24 @@ def main():
     ).hexdigest()
 
     if sub_hash_before != sub_hash_after:
-
         raise RuntimeError(
             "BUILD CHECK FAILED: "
             "/sub/{uuid} تغییر کرده است"
         )
 
     required = [
-
         "/sub/{uuid}",
-
         "async def info_page",
-
         "POMP NET",
-
         "@NovaTunneli",
-
         "https://t.me/NovaTunneli",
-
         "pompnet-css",
-
         "POMP NET PANEL",
-
     ]
 
     for item in required:
 
         if item not in check:
-
             raise RuntimeError(
                 "BUILD CHECK FAILED: "
                 + item
@@ -1078,7 +1008,7 @@ def main():
     print("=" * 60)
     print("POMP NET BUILD CHECK: OK")
     print("PYTHON SYNTAX: OK")
-    print("AHB CORE: PRESERVED")
+    print("CORE: PRESERVED")
     print("SUBSCRIPTION: PRESERVED")
     print("INFO PAGE: POMP NET")
     print("REAL USER DATA: PRESERVED")

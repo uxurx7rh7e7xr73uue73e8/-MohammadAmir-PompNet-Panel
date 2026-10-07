@@ -1,852 +1,609 @@
 from pathlib import Path
 import re
 import hashlib
+import py_compile
 
 ROOT = Path("/app")
 MAIN = ROOT / "main.py"
 CSS = ROOT / "pompnet.css"
 
 
-def replace_once(data, pattern, replacement):
-    return re.sub(pattern, replacement, data, count=1)
-
-
 def get_sub_route(data):
-    """
-    کل تابع /sub/{uuid} را پیدا می‌کند.
-    برای اطمینان از اینکه منطق Subscription تغییر نکرده است.
-    """
     pattern = re.compile(
         r'@app\.get\(\s*["\']/sub/\{uuid\}["\'].*?(?=\n@app\.get|\n@app\.post|\n@app\.websocket|\nasync def |\Z)',
         re.S,
     )
-    match = pattern.search(data)
-    return match.group(0) if match else None
+    m = pattern.search(data)
+    return m.group(0) if m else None
 
 
 def replace_info_html(data):
-    """
-    فقط HTML صفحه /info/{uid} را عوض می‌کند.
-    محاسبه حجم، تاریخ، لینک VLESS و Subscription
-    از کد اصلی AHB باقی می‌ماند.
-    """
 
-    start = data.find('info_html = f"""')
+    marker = 'info_html = f"""'
+    start = data.find(marker)
 
     if start == -1:
-        raise RuntimeError(
-            "ERROR: info_html پیدا نشد"
-        )
+        raise RuntimeError("ERROR: info_html پیدا نشد")
 
-    end = data.find('"""', start + len('info_html = f"""'))
+    end = data.find('"""', start + len(marker))
 
     if end == -1:
-        raise RuntimeError(
-            "ERROR: پایان info_html پیدا نشد"
-        )
+        raise RuntimeError("ERROR: پایان info_html پیدا نشد")
 
-    old_block = data[start:end + 3]
-
-    new_block = '''info_html = f"""
+    template = r'''
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#07030f">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05020d">
 <title>POMP NET PANEL</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+
+html,body{
+margin:0;
+min-height:100%;
 }
 
-html,
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
+body{
+font-family:Tahoma,Vazirmatn,Arial,sans-serif;
+color:#fff;
+background:
+radial-gradient(circle at 10% 5%,rgba(124,58,237,.28),transparent 30%),
+radial-gradient(circle at 95% 15%,rgba(37,99,235,.25),transparent 30%),
+linear-gradient(135deg,#020106,#090414 50%,#020617);
 }
 
-body {
-    background:
-        radial-gradient(
-            circle at 10% 10%,
-            rgba(124,58,237,.22),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 90% 20%,
-            rgba(37,99,235,.20),
-            transparent 30%
-        ),
-        linear-gradient(
-            135deg,
-            #03020a,
-            #090512 50%,
-            #020617
-        );
-
-    color: #fff;
-
-    font-family:
-        Vazirmatn,
-        Tahoma,
-        Arial,
-        sans-serif;
+.pn{
+width:min(1080px,94%);
+margin:auto;
+padding:18px 0 45px;
 }
 
-.pomp-container {
-    width: min(1050px, 94%);
-    margin: auto;
-    padding: 20px 0 45px;
+.card{
+border:1px solid rgba(139,92,246,.22);
+border-radius:24px;
+background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+box-shadow:0 18px 60px rgba(0,0,0,.35);
+backdrop-filter:blur(18px);
 }
 
-.pomp-header {
-    position: relative;
-    overflow: hidden;
-
-    padding: 24px;
-
-    border-radius: 26px;
-
-    border: 1px solid rgba(139,92,246,.30);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(124,58,237,.20),
-            rgba(37,99,235,.12)
-        );
-
-    box-shadow:
-        0 20px 70px rgba(0,0,0,.45),
-        inset 0 1px 0 rgba(255,255,255,.06);
+.header{
+padding:24px;
+position:relative;
+overflow:hidden;
+background:
+radial-gradient(circle at 100% 0,rgba(124,58,237,.28),transparent 45%),
+radial-gradient(circle at 0 100%,rgba(37,99,235,.22),transparent 45%),
+rgba(8,4,18,.75);
 }
 
-.pomp-header::before {
-    content: "";
-
-    position: absolute;
-
-    width: 220px;
-    height: 220px;
-
-    border-radius: 50%;
-
-    background: rgba(124,58,237,.14);
-
-    filter: blur(55px);
-
-    top: -110px;
-    right: -70px;
+.header:after{
+content:"";
+position:absolute;
+width:190px;
+height:190px;
+right:-80px;
+top:-100px;
+border-radius:50%;
+background:#7c3aed;
+opacity:.12;
+filter:blur(45px);
 }
 
-.pomp-logo {
-    position: relative;
-
-    display: flex;
-    align-items: center;
-
-    gap: 14px;
+.logo{
+display:flex;
+align-items:center;
+gap:14px;
+position:relative;
+z-index:1;
 }
 
-.pomp-logo-icon {
-    width: 60px;
-    height: 60px;
-
-    border-radius: 19px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 30px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #2563eb
-        );
-
-    box-shadow:
-        0 12px 35px rgba(124,58,237,.42);
+.logo-icon{
+width:60px;
+height:60px;
+border-radius:18px;
+display:grid;
+place-items:center;
+font-size:29px;
+background:linear-gradient(135deg,#7c3aed,#2563eb);
+box-shadow:0 10px 35px rgba(124,58,237,.4);
 }
 
-.pomp-title {
-    font-size: 26px;
-    font-weight: 900;
+.title{
+font-size:27px;
+font-weight:900;
+letter-spacing:.5px;
 }
 
-.pomp-subtitle {
-    margin-top: 5px;
-
-    color: #aaa7b8;
-
-    font-size: 13px;
+.subtitle{
+color:#a7a2b7;
+font-size:12px;
+margin-top:5px;
 }
 
-.pomp-status {
-    position: relative;
-
-    display: inline-flex;
-    align-items: center;
-
-    gap: 8px;
-
-    margin-top: 18px;
-
-    padding: 8px 14px;
-
-    border-radius: 999px;
-
-    color: #86efac;
-
-    background: rgba(34,197,94,.10);
-
-    border: 1px solid rgba(34,197,94,.25);
-
-    font-size: 13px;
-    font-weight: 800;
+.status{
+display:inline-flex;
+align-items:center;
+gap:8px;
+margin-top:17px;
+padding:8px 14px;
+border-radius:999px;
+background:rgba(34,197,94,.10);
+border:1px solid rgba(34,197,94,.25);
+color:#86efac;
+font-size:12px;
+font-weight:900;
 }
 
-.pomp-dot {
-    width: 8px;
-    height: 8px;
-
-    border-radius: 50%;
-
-    background: #22c55e;
-
-    box-shadow:
-        0 0 13px #22c55e;
+.dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:#22c55e;
+box-shadow:0 0 12px #22c55e;
 }
 
-.pomp-stats {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 13px;
-
-    margin-top: 15px;
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin-top:14px;
 }
 
-.pomp-card {
-    padding: 18px;
-
-    border-radius: 21px;
-
-    border: 1px solid rgba(255,255,255,.08);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.07),
-            rgba(255,255,255,.025)
-        );
-
-    box-shadow:
-        0 15px 45px rgba(0,0,0,.24);
-
-    backdrop-filter: blur(14px);
+.stat{
+padding:17px;
 }
 
-.pomp-label {
-    color: #9995a8;
-
-    font-size: 12px;
-
-    margin-bottom: 8px;
+.label{
+color:#9993aa;
+font-size:11px;
+margin-bottom:8px;
 }
 
-.pomp-value {
-    font-size: 18px;
-
-    font-weight: 900;
-
-    word-break: break-word;
+.value{
+font-size:17px;
+font-weight:900;
+word-break:break-word;
 }
 
-.pomp-main {
-    display: grid;
-
-    grid-template-columns:
-        330px 1fr;
-
-    gap: 15px;
-
-    margin-top: 15px;
+.main{
+display:grid;
+grid-template-columns:330px 1fr;
+gap:14px;
+margin-top:14px;
 }
 
-.pomp-usage {
-    min-height: 330px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
+.usage{
+padding:22px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+min-height:320px;
 }
 
-.pomp-section-title {
-    font-size: 18px;
-
-    font-weight: 900;
-
-    margin-bottom: 15px;
+.section-title{
+font-size:16px;
+font-weight:900;
+margin-bottom:16px;
 }
 
-.pomp-ring {
-    width: 190px;
-    height: 190px;
-
-    border-radius: 50%;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background:
-        conic-gradient(
-            #8b5cf6 0deg,
-            #2563eb {{usage_percent}}%,
-            rgba(255,255,255,.07)
-                {{usage_percent}}%,
-            rgba(255,255,255,.07) 100%
-        );
-
-    box-shadow:
-        0 0 55px rgba(124,58,237,.18);
+.ring{
+width:185px;
+height:185px;
+border-radius:50%;
+display:grid;
+place-items:center;
+background:
+conic-gradient(
+#8b5cf6 0deg,
+#2563eb __USAGE__%,
+rgba(255,255,255,.07) __USAGE__%,
+rgba(255,255,255,.07) 100%
+);
+box-shadow:0 0 55px rgba(124,58,237,.20);
 }
 
-.pomp-ring-inner {
-    width: 162px;
-    height: 162px;
-
-    border-radius: 50%;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    background: #080511;
-
-    border: 1px solid rgba(255,255,255,.06);
+.ring-inner{
+width:157px;
+height:157px;
+border-radius:50%;
+background:#08050f;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+border:1px solid rgba(255,255,255,.06);
 }
 
-.pomp-percent {
-    font-size: 31px;
-
-    font-weight: 900;
+.percent{
+font-size:30px;
+font-weight:900;
 }
 
-.pomp-percent-small {
-    margin-top: 4px;
-
-    color: #9995a8;
-
-    font-size: 12px;
+.percent-small{
+color:#9993aa;
+font-size:11px;
+margin-top:4px;
 }
 
-.pomp-info {
-    display: grid;
-
-    gap: 9px;
+.info{
+padding:21px;
 }
 
-.pomp-row {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 15px;
-
-    padding: 13px;
-
-    border-radius: 14px;
-
-    background:
-        rgba(255,255,255,.035);
-
-    border: 1px solid rgba(255,255,255,.055);
+.rows{
+display:grid;
+gap:8px;
 }
 
-.pomp-row span:first-child {
-    color: #9692a4;
-
-    font-size: 12px;
+.row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+padding:12px 13px;
+border-radius:14px;
+background:rgba(255,255,255,.035);
+border:1px solid rgba(255,255,255,.055);
 }
 
-.pomp-row span:last-child {
-    color: #fff;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    word-break: break-all;
-
-    text-align: left;
-
-    direction: ltr;
+.row span:first-child{
+color:#9892a6;
+font-size:11px;
+white-space:nowrap;
 }
 
-.pomp-links {
-    margin-top: 15px;
+.row span:last-child{
+font-size:12px;
+font-weight:700;
+word-break:break-all;
+direction:ltr;
+text-align:left;
 }
 
-.pomp-input-row {
-    display: flex;
-
-    gap: 9px;
-
-    margin-bottom: 13px;
+.links{
+padding:21px;
+margin-top:14px;
 }
 
-.pomp-input {
-    flex: 1;
-
-    min-width: 0;
-
-    padding: 14px;
-
-    border-radius: 14px;
-
-    border: 1px solid rgba(255,255,255,.08);
-
-    background: #05030b;
-
-    color: #ddd;
-
-    direction: ltr;
-
-    outline: none;
-
-    font-size: 12px;
+.input-row{
+display:flex;
+gap:8px;
+margin:7px 0 13px;
 }
 
-.pomp-copy {
-    border: 0;
-
-    border-radius: 14px;
-
-    padding: 0 18px;
-
-    color: #fff;
-
-    font-weight: 900;
-
-    cursor: pointer;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #2563eb
-        );
+.input{
+flex:1;
+min-width:0;
+padding:13px;
+border-radius:13px;
+border:1px solid rgba(255,255,255,.08);
+background:#05030a;
+color:#ddd;
+direction:ltr;
+outline:none;
+font-size:11px;
 }
 
-.pomp-support {
-    display: block;
-
-    text-decoration: none;
-
-    text-align: center;
-
-    margin-top: 15px;
-
-    padding: 15px;
-
-    border-radius: 16px;
-
-    color: #fff;
-
-    font-weight: 900;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(124,58,237,.45),
-            rgba(37,99,235,.35)
-        );
-
-    border: 1px solid rgba(139,92,246,.35);
+.copy{
+border:0;
+border-radius:13px;
+padding:0 18px;
+color:#fff;
+font-weight:900;
+background:linear-gradient(135deg,#7c3aed,#2563eb);
+cursor:pointer;
 }
 
-.pomp-footer {
-    padding-top: 14px;
-
-    text-align: center;
-
-    color: #777385;
-
-    font-size: 11px;
+.support{
+display:block;
+text-decoration:none;
+text-align:center;
+padding:14px;
+border-radius:15px;
+margin-top:5px;
+color:#fff;
+font-weight:900;
+background:linear-gradient(135deg,rgba(124,58,237,.42),rgba(37,99,235,.32));
+border:1px solid rgba(139,92,246,.30);
 }
 
-@media(max-width:850px) {
-
-    .pomp-stats {
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-    .pomp-main {
-        grid-template-columns: 1fr;
-    }
+.footer{
+text-align:center;
+color:#716b80;
+font-size:10px;
+padding-top:15px;
 }
 
-@media(max-width:520px) {
+@media(max-width:850px){
+.stats{grid-template-columns:repeat(2,1fr)}
+.main{grid-template-columns:1fr}
+}
 
-    .pomp-container {
-        width: 92%;
-    }
-
-    .pomp-header {
-        padding: 18px;
-    }
-
-    .pomp-title {
-        font-size: 22px;
-    }
-
-    .pomp-stats {
-        gap: 8px;
-    }
-
-    .pomp-card {
-        padding: 14px;
-        border-radius: 17px;
-    }
-
-    .pomp-ring {
-        width: 165px;
-        height: 165px;
-    }
-
-    .pomp-ring-inner {
-        width: 141px;
-        height: 141px;
-    }
-
-    .pomp-input-row {
-        flex-direction: column;
-    }
-
-    .pomp-copy {
-        min-height: 45px;
-    }
+@media(max-width:520px){
+.pn{width:92%}
+.header{padding:19px}
+.title{font-size:22px}
+.stats{gap:8px}
+.stat{padding:14px}
+.value{font-size:14px}
+.usage{min-height:280px}
+.ring{width:165px;height:165px}
+.ring-inner{width:141px;height:141px}
+.input-row{flex-direction:column}
+.copy{min-height:44px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="pomp-container">
+<div class="pn">
 
-<section class="pomp-header">
+<section class="card header">
 
-    <div class="pomp-logo">
+<div class="logo">
 
-        <div class="pomp-logo-icon">
-            ⚡
-        </div>
+<div class="logo-icon">
+⚡
+</div>
 
-        <div>
+<div>
 
-            <div class="pomp-title">
-                POMP NET
-            </div>
+<div class="title">
+POMP NET
+</div>
 
-            <div class="pomp-subtitle">
-                Fast • Secure • Unlimited VPN
-            </div>
+<div class="subtitle">
+Fast • Secure • Unlimited VPN
+</div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
-    <div class="pomp-status">
-
-        <span class="pomp-dot"></span>
-
-        {status_text}
-
-    </div>
+<div class="status">
+<span class="dot"></span>
+__STATUS__
+</div>
 
 </section>
 
 
-<section class="pomp-stats">
+<section class="stats">
 
-    <div class="pomp-card">
+<div class="card stat">
+<div class="label">کاربر</div>
+<div class="value">__LABEL__</div>
+</div>
 
-        <div class="pomp-label">
-            کاربر
-        </div>
+<div class="card stat">
+<div class="label">حجم مصرف شده</div>
+<div class="value">__USED__</div>
+</div>
 
-        <div class="pomp-value">
-            {label}
-        </div>
+<div class="card stat">
+<div class="label">حجم کل</div>
+<div class="value">__TOTAL__</div>
+</div>
 
-    </div>
-
-
-    <div class="pomp-card">
-
-        <div class="pomp-label">
-            مصرف شده
-        </div>
-
-        <div class="pomp-value">
-            {used_e}
-        </div>
-
-    </div>
-
-
-    <div class="pomp-card">
-
-        <div class="pomp-label">
-            حجم کل
-        </div>
-
-        <div class="pomp-value">
-            {total_e}
-        </div>
-
-    </div>
-
-
-    <div class="pomp-card">
-
-        <div class="pomp-label">
-            باقی‌مانده
-        </div>
-
-        <div class="pomp-value">
-            {remaining_e}
-        </div>
-
-    </div>
+<div class="card stat">
+<div class="label">حجم باقی مانده</div>
+<div class="value">__REMAINING__</div>
+</div>
 
 </section>
 
 
-<section class="pomp-main">
+<section class="main">
 
+<div class="card usage">
 
-<div class="pomp-card pomp-usage">
+<div class="section-title">
+مصرف اینترنت
+</div>
 
-    <div class="pomp-section-title">
-        مصرف اینترنت
-    </div>
+<div class="ring">
 
-    <div class="pomp-ring">
+<div class="ring-inner">
 
-        <div class="pomp-ring-inner">
+<div class="percent">
+__USAGE__%
+</div>
 
-            <div class="pomp-percent">
-                {usage_percent}%
-            </div>
+<div class="percent-small">
+مصرف شده
+</div>
 
-            <div class="pomp-percent-small">
-                مصرف شده
-            </div>
+</div>
 
-        </div>
-
-    </div>
+</div>
 
 </div>
 
 
-<div class="pomp-card">
+<div class="card info">
 
-    <div class="pomp-section-title">
-        اطلاعات اشتراک
-    </div>
+<div class="section-title">
+اطلاعات اشتراک
+</div>
 
-    <div class="pomp-info">
+<div class="rows">
 
+<div class="row">
+<span>تاریخ انقضا</span>
+<span>__EXPIRY__</span>
+</div>
 
-        <div class="pomp-row">
-            <span>انقضا</span>
-            <span>{expiry_e}</span>
-        </div>
+<div class="row">
+<span>زمان باقی مانده</span>
+<span>__EXPIRY_REMAINING__</span>
+</div>
 
+<div class="row">
+<span>Protocol</span>
+<span>__PROTOCOL__</span>
+</div>
 
-        <div class="pomp-row">
-            <span>زمان باقی‌مانده</span>
-            <span>{expiry_remaining_e}</span>
-        </div>
+<div class="row">
+<span>Fingerprint</span>
+<span>__FINGERPRINT__</span>
+</div>
 
+<div class="row">
+<span>IP Limit</span>
+<span>__IP_LIMIT__</span>
+</div>
 
-        <div class="pomp-row">
-            <span>Protocol</span>
-            <span>{protocol}</span>
-        </div>
+<div class="row">
+<span>Connection Limit</span>
+<span>__CONN_LIMIT__</span>
+</div>
 
+<div class="row">
+<span>Speed Limit</span>
+<span>__SPEED_LIMIT__</span>
+</div>
 
-        <div class="pomp-row">
-            <span>Fingerprint</span>
-            <span>{fingerprint}</span>
-        </div>
-
-
-        <div class="pomp-row">
-            <span>IP Limit</span>
-            <span>{ip_limit}</span>
-        </div>
-
-
-        <div class="pomp-row">
-            <span>Connection Limit</span>
-            <span>{conn_limit}</span>
-        </div>
-
-
-        <div class="pomp-row">
-            <span>Speed Limit</span>
-            <span>{speed_limit}</span>
-        </div>
-
-
-    </div>
+</div>
 
 </div>
 
 </section>
 
 
-<section class="pomp-card pomp-links">
+<section class="card links">
 
-    <div class="pomp-section-title">
-        لینک‌های اتصال
-    </div>
+<div class="section-title">
+لینک‌های اتصال
+</div>
 
+<div class="label">
+VLESS
+</div>
 
-    <div class="pomp-label">
-        VLESS
-    </div>
+<div class="input-row">
 
-    <div class="pomp-input-row">
+<input
+class="input"
+id="pomp-vless"
+value="__VLESS__"
+readonly
+>
 
-        <input
-            class="pomp-input"
-            id="pomp-vless"
-            value="{vless_e}"
-            readonly
-        >
+<button
+class="copy"
+onclick="copyPomp('pomp-vless',this)"
+>
+کپی
+</button>
 
-        <button
-            class="pomp-copy"
-            onclick="copyPomp('pomp-vless',this)"
-        >
-            کپی
-        </button>
-
-    </div>
-
-
-    <div class="pomp-label">
-        Subscription
-    </div>
-
-    <div class="pomp-input-row">
-
-        <input
-            class="pomp-input"
-            id="pomp-sub"
-            value="{sub_e}"
-            readonly
-        >
-
-        <button
-            class="pomp-copy"
-            onclick="copyPomp('pomp-sub',this)"
-        >
-            کپی
-        </button>
-
-    </div>
+</div>
 
 
-    <a
-        class="pomp-support"
-        href="https://t.me/NovaTunneli"
-        target="_blank"
-        rel="noopener"
-    >
-        💬 پشتیبانی POMP NET
-    </a>
+<div class="label">
+Subscription
+</div>
+
+<div class="input-row">
+
+<input
+class="input"
+id="pomp-sub"
+value="__SUB__"
+readonly
+>
+
+<button
+class="copy"
+onclick="copyPomp('pomp-sub',this)"
+>
+کپی
+</button>
+
+</div>
+
+
+<a
+class="support"
+href="https://t.me/NovaTunneli"
+target="_blank"
+rel="noopener"
+>
+💬 پشتیبانی POMP NET
+</a>
 
 </section>
 
 
-<div class="pomp-footer">
-    POMP NET • Mohammad &amp; Amir
+<div class="footer">
+POMP NET • Mohammad &amp; Amir
 </div>
 
 </div>
 
 
 <script>
-
 function copyPomp(id,button){
 
-    const input =
-        document.getElementById(id);
+const input=document.getElementById(id);
 
-    if(!input){
-        return;
-    }
+if(!input)return;
 
-    navigator.clipboard
-        .writeText(input.value)
-        .then(function(){
+if(navigator.clipboard){
 
-            const old =
-                button.innerText;
+navigator.clipboard.writeText(input.value)
+.then(function(){
 
-            button.innerText =
-                "کپی شد ✓";
+const old=button.innerText;
 
-            setTimeout(function(){
+button.innerText="کپی شد ✓";
 
-                button.innerText =
-                    old;
+setTimeout(function(){
+button.innerText=old;
+},1500);
 
-            },1500);
+});
 
-        })
-        .catch(function(){
+}else{
 
-            input.select();
+input.select();
+document.execCommand("copy");
 
-            document.execCommand(
-                "copy"
-            );
-
-        });
 }
 
+}
 </script>
 
 </body>
 </html>
-"""'''
+'''
+
+    values = {
+        "__STATUS__": "{status_text}",
+        "__LABEL__": "{label}",
+        "__USED__": "{used_e}",
+        "__TOTAL__": "{total_e}",
+        "__REMAINING__": "{remaining_e}",
+        "__USAGE__": "{usage_percent}",
+        "__EXPIRY__": "{expiry_e}",
+        "__EXPIRY_REMAINING__": "{expiry_remaining_e}",
+        "__PROTOCOL__": "{protocol}",
+        "__FINGERPRINT__": "{fingerprint}",
+        "__IP_LIMIT__": "{ip_limit}",
+        "__CONN_LIMIT__": "{conn_limit}",
+        "__SPEED_LIMIT__": "{speed_limit}",
+        "__VLESS__": "{vless_e}",
+        "__SUB__": "{sub_e}",
+    }
+
+    for old, new in values.items():
+        template = template.replace(old, new)
+
+    new_block = 'info_html = f"""' + template + '"""'
 
     return data[:start] + new_block + data[end + 3:]
 
@@ -854,83 +611,37 @@ function copyPomp(id,button){
 def main():
 
     if not MAIN.exists():
-        raise RuntimeError(
-            "ERROR: main.py پیدا نشد"
-        )
+        raise RuntimeError("ERROR: main.py پیدا نشد")
 
     if not CSS.exists():
-        raise RuntimeError(
-            "ERROR: pompnet.css پیدا نشد"
-        )
+        raise RuntimeError("ERROR: pompnet.css پیدا نشد")
 
-    data = MAIN.read_text(
-        encoding="utf-8"
-    )
-
-    css = CSS.read_text(
-        encoding="utf-8"
-    )
+    data = MAIN.read_text(encoding="utf-8")
 
     # =====================================================
-    # محافظت از هسته Subscription
+    # BACKUP منطقی داخل Build
     # =====================================================
 
     sub_before = get_sub_route(data)
 
     if not sub_before:
-        raise RuntimeError(
-            "ERROR: /sub/{uuid} پیدا نشد"
-        )
+        raise RuntimeError("ERROR: /sub/{uuid} پیدا نشد")
 
     sub_hash_before = hashlib.sha256(
         sub_before.encode("utf-8")
     ).hexdigest()
 
     # =====================================================
-    # فقط تنظیمات برندینگ
+    # Branding فقط
     # =====================================================
 
-    data = replace_once(
-        data,
-        r'APP_NAME\s*=\s*["\'][^"\']*["\']',
-        'APP_NAME = "POMP NET"'
-    )
+    replacements = {
 
-    data = replace_once(
-        data,
-        r'APP_VERSION\s*=\s*["\'][^"\']*["\']',
-        'APP_VERSION = "POMP NET"'
-    )
+        "AHB PANEL": "POMP NET PANEL",
+        "AHB Panel": "POMP NET PANEL",
 
-    data = replace_once(
-        data,
-        r'SUPPORT_USERNAME\s*=\s*["\'][^"\']*["\']',
-        'SUPPORT_USERNAME = "@NovaTunneli"'
-    )
-
-    data = replace_once(
-        data,
-        r'SUPPORT_URL\s*=\s*["\'][^"\']*["\']',
-        'SUPPORT_URL = "https://t.me/NovaTunneli"'
-    )
-
-    # =====================================================
-    # فقط متن‌های نمایشی
-    # =====================================================
-
-    visual_replacements = {
-
-        "AHB PANEL":
-            "POMP NET PANEL",
-
-        "AHB Panel":
-            "POMP NET PANEL",
-
-        "Created By Ahb":
-            "Created By POMP NET",
-
-        "Created By AHB":
-            "Created By POMP NET",
+        "Created By Ahb": "Created By POMP NET",
+        "Created By AHB": "Created By POMP NET",
 
         "به پنل مدیریت AHB خوش آمدید":
             "به پنل مدیریت POMP NET خوش آمدید",
@@ -952,17 +663,39 @@ def main():
 
         "https://t.me/ahbpanel":
             "https://t.me/NovaTunneli",
-
     }
 
-    for old, new in visual_replacements.items():
-        data = data.replace(
-            old,
-            new
-        )
+    for old, new in replacements.items():
+        data = data.replace(old, new)
 
     # =====================================================
-    # قالب واقعی /info/{uid}
+    # APP Branding
+    # فقط اگر متغیر وجود داشته باشد
+    # =====================================================
+
+    data = re.sub(
+        r'APP_NAME\s*=\s*["\'][^"\']*["\']',
+        'APP_NAME = "POMP NET"',
+        data,
+        count=1
+    )
+
+    data = re.sub(
+        r'SUPPORT_USERNAME\s*=\s*["\'][^"\']*["\']',
+        'SUPPORT_USERNAME = "@NovaTunneli"',
+        data,
+        count=1
+    )
+
+    data = re.sub(
+        r'SUPPORT_URL\s*=\s*["\'][^"\']*["\']',
+        'SUPPORT_URL = "https://t.me/NovaTunneli"',
+        data,
+        count=1
+    )
+
+    # =====================================================
+    # INFO PAGE
     # =====================================================
 
     data = replace_info_html(data)
@@ -975,88 +708,25 @@ def main():
         r"<title>.*?</title>",
         "<title>POMP NET PANEL</title>",
         data,
-        flags=re.IGNORECASE,
+        flags=re.I,
         count=1
     )
 
     # =====================================================
-    # CSS اصلی POMP NET
+    # POMP NET CSS
     # =====================================================
+
+    css = CSS.read_text(encoding="utf-8")
 
     if 'id="pompnet-css"' not in data:
-
-        if "</head>" not in data:
-            raise RuntimeError(
-                "ERROR: </head> پیدا نشد"
-            )
-
-        style = (
-            '<style id="pompnet-css">\n'
-            + css
-            + "\n</style>"
-        )
-
-        data = data.replace(
-            "</head>",
-            style + "\n</head>",
-            1
-        )
-
-    # =====================================================
-    # بنر
-    # =====================================================
-
-    if 'id="pompnet-brand-banner"' not in data:
-
-        banner = """
-<div id="pompnet-brand-banner">
-    ⚡ <b>POMP NET</b>
-    • Mohammad &amp; Amir
-    • Fast • Secure • Unlimited VPN
-</div>
-"""
-
-        body = re.search(
-            r"<body[^>]*>",
-            data,
-            flags=re.IGNORECASE
-        )
-
-        if body:
-
-            pos = body.end()
-
-            data = (
-                data[:pos]
-                + "\n"
-                + banner
-                + "\n"
-                + data[pos:]
-            )
-
-    # =====================================================
-    # Login Branding
-    # منطق Login تغییر نمی‌کند
-    # =====================================================
-
-    login_css = """
-<style id="pompnet-login-brand">
-
-.pompnet-login-title {
-    font-weight: 900 !important;
-    letter-spacing: .5px !important;
-}
-
-</style>
-"""
-
-    if 'id="pompnet-login-brand"' not in data:
 
         if "</head>" in data:
 
             data = data.replace(
                 "</head>",
-                login_css + "\n</head>",
+                '<style id="pompnet-css">\n'
+                + css +
+                '\n</style>\n</head>',
                 1
             )
 
@@ -1070,7 +740,22 @@ def main():
     )
 
     # =====================================================
-    # تست Build
+    # Python Syntax Check
+    # =====================================================
+
+    try:
+        py_compile.compile(
+            str(MAIN),
+            doraise=True
+        )
+    except Exception as e:
+        raise RuntimeError(
+            "BUILD CHECK FAILED: Python Syntax Error\n"
+            + str(e)
+        )
+
+    # =====================================================
+    # Subscription Protection
     # =====================================================
 
     check = MAIN.read_text(
@@ -1089,19 +774,23 @@ def main():
     ).hexdigest()
 
     if sub_hash_before != sub_hash_after:
+
         raise RuntimeError(
             "BUILD CHECK FAILED: "
             "/sub/{uuid} تغییر کرده است"
         )
 
+    # =====================================================
+    # Required Checks
+    # =====================================================
+
     required = [
-        'APP_NAME = "POMP NET"',
-        '@NovaTunneli',
-        'id="pompnet-css"',
-        'id="pompnet-brand-banner"',
-        'POMP NET',
+        "/sub/{uuid}",
         'async def info_page',
-        '/sub/{uuid}',
+        "POMP NET",
+        "@NovaTunneli",
+        "https://t.me/NovaTunneli",
+        "pompnet-css",
     ]
 
     for item in required:
@@ -1115,13 +804,12 @@ def main():
 
     print("=" * 60)
     print("POMP NET BUILD CHECK: OK")
+    print("PYTHON SYNTAX: OK")
     print("CORE: AHB PRESERVED")
     print("SUBSCRIPTION: PRESERVED")
     print("INFO PAGE: POMP NET")
-    print("LOGIN: POMP NET PANEL")
-    print("THEME: POMP NET")
+    print("BRANDING: POMP NET")
     print("SUPPORT: @NovaTunneli")
-    print("ADMIN: admin / admin")
     print("PORT: Railway $PORT")
     print("HEALTH: /health")
     print("=" * 60)

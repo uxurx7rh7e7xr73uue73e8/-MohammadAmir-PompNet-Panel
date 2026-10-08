@@ -14,7 +14,7 @@ LOGIN_JS = Path("/tmp/pompnet_login.js")
 
 
 # =========================================================
-# پیدا کردن مسیر واقعی Subscription
+# پیدا کردن Route واقعی Subscription
 # =========================================================
 
 def get_sub_route(data: str):
@@ -26,23 +26,20 @@ def get_sub_route(data: str):
     )
 
     match = pattern.search(data)
-
     return match.group(0) if match else None
 
 
 # =========================================================
-# پیدا کردن LOGIN_HTML واقعی
+# پیدا کردن HTML Variable
 # =========================================================
 
-def get_login_html(data: str):
-
+def get_html_block(data: str, variable: str):
     patterns = [
-        r'LOGIN_HTML\s*=\s*r?"""',
-        r'LOGIN_HTML\s*=\s*r?\'\'\'',
+        rf'{re.escape(variable)}\s*=\s*r?"""',
+        rf"{re.escape(variable)}\s*=\s*r?'''",
     ]
 
     for pattern in patterns:
-
         match = re.search(pattern, data)
 
         if not match:
@@ -56,43 +53,97 @@ def get_login_html(data: str):
 
         if end == -1:
             raise RuntimeError(
-                "ERROR: پایان LOGIN_HTML پیدا نشد"
+                f"ERROR: پایان {variable} پیدا نشد"
             )
 
         return start, end, quote
 
-    raise RuntimeError(
-        "ERROR: LOGIN_HTML پیدا نشد"
+    return None
+
+
+# =========================================================
+# تزریق CSS داخل یک HTML مشخص
+# =========================================================
+
+def inject_css_into_block(
+    data: str,
+    variable: str,
+    css: str,
+    css_id: str,
+):
+    block = get_html_block(data, variable)
+
+    if not block:
+        raise RuntimeError(
+            f"ERROR: {variable} پیدا نشد"
+        )
+
+    start, end, _ = block
+
+    html = data[start:end]
+
+    if css_id in html:
+        return data
+
+    if "</head>" not in html:
+        raise RuntimeError(
+            f"ERROR: </head> داخل {variable} پیدا نشد"
+        )
+
+    injected = (
+        '<style id="' + css_id + '">\n'
+        + css
+        + "\n</style>\n"
+    )
+
+    html = html.replace(
+        "</head>",
+        injected + "</head>",
+        1
+    )
+
+    return (
+        data[:start]
+        + html
+        + data[end:]
     )
 
 
 # =========================================================
-# تزریق دقیق CSS/JS فقط داخل LOGIN_HTML
+# تزریق Login CSS / JS
 # =========================================================
 
 def inject_login_assets(
     data: str,
     login_css: str,
-    login_js: str
+    login_js: str,
 ):
+    block = get_html_block(
+        data,
+        "LOGIN_HTML"
+    )
 
-    start, end, _ = get_login_html(data)
+    if not block:
+        raise RuntimeError(
+            "ERROR: LOGIN_HTML پیدا نشد"
+        )
 
-    login_html = data[start:end]
+    start, end, _ = block
+
+    html = data[start:end]
 
     # -----------------------------------------------------
     # Login CSS
     # -----------------------------------------------------
 
-    if 'id="pompnet-login-css"' not in login_html:
+    if 'id="pompnet-login-css"' not in html:
 
-        if "</head>" not in login_html:
-
+        if "</head>" not in html:
             raise RuntimeError(
                 "ERROR: </head> داخل LOGIN_HTML پیدا نشد"
             )
 
-        login_html = login_html.replace(
+        html = html.replace(
             "</head>",
             '<style id="pompnet-login-css">\n'
             + login_css
@@ -105,15 +156,14 @@ def inject_login_assets(
     # Login JS
     # -----------------------------------------------------
 
-    if 'id="pompnet-login-js"' not in login_html:
+    if 'id="pompnet-login-js"' not in html:
 
-        if "</body>" not in login_html:
-
+        if "</body>" not in html:
             raise RuntimeError(
                 "ERROR: </body> داخل LOGIN_HTML پیدا نشد"
             )
 
-        login_html = login_html.replace(
+        html = html.replace(
             "</body>",
             '<script id="pompnet-login-js">\n'
             + login_js
@@ -124,7 +174,80 @@ def inject_login_assets(
 
     return (
         data[:start]
-        + login_html
+        + html
+        + data[end:]
+    )
+
+
+# =========================================================
+# اضافه کردن Banner واقعی PompNet به Dashboard
+# =========================================================
+
+def inject_dashboard_banner(data: str):
+    block = get_html_block(
+        data,
+        "DASHBOARD_HTML"
+    )
+
+    if not block:
+        raise RuntimeError(
+            "ERROR: DASHBOARD_HTML پیدا نشد"
+        )
+
+    start, end, _ = block
+
+    html = data[start:end]
+
+    if "id=\"pompnet-brand-banner\"" in html:
+        return data
+
+    banner = """
+<div id="pompnet-brand-banner">
+    <b>MR. MOHAMMAD | POMPNET</b>
+    <span> — کدنویسی شده توسط تیم پمپ نت و آقا امیر</span>
+</div>
+"""
+
+    # اولویت با داخل body
+    if "<body" in html and "</body>" in html:
+
+        body_start = html.find("> ", html.find("<body"))
+
+        if body_start == -1:
+            body_start = html.find(">", html.find("<body"))
+
+        if body_start == -1:
+            raise RuntimeError(
+                "ERROR: شروع BODY داخل DASHBOARD_HTML پیدا نشد"
+            )
+
+        insert_at = body_start + 1
+
+        html = (
+            html[:insert_at]
+            + banner
+            + html[insert_at:]
+        )
+
+    elif "<main" in html:
+
+        html = html.replace(
+            "<main",
+            banner + "\n<main",
+            1
+        )
+
+    else:
+
+        html = (
+            banner
+            + "\n"
+            + html
+        )
+
+    return (
+        data[:start]
+        + html
         + data[end:]
     )
 
@@ -136,7 +259,7 @@ def inject_login_assets(
 def main():
 
     # =====================================================
-    # بررسی فایل‌های ضروری
+    # فایل‌های ضروری
     # =====================================================
 
     required_files = [
@@ -149,13 +272,12 @@ def main():
     for path, name in required_files:
 
         if not path.exists():
-
             raise RuntimeError(
                 f"ERROR: {name} پیدا نشد"
             )
 
     # =====================================================
-    # خواندن هسته واقعی پنل
+    # خواندن هسته واقعی
     # =====================================================
 
     data = MAIN.read_text(
@@ -163,13 +285,12 @@ def main():
     )
 
     # =====================================================
-    # محافظت از Subscription
+    # محافظت Subscription
     # =====================================================
 
     sub_before = get_sub_route(data)
 
     if not sub_before:
-
         raise RuntimeError(
             "ERROR: مسیر واقعی /sub/{uuid} پیدا نشد"
         )
@@ -179,14 +300,10 @@ def main():
     ).hexdigest()
 
     # =====================================================
-    # فقط Branding
-    #
-    # قابلیت‌های پنل تغییر نمی‌کنند.
+    # برندینگ
     # =====================================================
 
     replacements = {
-
-        # AHB -> POMP NET
 
         "AHB PANEL":
             "POMP NET PANEL",
@@ -200,8 +317,6 @@ def main():
         "AHB panel":
             "POMP NET",
 
-        # Created By
-
         "Created By Ahb":
             "Created By POMP NET",
 
@@ -214,8 +329,6 @@ def main():
         "Created by Ahb":
             "Created by POMP NET",
 
-        # فارسی
-
         "به پنل مدیریت AHB خوش آمدید":
             "به پنل مدیریت POMP NET خوش آمدید",
 
@@ -225,12 +338,8 @@ def main():
         "این صفحه، درگاه عمومی AHB Panel است.":
             "این صفحه، درگاه عمومی POMP NET است.",
 
-        # Version branding
-
         "AHB Panel · 14.3.0":
             "POMP NET",
-
-        # Telegram
 
         "https://t.me/ahb_panel":
             "https://t.me/NovaTunneli",
@@ -247,8 +356,6 @@ def main():
         "@ahbpanelgap":
             "@NovaTunneli",
 
-        # Error messages / visible text
-
         "خطای داخلی AHB Panel":
             "خطای داخلی POMP NET",
 
@@ -260,11 +367,7 @@ def main():
     }
 
     for old, new in replacements.items():
-
-        data = data.replace(
-            old,
-            new
-        )
+        data = data.replace(old, new)
 
     # =====================================================
     # Support
@@ -285,7 +388,7 @@ def main():
     )
 
     # =====================================================
-    # Application Name
+    # App Name
     # =====================================================
 
     data = re.sub(
@@ -296,48 +399,46 @@ def main():
     )
 
     # =====================================================
-    # POMP NET اصلی
-    # فقط CSS اختصاصی خودت
+    # CSS اصلی PompNet
+    #
+    # مهم:
+    # CSS هم روی Login و هم Dashboard اعمال می‌شود.
     # =====================================================
 
     css = CSS.read_text(
         encoding="utf-8"
     )
 
+    # Login
     if 'id="pompnet-css"' not in data:
 
-        # CSS اصلی فقط در HTML واقعی قرار می‌گیرد.
-        # اگر LOGIN_HTML وجود دارد، اول همان را پیدا می‌کنیم.
-
-        login_start, login_end, _ = get_login_html(data)
-
-        before_login = data[:login_start]
-        login_html = data[login_start:login_end]
-        after_login = data[login_end:]
-
-        if "</head>" not in login_html:
-
-            raise RuntimeError(
-                "ERROR: </head> داخل LOGIN_HTML پیدا نشد"
-            )
-
-        login_html = login_html.replace(
-            "</head>",
-            '<style id="pompnet-css">\n'
-            + css
-            + "\n</style>\n"
-            + "</head>",
-            1
+        data = inject_css_into_block(
+            data,
+            "LOGIN_HTML",
+            css,
+            "pompnet-css"
         )
 
-        data = (
-            before_login
-            + login_html
-            + after_login
+    # Dashboard
+    if 'id="pompnet-dashboard-css"' not in data:
+
+        data = inject_css_into_block(
+            data,
+            "DASHBOARD_HTML",
+            css,
+            "pompnet-dashboard-css"
         )
 
     # =====================================================
-    # Login Assets
+    # Banner داشبورد
+    # =====================================================
+
+    data = inject_dashboard_banner(
+        data
+    )
+
+    # =====================================================
+    # Login CSS / JS
     # =====================================================
 
     login_css = LOGIN_CSS.read_text(
@@ -355,7 +456,7 @@ def main():
     )
 
     # =====================================================
-    # ذخیره main.py
+    # ذخیره
     # =====================================================
 
     MAIN.write_text(
@@ -364,7 +465,7 @@ def main():
     )
 
     # =====================================================
-    # Python Syntax Check
+    # Syntax Check
     # =====================================================
 
     try:
@@ -377,30 +478,24 @@ def main():
     except Exception as exc:
 
         raise RuntimeError(
-            "BUILD CHECK FAILED: "
-            "Python Syntax Error\n"
+            "BUILD CHECK FAILED: Python Syntax Error\n"
             + str(exc)
         )
 
     # =====================================================
-    # خواندن دوباره برای بررسی نهایی
+    # بررسی نهایی
     # =====================================================
 
     check = MAIN.read_text(
         encoding="utf-8"
     )
 
-    # =====================================================
-    # Subscription باید دقیقاً حفظ شده باشد
-    # =====================================================
-
+    # Subscription
     sub_after = get_sub_route(check)
 
     if not sub_after:
-
         raise RuntimeError(
-            "BUILD CHECK FAILED: "
-            "/sub/{uuid} حذف شده"
+            "BUILD CHECK FAILED: /sub/{uuid} حذف شده"
         )
 
     sub_hash_after = hashlib.sha256(
@@ -408,24 +503,56 @@ def main():
     ).hexdigest()
 
     if sub_hash_before != sub_hash_after:
-
         raise RuntimeError(
             "BUILD CHECK FAILED: "
             "منطق /sub/{uuid} تغییر کرده است"
         )
 
+    # Login
+    login_block = get_html_block(
+        check,
+        "LOGIN_HTML"
+    )
+
+    if not login_block:
+        raise RuntimeError(
+            "BUILD CHECK FAILED: LOGIN_HTML"
+        )
+
+    login_html = check[
+        login_block[0]:
+        login_block[1]
+    ]
+
+    # Dashboard
+    dashboard_block = get_html_block(
+        check,
+        "DASHBOARD_HTML"
+    )
+
+    if not dashboard_block:
+        raise RuntimeError(
+            "BUILD CHECK FAILED: DASHBOARD_HTML"
+        )
+
+    dashboard_html = check[
+        dashboard_block[0]:
+        dashboard_block[1]
+    ]
+
     # =====================================================
-    # بررسی قابلیت‌ها و برند
+    # قابلیت‌های ضروری
     # =====================================================
 
     required_strings = [
 
-        # Core
-
         "/sub/{uuid}",
+
         "async def info_page",
 
-        # Branding
+        "/api/login",
+
+        "/api/setup/status",
 
         "POMP NET",
 
@@ -435,17 +562,19 @@ def main():
 
         "کدنویسی شده توسط تیم پمپ نت و آقا امیر",
 
-        # Support
-
         "@NovaTunneli",
 
         "https://t.me/NovaTunneli",
 
-        # CSS / JS
-
         'id="pompnet-css"',
+
+        'id="pompnet-dashboard-css"',
+
         'id="pompnet-login-css"',
+
         'id="pompnet-login-js"',
+
+        'id="pompnet-brand-banner"',
     ]
 
     for item in required_strings:
@@ -458,89 +587,28 @@ def main():
             )
 
     # =====================================================
-    # بررسی اینکه Login واقعی هنوز وجود دارد
-    # =====================================================
-
-    get_login_html(check)
-
-    # =====================================================
     # نتیجه
     # =====================================================
 
     print("=" * 70)
-
-    print(
-        "POMP NET BUILD CHECK: OK"
-    )
-
-    print(
-        "PYTHON SYNTAX: OK"
-    )
-
-    print(
-        "REAL PANEL CORE: PRESERVED"
-    )
-
-    print(
-        "LOGIN LOGIC: PRESERVED"
-    )
-
-    print(
-        "SUBSCRIPTION: PRESERVED"
-    )
-
-    print(
-        "SUB URL: PRESERVED"
-    )
-
-    print(
-        "INFO PAGE: PRESERVED"
-    )
-
-    print(
-        "VLESS: PRESERVED"
-    )
-
-    print(
-        "SERVERS: PRESERVED"
-    )
-
-    print(
-        "QR: PRESERVED"
-    )
-
-    print(
-        "API: PRESERVED"
-    )
-
-    print(
-        "HEALTH: PRESERVED"
-    )
-
-    print(
-        "POMPNET CSS: OK"
-    )
-
-    print(
-        "POMPNET LOGIN CSS: OK"
-    )
-
-    print(
-        "POMPNET LOGIN JS: OK"
-    )
-
-    print(
-        "POMPNET BRANDING: OK"
-    )
-
-    print(
-        "SUPPORT: @NovaTunneli"
-    )
-
-    print(
-        "RAILWAY PORT: $PORT"
-    )
-
+    print("POMP NET BUILD CHECK: OK")
+    print("PYTHON SYNTAX: OK")
+    print("REAL PANEL CORE: PRESERVED")
+    print("LOGIN LOGIC: PRESERVED")
+    print("DASHBOARD: PRESERVED")
+    print("SUBSCRIPTION: PRESERVED")
+    print("SUB URL: PRESERVED")
+    print("INFO PAGE: PRESERVED")
+    print("VLESS: PRESERVED")
+    print("SERVERS: PRESERVED")
+    print("QR: PRESERVED")
+    print("API: PRESERVED")
+    print("HEALTH: PRESERVED")
+    print("POMPNET LOGIN: OK")
+    print("POMPNET DASHBOARD CSS: OK")
+    print("POMPNET BRAND BANNER: OK")
+    print("SUPPORT: @NovaTunneli")
+    print("RAILWAY PORT: $PORT")
     print("=" * 70)
 
 

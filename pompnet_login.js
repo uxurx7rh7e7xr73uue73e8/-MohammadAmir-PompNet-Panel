@@ -1,5 +1,6 @@
 /* =========================================================
-   POMP NET LOGIN BRAND
+   POMPNET LOGIN BRAND
+   فقط برندینگ صفحه ورود
    ========================================================= */
 
 (function () {
@@ -10,35 +11,32 @@
             return;
         }
 
-        const loginBox =
-            document.getElementById("loginBox");
+        const loginBox = document.getElementById("loginBox");
 
         if (!loginBox) {
             return;
         }
 
-        const brand =
-            document.createElement("div");
+        const brand = document.createElement("div");
 
-        brand.id =
-            "pompnet-login-brand";
+        brand.id = "pompnet-login-brand";
 
         brand.innerHTML = `
             <div class="pompnet-logo-circle">
-
                 <img
                     src="/pompnet_logo.png"
-                    alt="POMP NET"
+                    alt="PompNet"
                 >
-
             </div>
 
             <div class="pompnet-login-title">
-                POMP NET PANEL
+                <span class="pompnet-title-main">MR. MOHAMMAD</span>
+                <span class="pompnet-title-divider">|</span>
+                <span class="pompnet-title-brand">POMPNET</span>
             </div>
 
             <div class="pompnet-login-credit">
-                کدنویسی شده توسط تیم پمپ نت
+                ✦ کدنویسی شده توسط تیم پمپ نت و آقا امیر ✦
             </div>
         `;
 

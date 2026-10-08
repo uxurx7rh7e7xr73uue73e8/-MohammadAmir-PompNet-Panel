@@ -1,6 +1,7 @@
 FROM python:3.11-slim
 
 ARG AHB_CORE_COMMIT=f95c118169fd6c66e6e5b155a716cbdfc6e330c7
+ARG XRAY_VERSION=26.7.28
 
 WORKDIR /app
 
@@ -8,7 +9,26 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PIP_NO_CACHE_DIR=1
 ENV PYTHONHASHSEED=random
+
+# POMP NET automatic defaults
+ENV PORT=8080
 ENV DATA_DIR=/app/data
+
+ENV ADMIN_USERNAME=admin
+ENV ADMIN_PASSWORD=admin
+
+ENV SECRET_KEY=PompNet-Secret-2026-Change-Me
+ENV POMPNET_STATUS_TOKEN=PompNet-Status-2026-Change-Me
+
+ENV POMPNET_MAX_WS_CONNECTIONS=256
+ENV POMPNET_WS_HANDSHAKE_LIMIT=60
+ENV POMPNET_WS_HANDSHAKE_WINDOW=60
+
+ENV POMPNET_HSTS=1
+
+# ============================================================
+# SYSTEM PACKAGES
+# ============================================================
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -18,7 +38,11 @@ RUN apt-get update \
        unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# دریافت هسته دقیقاً از Commit ثابت
+# ============================================================
+# REAL AHB CORE
+# FIXED COMMIT — no automatic upstream changes
+# ============================================================
+
 RUN git clone \
       https://github.com/uxurx7rh7e7xr73uue73e8/ahbpanel.git \
       /tmp/ahb-core \
@@ -28,8 +52,9 @@ RUN git clone \
     && rm -rf /tmp/ahb-core \
     && test -f /app/main.py
 
-# نصب Xray
-ARG XRAY_VERSION=26.7.28
+# ============================================================
+# REAL XRAY
+# ============================================================
 
 RUN arch="$(uname -m)" \
     && case "$arch" in \
@@ -48,9 +73,9 @@ RUN arch="$(uname -m)" \
     && /usr/local/bin/xray version \
     && rm -rf /tmp/xray /tmp/xray.zip
 
-# =========================
+# ============================================================
 # POMP NET FILES
-# =========================
+# ============================================================
 
 COPY pompnet.css /app/pompnet.css
 COPY pompnet_login.css /tmp/pompnet_login.css
@@ -65,7 +90,13 @@ COPY app_wrapper.py /app/app_wrapper.py
 
 COPY requirements.txt /app/requirements.txt
 
-# بررسی فایل‌ها قبل از اجرا
+# Login patch
+COPY pompnet_login_patch.py /tmp/pompnet_login_patch.py
+
+# ============================================================
+# REQUIRED FILE CHECK
+# ============================================================
+
 RUN test -f /app/main.py \
     && test -f /app/pompnet_security.py \
     && test -f /app/pompnet_xray.py \
@@ -74,26 +105,46 @@ RUN test -f /app/main.py \
     && test -f /app/app_wrapper.py \
     && test -f /app/pompnet.css \
     && test -f /tmp/pompnet_brand.py \
+    && test -f /tmp/pompnet_login_patch.py \
     && test -f /app/requirements.txt \
     && /usr/local/bin/xray version
 
-# برند POMP NET
+# ============================================================
+# REAL POMP NET BRAND PATCH
+# ============================================================
+
 RUN python /tmp/pompnet_brand.py
 
-# نصب وابستگی‌ها
+# ============================================================
+# REAL LOGIN PATCH
+# ============================================================
+
+RUN python /tmp/pompnet_login_patch.py
+
+# ============================================================
+# PYTHON DEPENDENCIES
+# ============================================================
+
 RUN python -m pip install --upgrade pip \
     && python -m pip install --no-cache-dir -r /app/requirements.txt
 
-# تست Syntax تمام فایل‌ها
+# ============================================================
+# FINAL SYNTAX CHECK
+# ============================================================
+
 RUN python -m py_compile \
     /app/main.py \
     /app/pompnet_security.py \
     /app/pompnet_xray.py \
     /app/xray_manager.py \
     /app/pompnet_runtime.py \
-    /app/app_wrapper.py
+    /app/app_wrapper.py \
+    /tmp/pompnet_login_patch.py
 
-# کاربر غیر Root
+# ============================================================
+# NON-ROOT USER
+# ============================================================
+
 RUN useradd \
       --system \
       --uid 10001 \
@@ -106,6 +157,9 @@ RUN useradd \
 
 USER 10001:10001
 
+# Railway web service
 EXPOSE 8080
 
+# Railway PORT is respected automatically.
+# If Railway does not provide PORT, 8080 is used.
 CMD ["sh", "-c", "exec python -m uvicorn app_wrapper:app --host 0.0.0.0 --port ${PORT:-8080}"]

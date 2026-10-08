@@ -1,20 +1,23 @@
 /* =========================================================
-   POMP NET LOGIN BRAND
+   POMPNET LOGIN BRAND
    ========================================================= */
 
 #pompnet-login-brand {
     width: 100%;
     text-align: center;
-    margin: 0 auto 24px;
-    direction: rtl;
+    direction: ltr;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 10;
 }
 
+/* لوگو */
 .pompnet-logo-circle {
     width: 150px;
     height: 150px;
 
-    margin: 0 auto 16px;
-    padding: 5px;
+    margin: 0 auto 18px;
+    padding: 4px;
 
     border-radius: 50%;
 
@@ -22,18 +25,23 @@
     align-items: center;
     justify-content: center;
 
-    background: linear-gradient(
-        135deg,
-        #7c3aed,
-        #2563eb,
-        #ec4899
-    );
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #2563eb,
+            #ec4899,
+            #7c3aed
+        );
 
     box-shadow:
-        0 0 25px rgba(37, 99, 235, 0.65),
-        0 0 50px rgba(124, 58, 237, 0.45);
+        0 0 18px rgba(37, 99, 235, 0.75),
+        0 0 38px rgba(124, 58, 237, 0.55),
+        0 0 65px rgba(236, 72, 153, 0.25);
 
     overflow: hidden;
+
+    animation: pompnetGlow 3s ease-in-out infinite;
 }
 
 .pompnet-logo-circle img {
@@ -47,31 +55,134 @@
     border-radius: 50%;
 }
 
+/* عنوان اصلی پنل */
 .pompnet-login-title {
-    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
 
-    font-size: 24px;
-    font-weight: 900;
+    margin: 0 auto;
 
-    margin-top: 8px;
+    font-size: 25px;
+    font-weight: 950;
 
-    letter-spacing: 1px;
+    letter-spacing: 1.4px;
 
-    text-shadow:
-        0 0 10px rgba(37, 99, 235, 0.8),
-        0 0 25px rgba(124, 58, 237, 0.5);
+    white-space: nowrap;
 }
 
+/* MR. MOHAMMAD */
+.pompnet-title-main {
+    color: #ffffff;
+
+    text-shadow:
+        0 0 8px rgba(255, 255, 255, 0.35),
+        0 0 20px rgba(37, 99, 235, 0.65);
+}
+
+/* | */
+.pompnet-title-divider {
+    color: #ec4899;
+
+    font-weight: 900;
+
+    text-shadow:
+        0 0 10px rgba(236, 72, 153, 0.9);
+}
+
+/* POMPNET */
+.pompnet-title-brand {
+    background:
+        linear-gradient(
+            90deg,
+            #60a5fa,
+            #a78bfa,
+            #f472b6
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+
+    text-shadow:
+        0 0 18px rgba(124, 58, 237, 0.45);
+}
+
+/* متن زیر پنل */
 .pompnet-login-credit {
-    color: #b8b2c7;
+    direction: rtl;
+
+    margin-top: 11px;
+
+    color: #d8d3e5;
 
     font-size: 13px;
     font-weight: 700;
 
-    margin-top: 9px;
+    letter-spacing: 0.2px;
+
+    text-shadow:
+        0 0 8px rgba(124, 58, 237, 0.35);
 }
 
+/* خط ظریف زیر متن */
+.pompnet-login-credit::after {
+    content: "";
+
+    display: block;
+
+    width: 95px;
+    height: 2px;
+
+    margin: 9px auto 0;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #7c3aed,
+            #2563eb,
+            #ec4899,
+            transparent
+        );
+
+    box-shadow:
+        0 0 10px rgba(124, 58, 237, 0.65);
+}
+
+/* افکت لوگو */
+@keyframes pompnetGlow {
+
+    0%,
+    100% {
+        transform: scale(1);
+
+        box-shadow:
+            0 0 18px rgba(37, 99, 235, 0.75),
+            0 0 38px rgba(124, 58, 237, 0.55),
+            0 0 65px rgba(236, 72, 153, 0.25);
+    }
+
+    50% {
+        transform: scale(1.025);
+
+        box-shadow:
+            0 0 25px rgba(37, 99, 235, 0.9),
+            0 0 50px rgba(124, 58, 237, 0.7),
+            0 0 75px rgba(236, 72, 153, 0.35);
+    }
+}
+
+/* موبایل */
 @media (max-width: 600px) {
+
+    #pompnet-login-brand {
+        margin-bottom: 24px;
+    }
 
     .pompnet-logo-circle {
         width: 125px;
@@ -79,7 +190,9 @@
     }
 
     .pompnet-login-title {
-        font-size: 21px;
+        font-size: 20px;
+        gap: 6px;
+        letter-spacing: 0.8px;
     }
 
     .pompnet-login-credit {

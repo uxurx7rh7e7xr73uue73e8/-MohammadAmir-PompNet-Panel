@@ -1,5 +1,5 @@
 /* =========================================================
-   POMPNET LOGIN BRAND
+   POMP NET LOGIN
    ========================================================= */
 
 #pompnet-login-brand {
@@ -12,6 +12,7 @@
 }
 
 /* لوگو */
+
 .pompnet-logo-circle {
     width: 150px;
     height: 150px;
@@ -35,13 +36,17 @@
         );
 
     box-shadow:
-        0 0 18px rgba(37, 99, 235, 0.75),
-        0 0 38px rgba(124, 58, 237, 0.55),
-        0 0 65px rgba(236, 72, 153, 0.25);
+        0 0 18px rgba(37,99,235,.75),
+        0 0 38px rgba(124,58,237,.55),
+        0 0 65px rgba(236,72,153,.25);
 
     overflow: hidden;
 
-    animation: pompnetGlow 3s ease-in-out infinite;
+    animation:
+        pompnetGlow
+        3s
+        ease-in-out
+        infinite;
 }
 
 .pompnet-logo-circle img {
@@ -55,11 +60,14 @@
     border-radius: 50%;
 }
 
-/* عنوان اصلی پنل */
+/* عنوان */
+
 .pompnet-login-title {
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     gap: 9px;
 
     margin: 0 auto;
@@ -72,26 +80,23 @@
     white-space: nowrap;
 }
 
-/* MR. MOHAMMAD */
 .pompnet-title-main {
     color: #ffffff;
 
     text-shadow:
-        0 0 8px rgba(255, 255, 255, 0.35),
-        0 0 20px rgba(37, 99, 235, 0.65);
+        0 0 8px rgba(255,255,255,.35),
+        0 0 20px rgba(37,99,235,.65);
 }
 
-/* | */
 .pompnet-title-divider {
     color: #ec4899;
 
     font-weight: 900;
 
     text-shadow:
-        0 0 10px rgba(236, 72, 153, 0.9);
+        0 0 10px rgba(236,72,153,.9);
 }
 
-/* POMPNET */
 .pompnet-title-brand {
     background:
         linear-gradient(
@@ -107,10 +112,11 @@
     -webkit-text-fill-color: transparent;
 
     text-shadow:
-        0 0 18px rgba(124, 58, 237, 0.45);
+        0 0 18px rgba(124,58,237,.45);
 }
 
-/* متن زیر پنل */
+/* متن اختصاصی */
+
 .pompnet-login-credit {
     direction: rtl;
 
@@ -121,64 +127,159 @@
     font-size: 13px;
     font-weight: 700;
 
-    letter-spacing: 0.2px;
+    letter-spacing: .2px;
 
     text-shadow:
-        0 0 8px rgba(124, 58, 237, 0.35);
+        0 0 8px rgba(124,58,237,.35);
+
+    position: relative;
 }
 
-/* خط ظریف زیر متن */
+/* خط نور */
+
 .pompnet-login-credit::after {
     content: "";
 
     display: block;
 
-    width: 95px;
+    width: 130px;
     height: 2px;
 
-    margin: 9px auto 0;
+    margin: 10px auto 0;
 
-    border-radius: 10px;
+    border-radius: 999px;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            #7c3aed,
-            #2563eb,
-            #ec4899,
+            #8b35ff,
+            #168cff,
+            #ff3dbb,
+            #8b35ff,
             transparent
         );
 
+    background-size: 200% 100%;
+
     box-shadow:
-        0 0 10px rgba(124, 58, 237, 0.65);
+        0 0 8px #8b35ff,
+        0 0 14px rgba(22,140,255,.5);
+
+    animation:
+        pompnetLine
+        3s
+        linear
+        infinite;
 }
 
-/* افکت لوگو */
+/* افکت حرکت نور روی برند */
+
+#pompnet-login-brand::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 70%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.16),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    pointer-events: none;
+
+    animation:
+        pompnetShine
+        5s
+        ease-in-out
+        infinite;
+}
+
+/* Pulse */
+
+#pompnet-login-brand {
+    animation:
+        pompnetPulse
+        4s
+        ease-in-out
+        infinite;
+}
+
 @keyframes pompnetGlow {
 
-    0%,
-    100% {
+    0%,100% {
         transform: scale(1);
 
         box-shadow:
-            0 0 18px rgba(37, 99, 235, 0.75),
-            0 0 38px rgba(124, 58, 237, 0.55),
-            0 0 65px rgba(236, 72, 153, 0.25);
+            0 0 18px rgba(37,99,235,.75),
+            0 0 38px rgba(124,58,237,.55),
+            0 0 65px rgba(236,72,153,.25);
     }
 
     50% {
         transform: scale(1.025);
 
         box-shadow:
-            0 0 25px rgba(37, 99, 235, 0.9),
-            0 0 50px rgba(124, 58, 237, 0.7),
-            0 0 75px rgba(236, 72, 153, 0.35);
+            0 0 25px rgba(37,99,235,.9),
+            0 0 50px rgba(124,58,237,.7),
+            0 0 75px rgba(236,72,153,.35);
+    }
+}
+
+@keyframes pompnetShine {
+
+    0% {
+        left: -120%;
+    }
+
+    45%,100% {
+        left: 140%;
+    }
+}
+
+@keyframes pompnetLine {
+
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes pompnetPulse {
+
+    0%,100% {
+        filter:
+            drop-shadow(
+                0 0 8px
+                rgba(139,53,255,.12)
+            );
+    }
+
+    50% {
+        filter:
+            drop-shadow(
+                0 0 18px
+                rgba(22,140,255,.18)
+            );
     }
 }
 
 /* موبایل */
-@media (max-width: 600px) {
+
+@media (max-width:600px) {
 
     #pompnet-login-brand {
         margin-bottom: 24px;
@@ -192,10 +293,11 @@
     .pompnet-login-title {
         font-size: 20px;
         gap: 6px;
-        letter-spacing: 0.8px;
+        letter-spacing: .8px;
     }
 
     .pompnet-login-credit {
         font-size: 12px;
+        padding: 0 8px;
     }
 }

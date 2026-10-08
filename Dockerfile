@@ -1,10 +1,14 @@
 FROM python:3.11-slim
 
+ARG AHB_CORE_COMMIT=f95c118169fd6c66e6e5b155a716cbdfc6e330c7
+
 WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PIP_NO_CACHE_DIR=1
+ENV PYTHONHASHSEED=random
+ENV DATA_DIR=/app/data
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -14,23 +18,17 @@ RUN apt-get update \
        unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# ============================================================
-# AHB CORE واقعی
-# ============================================================
-
+# دریافت هسته دقیقاً از Commit ثابت
 RUN git clone \
       https://github.com/uxurx7rh7e7xr73uue73e8/ahbpanel.git \
       /tmp/ahb-core \
     && cd /tmp/ahb-core \
-    && git checkout f95c118169fd6c66e6e5b155a716cbdfc6e330c7 \
+    && git checkout --detach ${AHB_CORE_COMMIT} \
     && cp -a . /app/ \
     && rm -rf /tmp/ahb-core \
     && test -f /app/main.py
 
-# ============================================================
-# Xray Core
-# ============================================================
-
+# نصب Xray
 ARG XRAY_VERSION=26.7.28
 
 RUN arch="$(uname -m)" \
@@ -50,15 +48,16 @@ RUN arch="$(uname -m)" \
     && /usr/local/bin/xray version \
     && rm -rf /tmp/xray /tmp/xray.zip
 
-# ============================================================
+# =========================
 # POMP NET FILES
-# ============================================================
+# =========================
 
 COPY pompnet.css /app/pompnet.css
 COPY pompnet_login.css /tmp/pompnet_login.css
 COPY pompnet_login.js /tmp/pompnet_login.js
 COPY pompnet_brand.py /tmp/pompnet_brand.py
 
+COPY pompnet_security.py /app/pompnet_security.py
 COPY pompnet_xray.py /app/pompnet_xray.py
 COPY xray_manager.py /app/xray_manager.py
 COPY pompnet_runtime.py /app/pompnet_runtime.py
@@ -66,45 +65,47 @@ COPY app_wrapper.py /app/app_wrapper.py
 
 COPY requirements.txt /app/requirements.txt
 
-# ============================================================
-# بررسی فایل‌ها
-# ============================================================
-
+# بررسی فایل‌ها قبل از اجرا
 RUN test -f /app/main.py \
-    && test -f /app/pompnet.css \
+    && test -f /app/pompnet_security.py \
     && test -f /app/pompnet_xray.py \
     && test -f /app/xray_manager.py \
     && test -f /app/pompnet_runtime.py \
     && test -f /app/app_wrapper.py \
+    && test -f /app/pompnet.css \
     && test -f /tmp/pompnet_brand.py \
     && test -f /app/requirements.txt \
     && /usr/local/bin/xray version
 
-# ============================================================
 # برند POMP NET
-# ============================================================
-
 RUN python /tmp/pompnet_brand.py
 
-# ============================================================
-# Syntax Check
-# ============================================================
+# نصب وابستگی‌ها
+RUN python -m pip install --upgrade pip \
+    && python -m pip install --no-cache-dir -r /app/requirements.txt
 
+# تست Syntax تمام فایل‌ها
 RUN python -m py_compile \
     /app/main.py \
+    /app/pompnet_security.py \
     /app/pompnet_xray.py \
     /app/xray_manager.py \
     /app/pompnet_runtime.py \
     /app/app_wrapper.py
 
-# ============================================================
-# Python Dependencies
-# ============================================================
+# کاربر غیر Root
+RUN useradd \
+      --system \
+      --uid 10001 \
+      --create-home \
+      --home-dir /home/pompnet \
+      pompnet \
+    && mkdir -p /app/data \
+    && chown -R 10001:10001 /app /home/pompnet \
+    && chmod 700 /app/data
 
-RUN python -m pip install --upgrade pip \
-    && python -m pip install --no-cache-dir -r /app/requirements.txt
+USER 10001:10001
 
 EXPOSE 8080
 
-# Railway خودش PORT را تعیین می‌کند
 CMD ["sh", "-c", "exec python -m uvicorn app_wrapper:app --host 0.0.0.0 --port ${PORT:-8080}"]

@@ -1,42 +1,25 @@
 import hmac
 import os
 
-from fastapi import (
-    Header,
-    HTTPException,
-    WebSocket,
-)
-
+from fastapi import Header, HTTPException
 from main import app
 
-from pompnet_security import (
-    install_security,
-)
-
-from pompnet_runtime import (
-    startup,
-    shutdown,
-    proxy_websocket,
-)
+from pompnet_security import install_security
 
 
 # ============================================================
 # POMP NET SECURITY
 # ============================================================
 
-# امنیت روی اپ اصلی اعمال می‌شود
-install_security(
-    app
-)
+# امنیت روی همان اپ اصلی AHB اعمال می‌شود.
+install_security(app)
 
 
 # ============================================================
 # RAILWAY HEALTH CHECK
 # ============================================================
 
-@app.get(
-    "/health"
-)
+@app.get("/health")
 async def health_check():
     """
     Railway health check.
@@ -52,64 +35,16 @@ async def health_check():
 
 
 # ============================================================
-# POMP NET XRAY STARTUP
+# POMP NET STATUS TOKEN
 # ============================================================
 
-@app.on_event(
-    "startup"
-)
-async def pompnet_xray_startup():
-
-    await startup()
-
-
-# ============================================================
-# POMP NET XRAY SHUTDOWN
-# ============================================================
-
-@app.on_event(
-    "shutdown"
-)
-async def pompnet_xray_shutdown():
-
-    await shutdown()
-
-
-# ============================================================
-# REAL VLESS WEBSOCKET
-# ============================================================
-
-@app.websocket(
-    "/ws/{uid}"
-)
-async def pompnet_vless_websocket(
-    websocket: WebSocket,
-    uid: str,
-):
-
-    await proxy_websocket(
-        websocket,
-        uid,
-    )
-
-
-# ============================================================
-# POMP NET XRAY STATUS
-# ============================================================
-
-def status_token_ok(
-    token: str | None,
-):
-
+def status_token_ok(token: str | None):
     expected = os.getenv(
         "POMPNET_STATUS_TOKEN",
         "",
     ).strip()
 
-    if (
-        not expected
-        or not token
-    ):
+    if not expected or not token:
         return False
 
     return hmac.compare_digest(
@@ -118,27 +53,34 @@ def status_token_ok(
     )
 
 
-@app.get(
-    "/api/pompnet/xray"
-)
+# ============================================================
+# POMP NET XRAY STATUS
+# ============================================================
+
+@app.get("/api/pompnet/xray")
 async def pompnet_xray_status(
     x_pompnet_token: str | None = Header(
         default=None
     ),
 ):
+    """
+    فقط وضعیت Xray را نشان می‌دهد.
+
+    توجه:
+    WebSocket اصلی را AHB مدیریت می‌کند.
+    اینجا WebSocket جدید تعریف نمی‌کنیم تا
+    با /ws/{uuid} اصلی AHB تداخل ایجاد نشود.
+    """
 
     if not status_token_ok(
         x_pompnet_token
     ):
-
         raise HTTPException(
             status_code=404,
             detail="not found",
         )
 
-    from pompnet_xray import (
-        get_xray_status,
-    )
+    from pompnet_xray import get_xray_status
 
     return get_xray_status()
 
@@ -147,14 +89,18 @@ async def pompnet_xray_status(
 # POMP NET SECURITY STATUS
 # ============================================================
 
-@app.get(
-    "/api/pompnet/security"
-)
+@app.get("/api/pompnet/security")
 async def pompnet_security_status():
 
     return {
         "security": "enabled",
-        "websocket_proxy": "enabled",
+
+        # VLESS WebSocket توسط Core اصلی AHB
+        "websocket_proxy": "ahb-core",
+
+        # پورت عمومی جداگانه برای Xray باز نمی‌کنیم
         "xray_public_port": False,
+
+        # Endpoint وضعیت محافظت شده است
         "status_endpoint_protected": True,
     }

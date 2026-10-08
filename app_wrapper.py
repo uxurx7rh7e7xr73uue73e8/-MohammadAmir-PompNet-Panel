@@ -20,11 +20,40 @@ from pompnet_runtime import (
 )
 
 
+# ============================================================
+# POMP NET SECURITY
+# ============================================================
+
 # امنیت روی اپ اصلی اعمال می‌شود
 install_security(
     app
 )
 
+
+# ============================================================
+# RAILWAY HEALTH CHECK
+# ============================================================
+
+@app.get(
+    "/health"
+)
+async def health_check():
+    """
+    Railway health check.
+    این مسیر عمومی است و برای بررسی زنده بودن پنل
+    نیازی به Login یا Xray ندارد.
+    """
+
+    return {
+        "ok": True,
+        "service": "POMP NET",
+        "status": "healthy",
+    }
+
+
+# ============================================================
+# POMP NET XRAY STARTUP
+# ============================================================
 
 @app.on_event(
     "startup"
@@ -34,6 +63,10 @@ async def pompnet_xray_startup():
     await startup()
 
 
+# ============================================================
+# POMP NET XRAY SHUTDOWN
+# ============================================================
+
 @app.on_event(
     "shutdown"
 )
@@ -42,7 +75,10 @@ async def pompnet_xray_shutdown():
     await shutdown()
 
 
-# VLESS WebSocket واقعی
+# ============================================================
+# REAL VLESS WEBSOCKET
+# ============================================================
+
 @app.websocket(
     "/ws/{uid}"
 )
@@ -56,6 +92,10 @@ async def pompnet_vless_websocket(
         uid,
     )
 
+
+# ============================================================
+# POMP NET XRAY STATUS
+# ============================================================
 
 def status_token_ok(
     token: str | None,
@@ -102,6 +142,10 @@ async def pompnet_xray_status(
 
     return get_xray_status()
 
+
+# ============================================================
+# POMP NET SECURITY STATUS
+# ============================================================
 
 @app.get(
     "/api/pompnet/security"

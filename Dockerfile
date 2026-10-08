@@ -10,7 +10,6 @@ ENV PYTHONUNBUFFERED=1
 ENV PIP_NO_CACHE_DIR=1
 ENV PYTHONHASHSEED=random
 
-# POMP NET automatic defaults
 ENV PORT=8080
 ENV DATA_DIR=/app/data
 
@@ -26,10 +25,7 @@ ENV POMPNET_WS_HANDSHAKE_WINDOW=60
 
 ENV POMPNET_HSTS=1
 
-# ============================================================
 # SYSTEM PACKAGES
-# ============================================================
-
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
        git \
@@ -40,7 +36,6 @@ RUN apt-get update \
 
 # ============================================================
 # REAL AHB CORE
-# FIXED COMMIT — no automatic upstream changes
 # ============================================================
 
 RUN git clone \
@@ -90,8 +85,9 @@ COPY app_wrapper.py /app/app_wrapper.py
 
 COPY requirements.txt /app/requirements.txt
 
-# Login patch
+# LOGIN PATCHES
 COPY pompnet_login_patch.py /tmp/pompnet_login_patch.py
+COPY pompnet_login_credit.py /tmp/pompnet_login_credit.py
 
 # ============================================================
 # REQUIRED FILE CHECK
@@ -106,6 +102,7 @@ RUN test -f /app/main.py \
     && test -f /app/pompnet.css \
     && test -f /tmp/pompnet_brand.py \
     && test -f /tmp/pompnet_login_patch.py \
+    && test -f /tmp/pompnet_login_credit.py \
     && test -f /app/requirements.txt \
     && /usr/local/bin/xray version
 
@@ -120,6 +117,12 @@ RUN python /tmp/pompnet_brand.py
 # ============================================================
 
 RUN python /tmp/pompnet_login_patch.py
+
+# ============================================================
+# LOGIN CREDIT
+# ============================================================
+
+RUN python /tmp/pompnet_login_credit.py
 
 # ============================================================
 # PYTHON DEPENDENCIES
@@ -139,7 +142,8 @@ RUN python -m py_compile \
     /app/xray_manager.py \
     /app/pompnet_runtime.py \
     /app/app_wrapper.py \
-    /tmp/pompnet_login_patch.py
+    /tmp/pompnet_login_patch.py \
+    /tmp/pompnet_login_credit.py
 
 # ============================================================
 # NON-ROOT USER
@@ -157,9 +161,6 @@ RUN useradd \
 
 USER 10001:10001
 
-# Railway web service
 EXPOSE 8080
 
-# Railway PORT is respected automatically.
-# If Railway does not provide PORT, 8080 is used.
 CMD ["sh", "-c", "exec python -m uvicorn app_wrapper:app --host 0.0.0.0 --port ${PORT:-8080}"]

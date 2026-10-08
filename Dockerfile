@@ -13,7 +13,7 @@ RUN apt-get update \
        ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# دریافت هسته اصلی پنل بدون دستکاری قابلیت‌های آن
+# هسته واقعی پنل خودت
 RUN git clone \
       https://github.com/uxurx7rh7e7xr73uue73e8/ahbpanel.git \
       /tmp/panel-core \
@@ -23,25 +23,26 @@ RUN git clone \
     && rm -rf /tmp/panel-core \
     && test -f /app/main.py
 
-# پوسته POMP NET
+# فایل‌های خود PompNet
 COPY pompnet.css /app/pompnet.css
+COPY pompnet_login.css /tmp/pompnet_login.css
+COPY pompnet_login.js /tmp/pompnet_login.js
 COPY pompnet_brand.py /tmp/pompnet_brand.py
 COPY requirements.txt /app/requirements.txt
 
-# بررسی فایل‌های ضروری
 RUN test -f /app/main.py \
     && test -f /app/pompnet.css \
+    && test -f /tmp/pompnet_login.css \
+    && test -f /tmp/pompnet_login.js \
     && test -f /tmp/pompnet_brand.py \
     && test -f /app/requirements.txt
 
-# اعمال برندینگ بدون تغییر منطق پنل
+# فقط برندینگ؛ قابلیت‌های هسته دست‌نخورده
 RUN python /tmp/pompnet_brand.py
 
-# نصب وابستگی‌ها
 RUN python -m pip install --upgrade pip \
     && python -m pip install --no-cache-dir -r /app/requirements.txt
 
 EXPOSE 8080
 
-# Railway PORT را خودش تعیین می‌کند
 CMD ["sh", "-c", "exec python -m uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}"]

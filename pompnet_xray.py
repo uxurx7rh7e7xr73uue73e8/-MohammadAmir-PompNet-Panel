@@ -5,9 +5,10 @@ import os
 import subprocess
 import threading
 from pathlib import Path
-from typing import Iterable
 
-logger = logging.getLogger("pompnet-xray")
+logger = logging.getLogger(
+    "pompnet-xray"
+)
 
 XRAY_BIN = os.getenv(
     "XRAY_BIN",
@@ -24,77 +25,128 @@ DATA_DIR = Path(
     )
 )
 
-XRAY_CONFIG = DATA_DIR / "pompnet-xray.json"
+XRAY_CONFIG = (
+    DATA_DIR
+    / "pompnet-xray.json"
+)
 
+# Xray فقط روی localhost است.
 XRAY_HOST = "127.0.0.1"
-XRAY_PORT = 10000
+
+XRAY_PORT = int(
+    os.getenv(
+        "POMPNET_XRAY_PORT",
+        "10000",
+    )
+)
 
 _process = None
+
 _lock = threading.RLock()
 
 _last_hash = ""
 
 
 def _uuid(value):
-    value = str(value or "").strip()
+
+    value = str(
+        value or ""
+    ).strip()
 
     parts = value.split("-")
 
     if len(parts) != 5:
         return None
 
-    if [
+    expected = [
         8,
         4,
         4,
         4,
         12,
-    ] != [
+    ]
+
+    if [
         len(x)
         for x in parts
-    ]:
+    ] != expected:
         return None
 
     try:
-        int(value.replace("-", ""), 16)
+        int(
+            value.replace(
+                "-",
+                "",
+            ),
+            16,
+        )
+
     except ValueError:
         return None
 
     return value.lower()
 
 
-def extract_uuids(links) -> list[str]:
-    if not isinstance(links, dict):
+def extract_uuids(
+    links,
+) -> list[str]:
+
+    if not isinstance(
+        links,
+        dict,
+    ):
         return []
 
     result = []
 
     for uid, link in links.items():
 
-        if not isinstance(link, dict):
+        if not isinstance(
+            link,
+            dict,
+        ):
             continue
 
-        if link.get("active", True) is False:
+        if (
+            link.get(
+                "active",
+                True,
+            )
+            is False
+        ):
             continue
 
         clean = _uuid(uid)
 
-        if clean and clean not in result:
-            result.append(clean)
+        if (
+            clean
+            and clean not in result
+        ):
+            result.append(
+                clean
+            )
 
     return result
 
 
-def build_config(links) -> dict:
-    uuids = extract_uuids(links)
+def build_config(
+    links,
+) -> dict:
+
+    uuids = extract_uuids(
+        links
+    )
 
     clients = [
         {
             "id": uid,
-            "email": f"pompnet-{index}",
+            "email": (
+                f"pompnet-{index}"
+            ),
             "level": 0,
         }
-        for index, uid in enumerate(
+        for index, uid
+        in enumerate(
             uuids,
             start=1,
         )
@@ -103,13 +155,18 @@ def build_config(links) -> dict:
     return {
         "log": {
             "loglevel": "warning",
+            "access": "none",
+            "error": "none",
         },
 
         "inbounds": [
             {
                 "tag": "pompnet-vless",
+
                 "listen": XRAY_HOST,
+
                 "port": XRAY_PORT,
+
                 "protocol": "vless",
 
                 "settings": {
@@ -123,6 +180,7 @@ def build_config(links) -> dict:
 
                 "sniffing": {
                     "enabled": True,
+
                     "destOverride": [
                         "http",
                         "tls",
@@ -150,17 +208,28 @@ def build_config(links) -> dict:
     }
 
 
-def _config_hash(config: dict) -> str:
+def _config_hash(
+    config,
+):
+
     raw = json.dumps(
         config,
         sort_keys=True,
-        separators=(",", ":"),
+        separators=(
+            ",",
+            ":",
+        ),
     ).encode()
 
-    return hashlib.sha256(raw).hexdigest()
+    return hashlib.sha256(
+        raw
+    ).hexdigest()
 
 
-def write_config(links) -> bool:
+def write_config(
+    links,
+):
+
     global _last_hash
 
     DATA_DIR.mkdir(
@@ -168,22 +237,35 @@ def write_config(links) -> bool:
         exist_ok=True,
     )
 
+    try:
+        os.chmod(
+            DATA_DIR,
+            0o700,
+        )
+    except OSError:
+        pass
+
     config = build_config(
         links
     )
 
-    current_hash = _config_hash(
-        config
+    current_hash = (
+        _config_hash(
+            config
+        )
     )
 
     if (
         XRAY_CONFIG.exists()
-        and current_hash == _last_hash
+        and current_hash
+        == _last_hash
     ):
         return False
 
-    temporary = XRAY_CONFIG.with_suffix(
-        ".tmp"
+    temporary = (
+        XRAY_CONFIG.with_suffix(
+            ".tmp"
+        )
     )
 
     temporary.write_text(
@@ -195,64 +277,95 @@ def write_config(links) -> bool:
         encoding="utf-8",
     )
 
+    try:
+        os.chmod(
+            temporary,
+            0o600,
+        )
+    except OSError:
+        pass
+
     temporary.replace(
         XRAY_CONFIG
     )
+
+    try:
+        os.chmod(
+            XRAY_CONFIG,
+            0o600,
+        )
+    except OSError:
+        pass
 
     _last_hash = current_hash
 
     return True
 
 
-def validate_config() -> bool:
+def validate_config():
+
     if not Path(
         XRAY_BIN
-    ).exists():
+    ).is_file():
         logger.error(
             "Xray binary not found: %s",
             XRAY_BIN,
         )
+
         return False
 
-    if not XRAY_CONFIG.exists():
+    if not XRAY_CONFIG.is_file():
         logger.error(
             "Xray config not found: %s",
             XRAY_CONFIG,
         )
+
         return False
 
     try:
+
         result = subprocess.run(
             [
                 XRAY_BIN,
                 "run",
                 "-test",
                 "-config",
-                str(XRAY_CONFIG),
+                str(
+                    XRAY_CONFIG
+                ),
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
             timeout=20,
+            check=False,
         )
 
-        if result.returncode != 0:
+        if (
+            result.returncode
+            != 0
+        ):
+
             logger.error(
                 "Xray config test failed: %s",
                 result.stderr[-4000:],
             )
+
             return False
 
         return True
 
     except Exception:
+
         logger.exception(
             "Xray config validation failed"
         )
+
         return False
 
 
 def stop_xray():
+
     global _process
 
     with _lock:
@@ -262,36 +375,48 @@ def stop_xray():
 
         try:
 
-            if _process.poll() is None:
+            if (
+                _process.poll()
+                is None
+            ):
+
                 _process.terminate()
 
                 try:
+
                     _process.wait(
                         timeout=10
                     )
+
                 except subprocess.TimeoutExpired:
+
                     _process.kill()
+
                     _process.wait(
                         timeout=5
                     )
 
         except Exception:
+
             logger.exception(
                 "Could not stop Xray"
             )
 
         finally:
+
             _process = None
 
 
-def start_xray() -> bool:
+def start_xray():
+
     global _process
 
     with _lock:
 
         if (
             _process is not None
-            and _process.poll() is None
+            and _process.poll()
+            is None
         ):
             return True
 
@@ -305,23 +430,31 @@ def start_xray() -> bool:
                     XRAY_BIN,
                     "run",
                     "-config",
-                    str(XRAY_CONFIG),
+                    str(
+                        XRAY_CONFIG
+                    ),
                 ],
                 stdout=subprocess.DEVNULL,
-                stderr=subprocess.STDOUT,
+                stderr=subprocess.DEVNULL,
             )
 
         except Exception:
+
             logger.exception(
                 "Could not start Xray"
             )
+
             _process = None
+
             return False
 
         return True
 
 
-def ensure_xray(links) -> bool:
+def ensure_xray(
+    links,
+):
+
     with _lock:
 
         changed = write_config(
@@ -329,19 +462,22 @@ def ensure_xray(links) -> bool:
         )
 
         if changed:
-
             stop_xray()
 
         if (
             _process is None
-            or _process.poll() is not None
+            or _process.poll()
+            is not None
         ):
             return start_xray()
 
         return True
 
 
-def restart_xray(links) -> bool:
+def restart_xray(
+    links,
+):
+
     with _lock:
 
         write_config(
@@ -353,27 +489,31 @@ def restart_xray(links) -> bool:
         return start_xray()
 
 
-def xray_running() -> bool:
+def xray_running():
+
     with _lock:
 
         return bool(
             _process is not None
-            and _process.poll() is None
+            and _process.poll()
+            is None
         )
 
 
-def get_xray_status() -> dict:
+def get_xray_status():
+
     return {
         "available": Path(
             XRAY_BIN
-        ).exists(),
+        ).is_file(),
 
-        "running":
-            xray_running(),
+        "running": xray_running(),
 
-        "config":
-            str(XRAY_CONFIG),
+        "config": str(
+            XRAY_CONFIG
+        ),
 
-        "port":
-            XRAY_PORT,
+        "port": XRAY_PORT,
+
+        "public": False,
     }

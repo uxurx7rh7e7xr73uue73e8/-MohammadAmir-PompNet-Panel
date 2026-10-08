@@ -9,7 +9,7 @@ if not MAIN.exists():
 text = MAIN.read_text(encoding="utf-8")
 
 # ============================================================
-# REAL POMP NET LOGIN
+# REAL POMP NET LOGIN CONFIG
 # ============================================================
 
 old_auth = '''_env_pw = os.environ.get("ADMIN_PASSWORD", "").strip()
@@ -34,169 +34,45 @@ AUTH = {
     "password_configured": bool(_env_pw),
 }'''
 
-if old_auth not in text:
+if old_auth in text:
+    text = text.replace(old_auth, new_auth, 1)
+elif '"username": _env_user or "admin"' not in text:
     raise SystemExit(
         "ERROR: real AUTH block not found; stopped safely"
     )
 
-text = text.replace(
-    old_auth,
-    new_auth,
-    1,
+# ============================================================
+# REAL OWNER USERNAME
+# ============================================================
+
+old_owner_check = '''    if username and username not in ("owner", "admin", "root"):'''
+
+new_owner_check = '''    if username and username != AUTH.get("username", "admin") and username not in ("owner", "admin", "root"):'''
+
+if old_owner_check in text:
+    text = text.replace(old_owner_check, new_owner_check, 1)
+elif new_owner_check not in text:
+    raise SystemExit(
+        "ERROR: real /api/login owner check not found; stopped safely"
+    )
+
+# ============================================================
+# SAFETY CHECKS
+# ============================================================
+
+required = (
+    'AUTH = {',
+    '"username": _env_user or "admin"',
+    'ADMIN_USERNAME',
+    'document.getElementById(\'loginUser\').value',
+    '"/api/login"',
 )
 
-# ============================================================
-# JSON LOGIN
-# ============================================================
-
-old_json = '''            password = str(
-                body.get(
-                    "password",
-                    "",
-                )
-            ).strip()'''
-
-new_json = '''            username = str(
-                body.get(
-                    "username",
-                    "",
-                )
-            ).strip().lower()
-
-            password = str(
-                body.get(
-                    "password",
-                    "",
-                )
-            ).strip()'''
-
-if old_json not in text:
-    raise SystemExit(
-        "ERROR: real JSON login block not found"
-    )
-
-text = text.replace(
-    old_json,
-    new_json,
-    1,
-)
-
-# ============================================================
-# FORM LOGIN
-# ============================================================
-
-old_form = '''            password = (
-                parsed.get(
-                    "password",
-                    [""],
-                )[0]
-                .strip()
-            )'''
-
-new_form = '''            username = (
-                parsed.get(
-                    "username",
-                    [""],
-                )[0]
-                .strip()
-                .lower()
-            )
-
-            password = (
-                parsed.get(
-                    "password",
-                    [""],
-                )[0]
-                .strip()
-            )'''
-
-if old_form not in text:
-    raise SystemExit(
-        "ERROR: real form login block not found"
-    )
-
-text = text.replace(
-    old_form,
-    new_form,
-    1,
-)
-
-# ============================================================
-# REAL USERNAME VALIDATION
-# ============================================================
-
-old_check = '''    if not password:
-        register_login_failure(ip)
-        return HTMLResponse(
-            login_error_html(
-                "رمز عبور را وارد کنید."
-            ),
-            status_code=400,
+for marker in required:
+    if marker not in text:
+        raise SystemExit(
+            f"ERROR: required login marker missing: {marker}"
         )
-
-    if (
-        hash_password(password)
-        != AUTH["password_hash"]
-    ):'''
-
-new_check = '''    if not username:
-        username = AUTH.get(
-            "username",
-            "admin",
-        )
-
-    if username != AUTH.get(
-        "username",
-        "admin",
-    ):
-        register_login_failure(ip)
-
-        return HTMLResponse(
-            login_error_html(
-                "نام کاربری یا رمز عبور اشتباه است."
-            ),
-            status_code=401,
-        )
-
-    if not password:
-        register_login_failure(ip)
-
-        return HTMLResponse(
-            login_error_html(
-                "رمز عبور را وارد کنید."
-            ),
-            status_code=400,
-        )
-
-    if (
-        hash_password(password)
-        != AUTH["password_hash"]
-    ):'''
-
-if old_check not in text:
-    raise SystemExit(
-        "ERROR: real password validation block not found"
-    )
-
-text = text.replace(
-    old_check,
-    new_check,
-    1,
-)
-
-# ============================================================
-# FINAL CHECKS
-# ============================================================
-
-if "ADMIN_USERNAME" not in text:
-    raise SystemExit(
-        "ERROR: ADMIN_USERNAME patch failed"
-    )
-
-if 'AUTH["username"]' not in text and 'AUTH.get(' not in text:
-    raise SystemExit(
-        "ERROR: username validation patch failed"
-    )
 
 MAIN.write_text(
     text,
@@ -204,5 +80,6 @@ MAIN.write_text(
 )
 
 print("POMP NET REAL LOGIN PATCH: OK")
-print("USERNAME: admin")
-print("PASSWORD: configured")
+print("OWNER USERNAME: ADMIN_USERNAME")
+print("DEFAULT USERNAME: admin")
+print("DEFAULT PASSWORD: admin")

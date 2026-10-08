@@ -1,112 +1,146 @@
 /* =========================================================
-   POMP NET — Neon Glassmorphism
+   POMP NET — CRYSTAL GLASS UI V2
+   فقط ظاهر — بدون تغییر منطق، API، مسیرها یا قابلیت‌ها
    ========================================================= */
 
 :root {
-    --pn-bg: #050509;
-    --pn-card: rgba(16, 14, 28, .78);
-    --pn-purple: #8b35ff;
-    --pn-purple-2: #b15cff;
-    --pn-blue: #168cff;
-    --pn-blue-2: #35b7ff;
-    --pn-pink: #ff3dbb;
-    --pn-text: #f7f4ff;
-    --pn-soft: #b8b1c9;
-    --pn-border: rgba(255,255,255,.10);
-    --pn-radius: 18px;
+    --pn-glass: rgba(20, 24, 46, .30);
+    --pn-glass-strong: rgba(20, 24, 46, .42);
+    --pn-glass-border: rgba(255, 255, 255, .13);
+
+    --pn-cyan: #28d7ff;
+    --pn-violet: #8b5cff;
+    --pn-pink: #ff4fc4;
+    --pn-blue: #3b9dff;
 }
 
-html {
-    scroll-behavior: smooth;
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+html,
+body {
+    background: #050711 !important;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
     background:
         radial-gradient(
-            circle at 10% 5%,
-            rgba(139,53,255,.18),
-            transparent 30%
+            circle at 15% 18%,
+            rgba(139, 92, 255, .24) 0,
+            transparent 24%
         ),
         radial-gradient(
-            circle at 90% 10%,
-            rgba(22,140,255,.15),
-            transparent 30%
+            circle at 86% 14%,
+            rgba(40, 215, 255, .20) 0,
+            transparent 23%
         ),
         radial-gradient(
-            circle at 50% 100%,
-            rgba(255,61,187,.08),
-            transparent 30%
+            circle at 76% 78%,
+            rgba(255, 79, 196, .17) 0,
+            transparent 26%
         ),
-        var(--pn-bg) !important;
-
-    color: var(--pn-text);
-    font-family:
-        Vazirmatn,
-        IRANSans,
-        Tahoma,
-        Arial,
-        sans-serif;
-
-    direction: rtl;
-    overflow-x: hidden;
+        radial-gradient(
+            circle at 22% 88%,
+            rgba(59, 157, 255, .15) 0,
+            transparent 24%
+        ),
+        linear-gradient(
+            135deg,
+            #050711 0%,
+            #0b1023 48%,
+            #050711 100%
+        ) !important;
 }
 
-body::before,
-body::after {
-    content: "";
-    position: fixed;
-    pointer-events: none;
-    z-index: -1;
-    border-radius: 50%;
-    filter: blur(100px);
-}
+/* =========================================================
+   رنگ‌های نورانی پس‌زمینه
+   ========================================================= */
 
 body::before {
-    width: 420px;
-    height: 420px;
-    top: -160px;
-    right: -120px;
-    background: rgba(139,53,255,.16);
+    width: 780px;
+    height: 780px;
+    top: -280px;
+    right: -260px;
+
+    background:
+        radial-gradient(
+            circle at 25% 25%,
+            rgba(40, 215, 255, .65) 0 5px,
+            transparent 9px
+        ),
+        radial-gradient(
+            circle at 60% 32%,
+            rgba(255, 79, 196, .58) 0 6px,
+            transparent 10px
+        ),
+        radial-gradient(
+            circle at 44% 62%,
+            rgba(139, 92, 255, .60) 0 5px,
+            transparent 9px
+        ),
+        linear-gradient(
+            28deg,
+            transparent 47%,
+            rgba(92, 116, 255, .13) 48%,
+            transparent 49%
+        ),
+        linear-gradient(
+            152deg,
+            transparent 49%,
+            rgba(255, 79, 196, .12) 50%,
+            transparent 51%
+        );
+
+    filter: blur(10px);
+    opacity: .85;
+
+    box-shadow:
+        0 0 90px rgba(139, 92, 255, .18);
 }
 
 body::after {
-    width: 400px;
-    height: 400px;
-    bottom: -160px;
-    left: -120px;
-    background: rgba(22,140,255,.13);
+    width: 700px;
+    height: 700px;
+    bottom: -300px;
+    left: -250px;
+
+    background:
+        radial-gradient(
+            circle at 62% 28%,
+            rgba(255, 79, 196, .60) 0 6px,
+            transparent 10px
+        ),
+        radial-gradient(
+            circle at 35% 58%,
+            rgba(40, 215, 255, .55) 0 5px,
+            transparent 9px
+        ),
+        radial-gradient(
+            circle at 72% 72%,
+            rgba(139, 92, 255, .55) 0 5px,
+            transparent 9px
+        ),
+        linear-gradient(
+            20deg,
+            transparent 47%,
+            rgba(40, 215, 255, .12) 48%,
+            transparent 49%
+        ),
+        linear-gradient(
+            160deg,
+            transparent 49%,
+            rgba(139, 92, 255, .12) 50%,
+            transparent 51%
+        );
+
+    filter: blur(12px);
+    opacity: .72;
 }
 
-/* TEXT */
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    color: #f7f4ff !important;
-}
-
-p,
-small,
-label {
-    color: var(--pn-soft);
-}
-
-a {
-    color: var(--pn-blue-2);
-    transition: .2s;
-}
-
-a:hover {
-    color: var(--pn-purple-2);
-    text-shadow: 0 0 10px rgba(177,92,255,.55);
-}
-
-/* GLASS */
+/* =========================================================
+   CRYSTAL GLASS
+   ========================================================= */
 
 .card,
 .panel,
@@ -125,24 +159,36 @@ header,
 nav,
 aside,
 footer {
+
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,.045),
-            rgba(255,255,255,.012)
+            rgba(255, 255, 255, .075),
+            rgba(255, 255, 255, .018)
         ),
-        var(--pn-card) !important;
+        var(--pn-glass) !important;
 
-    border: 1px solid var(--pn-border);
-    border-radius: var(--pn-radius);
+    border:
+        1px solid var(--pn-glass-border) !important;
 
     box-shadow:
-        0 10px 35px rgba(0,0,0,.38),
-        0 0 35px rgba(108,38,255,.10);
+        inset 0 1px 0 rgba(255, 255, 255, .10),
+        inset 0 0 35px rgba(139, 92, 255, .035),
+        0 18px 55px rgba(0, 0, 0, .34),
+        0 0 35px rgba(92, 74, 255, .09) !important;
 
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter:
+        blur(28px)
+        saturate(150%) !important;
+
+    -webkit-backdrop-filter:
+        blur(28px)
+        saturate(150%) !important;
 }
+
+/* =========================================================
+   HOVER
+   ========================================================= */
 
 .card:hover,
 .panel:hover,
@@ -151,168 +197,247 @@ footer {
 .stat-card:hover,
 .user-card:hover,
 .server-card:hover {
-    border-color: rgba(139,53,255,.35);
+
+    border-color:
+        rgba(110, 205, 255, .28) !important;
 
     box-shadow:
-        0 10px 35px rgba(0,0,0,.38),
-        0 0 28px rgba(139,53,255,.12);
-
-    transform: translateY(-2px);
+        inset 0 1px 0 rgba(255, 255, 255, .12),
+        0 20px 60px rgba(0, 0, 0, .38),
+        0 0 42px rgba(139, 92, 255, .14) !important;
 }
 
-/* BUTTONS */
+/* =========================================================
+   POMP NET GLASS BRAND
+   ========================================================= */
+
+#pompnet-brand-banner {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    min-height: 46px;
+
+    padding: 8px 14px;
+
+    overflow: hidden;
+
+    background:
+        rgba(12, 16, 34, .26) !important;
+
+    border:
+        1px solid rgba(255, 255, 255, .14) !important;
+
+    border-radius: 16px !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .12),
+        0 0 32px rgba(139, 92, 255, .10) !important;
+
+    backdrop-filter:
+        blur(24px)
+        saturate(160%) !important;
+
+    -webkit-backdrop-filter:
+        blur(24px)
+        saturate(160%) !important;
+}
+
+/* =========================================================
+   علامت رنگی POMP NET
+   ========================================================= */
+
+#pompnet-brand-banner::before {
+
+    content: "PN";
+
+    flex: 0 0 30px;
+
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 10px;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: .5px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #22d3ee 0%,
+            #7c3aed 48%,
+            #ec4899 100%
+        );
+
+    box-shadow:
+        0 0 12px rgba(34, 211, 238, .55),
+        0 0 25px rgba(124, 58, 237, .38),
+        0 0 38px rgba(236, 72, 153, .20);
+}
+
+/* =========================================================
+   نور متحرک روی شیشه
+   ========================================================= */
+
+#pompnet-brand-banner::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -45%;
+
+    background:
+        linear-gradient(
+            110deg,
+            transparent 42%,
+            rgba(255, 255, 255, .10) 50%,
+            transparent 58%
+        );
+
+    transform:
+        translateX(-35%);
+
+    animation:
+        pnGlassShine
+        5s
+        ease-in-out
+        infinite;
+
+    pointer-events: none;
+}
+
+#pompnet-brand-banner
+.pompnet-banner-text {
+
+    position: relative;
+
+    z-index: 1;
+
+    color: #f6f3ff !important;
+
+    text-shadow:
+        0 0 14px
+        rgba(139, 92, 255, .35);
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
 
 button,
 .btn,
 .button,
 input[type="submit"],
 input[type="button"] {
-    border: 1px solid rgba(255,255,255,.10);
-    border-radius: 12px;
 
-    color: #fff;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--pn-purple),
-            var(--pn-blue)
-        );
+    border-color:
+        rgba(255, 255, 255, .14) !important;
 
     box-shadow:
-        0 7px 25px rgba(91,37,190,.25);
-
-    cursor: pointer;
-    transition: .18s;
+        0 10px 28px rgba(91, 37, 190, .22),
+        inset 0 1px rgba(255, 255, 255, .10) !important;
 }
 
-button:hover,
-.btn:hover,
-.button:hover,
-input[type="submit"]:hover,
-input[type="button"]:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.10);
-
-    box-shadow:
-        0 8px 30px rgba(139,53,255,.35),
-        0 0 25px rgba(22,140,255,.15);
-}
-
-/* INPUTS */
+/* =========================================================
+   INPUTS
+   ========================================================= */
 
 input,
 textarea,
 select {
-    color: var(--pn-text);
 
     background:
-        rgba(4,4,10,.62);
+        rgba(7, 10, 22, .34) !important;
 
-    border:
-        1px solid rgba(255,255,255,.10);
+    border-color:
+        rgba(255, 255, 255, .12) !important;
 
-    border-radius: 12px;
-    outline: none;
+    backdrop-filter:
+        blur(18px) !important;
+
+    -webkit-backdrop-filter:
+        blur(18px) !important;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-    border-color: var(--pn-purple);
-
-    box-shadow:
-        0 0 0 3px rgba(139,53,255,.10),
-        0 0 22px rgba(139,53,255,.12);
-}
-
-/* TABLE */
+/* =========================================================
+   TABLE
+   ========================================================= */
 
 thead {
+
     background:
         linear-gradient(
             135deg,
-            rgba(139,53,255,.12),
-            rgba(22,140,255,.08)
-        );
+            rgba(139, 92, 255, .12),
+            rgba(40, 215, 255, .08)
+        ) !important;
 }
 
 tbody tr:hover {
-    background: rgba(139,53,255,.055);
-}
-
-/* POMP NET BANNER */
-
-#pompnet-brand-banner {
-    box-sizing: border-box;
-
-    width: 100%;
-
-    text-align: center;
-
-    padding: 9px 14px;
-
-    margin: 0 0 12px;
-
-    border-radius: 14px;
 
     background:
-        linear-gradient(
-            135deg,
-            rgba(139,53,255,.16),
-            rgba(22,140,255,.12)
-        );
-
-    border:
-        1px solid rgba(139,53,255,.22);
-
-    color: #e9e2ff;
-
-    font-size: 12px;
-    line-height: 1.8;
-
-    box-shadow:
-        0 0 25px rgba(100,40,255,.10),
-        inset 0 1px rgba(255,255,255,.06);
-
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+        rgba(139, 92, 255, .07) !important;
 }
 
-#pompnet-brand-banner b {
-    color: #bd8cff;
+/* =========================================================
+   GLASS SHINE ANIMATION
+   ========================================================= */
 
-    text-shadow:
-        0 0 12px rgba(139,53,255,.35);
+@keyframes pnGlassShine {
+
+    0%,
+    35% {
+        transform:
+            translateX(-55%);
+    }
+
+    65%,
+    100% {
+        transform:
+            translateX(55%);
+    }
 }
 
-/* SCROLLBAR */
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
+@media (max-width: 700px) {
 
-::-webkit-scrollbar-track {
-    background: #06060b;
-}
-
-::-webkit-scrollbar-thumb {
-    background:
-        linear-gradient(
-            180deg,
-            var(--pn-purple),
-            var(--pn-blue)
-        );
-
-    border-radius: 999px;
-}
-
-/* MOBILE */
-
-@media (max-width: 520px) {
     #pompnet-brand-banner {
-        font-size: 10px;
-        padding: 8px 10px;
+
+        min-height: 42px;
+
+        padding: 7px 10px;
+
+        gap: 8px;
+    }
+
+    #pompnet-brand-banner::before {
+
+        width: 27px;
+
+        height: 27px;
+
+        flex-basis: 27px;
+
+        border-radius: 9px;
     }
 }

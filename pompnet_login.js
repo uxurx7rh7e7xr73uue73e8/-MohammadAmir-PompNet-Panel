@@ -1,6 +1,7 @@
 /* =========================================================
    POMPNET LOGIN BRAND
    فقط برندینگ صفحه ورود
+   منطق Login اصلی پنل دست‌نخورده است
    ========================================================= */
 
 (function () {
@@ -22,11 +23,8 @@
         brand.id = "pompnet-login-brand";
 
         brand.innerHTML = `
-            <div class="pompnet-logo-circle">
-                <img
-                    src="/pompnet_logo.png"
-                    alt="PompNet"
-                >
+            <div class="pompnet-logo-circle" aria-label="PompNet">
+                <span class="pompnet-logo-text">PN</span>
             </div>
 
             <div class="pompnet-login-title">

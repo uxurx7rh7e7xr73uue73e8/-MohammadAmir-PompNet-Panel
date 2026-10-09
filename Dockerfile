@@ -13,6 +13,7 @@ ENV PYTHONHASHSEED=random
 ENV PORT=8080
 ENV DATA_DIR=/app/data
 
+# این مقادیر پیش‌فرض‌اند؛ قبل از انتشار عمومی در Railway تغییرشان بده.
 ENV ADMIN_USERNAME=admin
 ENV ADMIN_PASSWORD=admin
 
@@ -25,7 +26,10 @@ ENV POMPNET_WS_HANDSHAKE_WINDOW=60
 
 ENV POMPNET_HSTS=1
 
+# ============================================================
 # SYSTEM PACKAGES
+# ============================================================
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
        git \
@@ -35,20 +39,20 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # ============================================================
-# REAL AHB CORE
+# ORIGINAL PANEL CORE
 # ============================================================
 
 RUN git clone \
       https://github.com/uxurx7rh7e7xr73uue73e8/ahbpanel.git \
       /tmp/ahb-core \
     && cd /tmp/ahb-core \
-    && git checkout --detach ${AHB_CORE_COMMIT} \
+    && git checkout --detach "${AHB_CORE_COMMIT}" \
     && cp -a . /app/ \
     && rm -rf /tmp/ahb-core \
     && test -f /app/main.py
 
 # ============================================================
-# REAL XRAY
+# XRAY CORE
 # ============================================================
 
 RUN arch="$(uname -m)" \
@@ -75,7 +79,9 @@ RUN arch="$(uname -m)" \
 COPY pompnet.css /app/pompnet.css
 COPY pompnet_login.css /tmp/pompnet_login.css
 COPY pompnet_login.js /tmp/pompnet_login.js
+
 COPY pompnet_brand.py /tmp/pompnet_brand.py
+COPY pompnet_brand_fix.py /tmp/pompnet_brand_fix.py
 
 COPY pompnet_security.py /app/pompnet_security.py
 COPY pompnet_xray.py /app/pompnet_xray.py
@@ -85,7 +91,10 @@ COPY app_wrapper.py /app/app_wrapper.py
 
 COPY requirements.txt /app/requirements.txt
 
+# ============================================================
 # LOGIN PATCHES
+# ============================================================
+
 COPY pompnet_login_patch.py /tmp/pompnet_login_patch.py
 COPY pompnet_login_credit.py /tmp/pompnet_login_credit.py
 
@@ -100,17 +109,19 @@ RUN test -f /app/main.py \
     && test -f /app/pompnet_runtime.py \
     && test -f /app/app_wrapper.py \
     && test -f /app/pompnet.css \
+    && test -f /app/requirements.txt \
     && test -f /tmp/pompnet_brand.py \
+    && test -f /tmp/pompnet_brand_fix.py \
     && test -f /tmp/pompnet_login_patch.py \
     && test -f /tmp/pompnet_login_credit.py \
-    && test -f /app/requirements.txt \
     && /usr/local/bin/xray version
 
 # ============================================================
-# REAL POMP NET BRAND PATCH
+# POMP NET BRAND PATCHES
 # ============================================================
 
-RUN python /tmp/pompnet_brand.py
+RUN python /tmp/pompnet_brand.py \
+    && python /tmp/pompnet_brand_fix.py
 
 # ============================================================
 # REAL LOGIN PATCH
@@ -142,6 +153,8 @@ RUN python -m py_compile \
     /app/xray_manager.py \
     /app/pompnet_runtime.py \
     /app/app_wrapper.py \
+    /tmp/pompnet_brand.py \
+    /tmp/pompnet_brand_fix.py \
     /tmp/pompnet_login_patch.py \
     /tmp/pompnet_login_credit.py
 

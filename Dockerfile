@@ -11,7 +11,7 @@ ENV PIP_NO_CACHE_DIR=1
 ENV PYTHONHASHSEED=random
 
 ENV PORT=8080
-ENV DATA_DIR=/app/data
+ENV DATA_DIR=/data
 
 # ورود مالک، طبق درخواست
 ENV ADMIN_USERNAME=admin
@@ -172,9 +172,9 @@ RUN useradd \
       --create-home \
       --home-dir /home/pompnet \
       pompnet \
-    && mkdir -p /app/data \
-    && chown -R 10001:10001 /app /home/pompnet \
-    && chmod 700 /app/data
+    && mkdir -p /data \
+    && chown -R 10001:10001 /app /home/pompnet /data \
+    && chmod 700 /data
 
 USER 10001:10001
 

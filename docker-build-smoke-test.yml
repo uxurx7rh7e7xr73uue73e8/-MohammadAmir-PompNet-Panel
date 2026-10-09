@@ -1,0 +1,74 @@
+name: POMP NET Docker Build and Smoke Test
+
+on:
+push:
+branches:
+- main
+workflow_dispatch:
+
+permissions:
+contents: read
+
+jobs:
+docker-build-smoke-test:
+runs-on: ubuntu-latest
+timeout-minutes: 30
+
+steps:
+  - name: Checkout repository
+    uses: actions/checkout@v4
+
+  - name: Set up Docker Buildx
+    uses: docker/setup-buildx-action@v3
+
+  - name: Build actual Docker image
+    uses: docker/build-push-action@v6
+    with:
+      context: .
+      file: ./Dockerfile
+      tags: pompnet-panel:ci
+      load: true
+      push: false
+
+  - name: Start container
+    run: docker run -d --name pompnet-smoke -p 8080:8080 pompnet-panel:ci
+
+  - name: Test health endpoint
+    shell: bash
+    run: |
+      set -euo pipefail
+      for attempt in $(seq 1 45); do
+        if curl --fail --silent http://127.0.0.1:8080/health; then
+          echo
+          echo "HEALTH CHECK PASSED"
+          exit 0
+        fi
+        if [ "$(docker inspect -f '{{.State.Running}}' pompnet-smoke 2>/dev/null || true)" != "true" ]; then
+          echo "Container stopped before becoming healthy."
+          docker logs pompnet-smoke || true
+          exit 1
+        fi
+        sleep 2
+      done
+      echo "Health endpoint did not become ready."
+      docker logs pompnet-smoke || true
+      exit 1
+
+  - name: Test login page
+    run: |
+      set -euo pipefail
+      code="$(curl --silent --output /tmp/login.html --write-out '%{http_code}' http://127.0.0.1:8080/login)"
+      echo "Login HTTP status: $code"
+      if [ "$code" -ge 500 ]; then
+        cat /tmp/login.html || true
+        docker logs pompnet-smoke || true
+        exit 1
+      fi
+
+  - name: Show logs if test fails
+    if: failure()
+    run: docker logs pompnet-smoke || true
+
+  - name: Clean up
+    if: always()
+    run: docker rm -f pompnet-smoke || true

@@ -145,61 +145,6 @@ def inject_login_assets(data: str, login_css: str, login_js: str):
     return data[:start] + html + data[end:]
 
 
-def inject_banner(data: str, variable: str, element_id: str, text: str):
-    # این تابع برای سازگاری با ساختار قبلی نگه داشته شده است.
-    # در main() دیگر فراخوانی نمی‌شود و بنری اضافه نمی‌کند.
-    block = get_html_block(data, variable)
-
-    if not block:
-        raise RuntimeError(
-            f"ERROR: {variable} پیدا نشد"
-        )
-
-    start, end, _ = block
-    html = data[start:end]
-
-    if f'id="{element_id}"' in html:
-        return data
-
-    banner = f'''
-<div id="{element_id}">
-    <span class="pompnet-banner-text">
-        {text}
-    </span>
-</div>
-'''
-
-    body_match = re.search(
-        r"<body\b[^>]*>",
-        html,
-        re.I
-    )
-
-    if body_match:
-        insert_at = body_match.end()
-        html = html[:insert_at] + banner + html[insert_at:]
-    else:
-        main_match = re.search(
-            r"<main\b",
-            html,
-            re.I
-        )
-
-        if not main_match:
-            raise RuntimeError(
-                f"ERROR: محل Banner در {variable} پیدا نشد"
-            )
-
-        html = (
-            html[:main_match.start()]
-            + banner
-            + "\n"
-            + html[main_match.start():]
-        )
-
-    return data[:start] + html + data[end:]
-
-
 def replace_constant(data: str, name: str, value: str):
     pattern = re.compile(
         rf'^{re.escape(name)}\s*=\s*["\'][^"\']*["\']',
@@ -255,6 +200,44 @@ def atomic_write(path: Path, content: str):
             temp_path.unlink()
 
 
+def remove_creator_banners(data: str, variable: str):
+    """
+    حذف بنرهای شناخته‌شدهٔ سازنده از HTML صفحه.
+    فقط عناصر دارای شناسه‌های مشخص‌شده حذف می‌شوند.
+    """
+
+    block = get_html_block(data, variable)
+
+    if not block:
+        raise RuntimeError(
+            f"ERROR: {variable} پیدا نشد"
+        )
+
+    start, end, _ = block
+    html = data[start:end]
+
+    banner_ids = (
+        "pompnet-brand-banner",
+        "pompnet-sub-brand-banner",
+    )
+
+    for banner_id in banner_ids:
+        pattern = (
+            r'<div\b(?=[^>]*\bid=["\']'
+            + re.escape(banner_id)
+            + r'["\'])[^>]*>.*?</div\s*>'
+        )
+
+        html = re.sub(
+            pattern,
+            "",
+            html,
+            flags=re.I | re.S
+        )
+
+    return data[:start] + html + data[end:]
+
+
 def main():
 
     # =========================================================
@@ -294,28 +277,49 @@ def main():
     ).hexdigest()
 
     # =========================================================
-    # برند POMP NET و مشخصات پشتیبانی
+    # برند POMP NET و اصلاح رابط کاربری
     # =========================================================
 
     ui_replacements = {
+        # برند قدیمی
         "AHB PANEL": "POMP NET",
         "AHB Panel": "POMP NET",
         "AHBPanel": "POMP NET",
         "AHB panel": "POMP NET",
-        "ای اچ بی پنل": "آقای محمد پمپ‌نت پنل",
-        "Created By Ahb": "Created By POMP NET",
-        "Created By AHB": "Created By POMP NET",
-        "Created by AHB": "Created by POMP NET",
-        "Created by Ahb": "Created by POMP NET",
+        "ای اچ بی پنل": "POMP NET",
+
+        # حذف متن سازنده
+        "✦ کدنویسی شده توسط تیم پمپ‌نت • محمد و امیر ✦": "",
+        "کدنویسی شده توسط تیم پمپ‌نت • محمد و امیر": "",
+        "کدنویسی شده توسط تیم پمپ نت • محمد و امیر": "",
+        "کدنویسی شده توسط پمپ نت و امیر": "",
+        "کدنویسی شده توسط تیم پمپ نت": "",
+        "کدنویسی شده توسط تیم پمپ‌نت": "",
+        "کدنویسی شده توسط پمپ‌نت": "",
+        "Created By Ahb": "",
+        "Created By AHB": "",
+        "Created by AHB": "",
+        "Created by Ahb": "",
+        "Coded by POMP NET team": "",
+        "coded by POMP NET team": "",
+        "Coded by POMP NET": "",
+
+        # متن‌های رابط کاربری
         "به پنل مدیریت AHB خوش آمدید":
             "به پنل مدیریت POMP NET خوش آمدید",
-        "درگاه عمومی AHB Panel": "درگاه عمومی POMP NET",
+
+        "درگاه عمومی AHB Panel":
+            "درگاه عمومی POMP NET",
+
         "این صفحه، درگاه عمومی AHB Panel است.":
             "این صفحه، درگاه عمومی POMP NET است.",
+
         "AHB Panel · 14.3.0": "POMP NET",
         "خطای داخلی AHB Panel": "خطای داخلی POMP NET",
         "خطای داخلی AHB": "خطای داخلی POMP NET",
         "AHB Panel Error": "POMP NET Error",
+
+        # لینک‌ها و نام‌های قدیمی
         "https://t.me/ahb_panel": "https://t.me/NovaTunneli",
         "https://t.me/ahbpanel": "https://t.me/NovaTunneli",
         "https://t.me/ahbpanelgap": "https://t.me/NovaTunneli",
@@ -324,10 +328,14 @@ def main():
         "@ahbpanel": "@NovaTunneli",
         "@ahbpanelgap": "@NovaTunneli",
         "reymit.ir/moditor": "@NovaTunneli",
+
+        # لینک مخزن
         "https://github.com/ahb-panel/ahb_panel":
             "https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel",
+
         "https://github.com/ahb-panell/ahb_panel":
             "https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel",
+
         "ahb-panel/ahb_panel":
             "uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel",
     }
@@ -339,6 +347,10 @@ def main():
         "DASHBOARD_HTML"
     )
 
+    # =========================================================
+    # اعمال تغییرات فقط در HTML صفحات شناخته‌شده
+    # =========================================================
+
     for page in pages:
         data = replace_inside_html(
             data,
@@ -347,7 +359,7 @@ def main():
         )
 
     # =========================================================
-    # جایگزینی AHB باقی‌مانده در HTML
+    # جایگزینی AHB باقی‌مانده در HTML صفحات
     # =========================================================
 
     for page in pages:
@@ -376,17 +388,30 @@ def main():
         data = data[:start] + html + data[end:]
 
     # =========================================================
-    # نام برنامه
+    # حذف بنر سازنده از داشبورد و سابسکریپشن
+    # =========================================================
+
+    for page in (
+        "DASHBOARD_HTML",
+        "PUBLIC_SUB_HTML"
+    ):
+        data = remove_creator_banners(
+            data,
+            page
+        )
+
+    # =========================================================
+    # تنظیم نام برنامه
     # =========================================================
 
     data = replace_constant(
         data,
         "APP_NAME",
-        "آقای محمد پمپ‌نت پنل"
+        "POMP NET"
     )
 
     # =========================================================
-    # پشتیبانی رسمی POMP NET
+    # مشخصات پشتیبانی
     # =========================================================
 
     data = replace_constant(
@@ -443,44 +468,6 @@ def main():
     )
 
     # =========================================================
-    # حذف بنرهای قبلی از داشبورد و صفحه ساب
-    # هیچ بنر جدیدی اضافه نمی‌شود.
-    # =========================================================
-
-    banner_ids = (
-        "pompnet-brand-banner",
-        "pompnet-sub-brand-banner",
-    )
-
-    for page in ("DASHBOARD_HTML", "PUBLIC_SUB_HTML"):
-        block = get_html_block(data, page)
-
-        if not block:
-            raise RuntimeError(
-                f"ERROR: {page} پیدا نشد"
-            )
-
-        start_html, end_html, _ = block
-        html = data[start_html:end_html]
-
-        for banner_id in banner_ids:
-            banner_pattern = (
-                r'<div\b(?=[^>]*\bid=["\']'
-                + re.escape(banner_id)
-                + r'["\'])[^>]*>.*?</div\s*>'
-            )
-
-            html = re.sub(
-                banner_pattern,
-                '',
-                html,
-                count=1,
-                flags=re.I | re.S
-            )
-
-        data = data[:start_html] + html + data[end_html:]
-
-    # =========================================================
     # بررسی مسیر Subscription قبل از ذخیره
     # =========================================================
 
@@ -502,7 +489,7 @@ def main():
         )
 
     # =========================================================
-    # بررسی کد پایتون قبل از تغییر فایل اصلی
+    # بررسی نحو پایتون قبل از تغییر فایل اصلی
     # =========================================================
 
     with tempfile.TemporaryDirectory(
@@ -523,7 +510,7 @@ def main():
     check = data
 
     # =========================================================
-    # موارد ضروری
+    # بررسی موارد ضروری
     # =========================================================
 
     required = (
@@ -546,7 +533,7 @@ def main():
             )
 
     # =========================================================
-    # بررسی برند قدیمی در رابط کاربری
+    # بررسی باقی‌نماندن برند قدیمی در HTML
     # =========================================================
 
     forbidden = (
@@ -580,10 +567,18 @@ def main():
                 )
 
     # =========================================================
-    # بررسی نهایی حذف بنرهای سازنده
+    # بررسی حذف بنرهای سازنده
     # =========================================================
 
-    for page in ("DASHBOARD_HTML", "PUBLIC_SUB_HTML"):
+    banner_ids = (
+        "pompnet-brand-banner",
+        "pompnet-sub-brand-banner",
+    )
+
+    for page in (
+        "DASHBOARD_HTML",
+        "PUBLIC_SUB_HTML"
+    ):
         block = get_html_block(check, page)
 
         if not block:
@@ -595,7 +590,13 @@ def main():
         html = check[start_html:end_html]
 
         for banner_id in banner_ids:
-            if f'id="{banner_id}"' in html:
+            if re.search(
+                r'\bid=["\']'
+                + re.escape(banner_id)
+                + r'["\']',
+                html,
+                re.I
+            ):
                 raise RuntimeError(
                     f"BUILD CHECK FAILED: بنر {banner_id} "
                     f"در {page} باقی مانده است"
@@ -645,6 +646,7 @@ def main():
     print("APP NAME: UPDATED")
     print("SUPPORT: @NovaTunneli")
     print("BRANDING: POMP NET")
+    print("CREATOR BANNER: REMOVED")
     print("LOGIN HTML: CHECKED")
     print("DASHBOARD HTML: CHECKED")
     print("SUBSCRIPTION HTML: CHECKED")

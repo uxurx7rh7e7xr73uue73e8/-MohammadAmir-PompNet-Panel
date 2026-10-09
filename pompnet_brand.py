@@ -146,6 +146,8 @@ def inject_login_assets(data: str, login_css: str, login_js: str):
 
 
 def inject_banner(data: str, variable: str, element_id: str, text: str):
+    # این تابع برای سازگاری با ساختار قبلی نگه داشته شده است.
+    # در main() دیگر فراخوانی نمی‌شود و بنری اضافه نمی‌کند.
     block = get_html_block(data, variable)
 
     if not block:
@@ -175,13 +177,7 @@ def inject_banner(data: str, variable: str, element_id: str, text: str):
 
     if body_match:
         insert_at = body_match.end()
-
-        html = (
-            html[:insert_at]
-            + banner
-            + html[insert_at:]
-        )
-
+        html = html[:insert_at] + banner + html[insert_at:]
     else:
         main_match = re.search(
             r"<main\b",
@@ -302,85 +298,36 @@ def main():
     # =========================================================
 
     ui_replacements = {
-
-        "AHB PANEL":
-            "POMP NET",
-
-        "AHB Panel":
-            "POMP NET",
-
-        "AHBPanel":
-            "POMP NET",
-
-        "AHB panel":
-            "POMP NET",
-
-        "ای اچ بی پنل":
-            "آقای محمد پمپ‌نت پنل",
-
-        "Created By Ahb":
-            "Created By POMP NET",
-
-        "Created By AHB":
-            "Created By POMP NET",
-
-        "Created by AHB":
-            "Created by POMP NET",
-
-        "Created by Ahb":
-            "Created by POMP NET",
-
+        "AHB PANEL": "POMP NET",
+        "AHB Panel": "POMP NET",
+        "AHBPanel": "POMP NET",
+        "AHB panel": "POMP NET",
+        "ای اچ بی پنل": "آقای محمد پمپ‌نت پنل",
+        "Created By Ahb": "Created By POMP NET",
+        "Created By AHB": "Created By POMP NET",
+        "Created by AHB": "Created by POMP NET",
+        "Created by Ahb": "Created by POMP NET",
         "به پنل مدیریت AHB خوش آمدید":
             "به پنل مدیریت POMP NET خوش آمدید",
-
-        "درگاه عمومی AHB Panel":
-            "درگاه عمومی POMP NET",
-
+        "درگاه عمومی AHB Panel": "درگاه عمومی POMP NET",
         "این صفحه، درگاه عمومی AHB Panel است.":
             "این صفحه، درگاه عمومی POMP NET است.",
-
-        "AHB Panel · 14.3.0":
-            "POMP NET",
-
-        "خطای داخلی AHB Panel":
-            "خطای داخلی POMP NET",
-
-        "خطای داخلی AHB":
-            "خطای داخلی POMP NET",
-
-        "AHB Panel Error":
-            "POMP NET Error",
-
-        "https://t.me/ahb_panel":
-            "https://t.me/NovaTunneli",
-
-        "https://t.me/ahbpanel":
-            "https://t.me/NovaTunneli",
-
-        "https://t.me/ahbpanelgap":
-            "https://t.me/NovaTunneli",
-
-        "https://t.me/logictop12":
-            "https://t.me/NovaTunneli",
-
-        "@ahb_panel":
-            "@NovaTunneli",
-
-        "@ahbpanel":
-            "@NovaTunneli",
-
-        "@ahbpanelgap":
-            "@NovaTunneli",
-
-        "reymit.ir/moditor":
-            "@NovaTunneli",
-
+        "AHB Panel · 14.3.0": "POMP NET",
+        "خطای داخلی AHB Panel": "خطای داخلی POMP NET",
+        "خطای داخلی AHB": "خطای داخلی POMP NET",
+        "AHB Panel Error": "POMP NET Error",
+        "https://t.me/ahb_panel": "https://t.me/NovaTunneli",
+        "https://t.me/ahbpanel": "https://t.me/NovaTunneli",
+        "https://t.me/ahbpanelgap": "https://t.me/NovaTunneli",
+        "https://t.me/logictop12": "https://t.me/NovaTunneli",
+        "@ahb_panel": "@NovaTunneli",
+        "@ahbpanel": "@NovaTunneli",
+        "@ahbpanelgap": "@NovaTunneli",
+        "reymit.ir/moditor": "@NovaTunneli",
         "https://github.com/ahb-panel/ahb_panel":
             "https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel",
-
         "https://github.com/ahb-panell/ahb_panel":
             "https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel",
-
         "ahb-panel/ahb_panel":
             "uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel",
     }
@@ -404,7 +351,6 @@ def main():
     # =========================================================
 
     for page in pages:
-
         block = get_html_block(data, page)
 
         if not block:
@@ -427,11 +373,7 @@ def main():
             html
         )
 
-        data = (
-            data[:start]
-            + html
-            + data[end:]
-        )
+        data = data[:start] + html + data[end:]
 
     # =========================================================
     # نام برنامه
@@ -468,22 +410,10 @@ def main():
     )
 
     css_pages = (
-        (
-            "LANDING_HTML",
-            "pompnet-landing-css"
-        ),
-        (
-            "LOGIN_HTML",
-            "pompnet-main-login-css"
-        ),
-        (
-            "PUBLIC_SUB_HTML",
-            "pompnet-public-sub-css"
-        ),
-        (
-            "DASHBOARD_HTML",
-            "pompnet-dashboard-css"
-        ),
+        ("LANDING_HTML", "pompnet-landing-css"),
+        ("LOGIN_HTML", "pompnet-main-login-css"),
+        ("PUBLIC_SUB_HTML", "pompnet-public-sub-css"),
+        ("DASHBOARD_HTML", "pompnet-dashboard-css"),
     )
 
     for page, css_id in css_pages:
@@ -513,22 +443,42 @@ def main():
     )
 
     # =========================================================
-    # نشان برند POMP NET
+    # حذف بنرهای قبلی از داشبورد و صفحه ساب
+    # هیچ بنر جدیدی اضافه نمی‌شود.
     # =========================================================
 
-    data = inject_banner(
-        data,
-        "DASHBOARD_HTML",
+    banner_ids = (
         "pompnet-brand-banner",
-        "✦ کدنویسی شده توسط تیم پمپ‌نت • محمد و امیر ✦"
+        "pompnet-sub-brand-banner",
     )
 
-    data = inject_banner(
-        data,
-        "PUBLIC_SUB_HTML",
-        "pompnet-sub-brand-banner",
-        "✦ کدنویسی شده توسط تیم پمپ‌نت • محمد و امیر ✦"
-    )
+    for page in ("DASHBOARD_HTML", "PUBLIC_SUB_HTML"):
+        block = get_html_block(data, page)
+
+        if not block:
+            raise RuntimeError(
+                f"ERROR: {page} پیدا نشد"
+            )
+
+        start_html, end_html, _ = block
+        html = data[start_html:end_html]
+
+        for banner_id in banner_ids:
+            banner_pattern = (
+                r'<div\b(?=[^>]*\bid=["\']'
+                + re.escape(banner_id)
+                + r'["\'])[^>]*>.*?</div\s*>'
+            )
+
+            html = re.sub(
+                banner_pattern,
+                '',
+                html,
+                count=1,
+                flags=re.I | re.S
+            )
+
+        data = data[:start_html] + html + data[end_html:]
 
     # =========================================================
     # بررسی مسیر Subscription قبل از ذخیره
@@ -558,7 +508,6 @@ def main():
     with tempfile.TemporaryDirectory(
         prefix="pompnet-check-"
     ) as temp_dir:
-
         candidate = Path(temp_dir) / "main.py"
 
         candidate.write_text(
@@ -588,8 +537,6 @@ def main():
         'id="pompnet-dashboard-css"',
         'id="pompnet-login-css"',
         'id="pompnet-login-js"',
-        'id="pompnet-brand-banner"',
-        'id="pompnet-sub-brand-banner"',
     )
 
     for item in required:
@@ -615,11 +562,7 @@ def main():
     )
 
     for page in pages:
-
-        block = get_html_block(
-            check,
-            page
-        )
+        block = get_html_block(check, page)
 
         if not block:
             raise RuntimeError(
@@ -634,6 +577,28 @@ def main():
                 raise RuntimeError(
                     "BUILD CHECK FAILED: "
                     f"برند قدیمی در {page} باقی مانده: {item}"
+                )
+
+    # =========================================================
+    # بررسی نهایی حذف بنرهای سازنده
+    # =========================================================
+
+    for page in ("DASHBOARD_HTML", "PUBLIC_SUB_HTML"):
+        block = get_html_block(check, page)
+
+        if not block:
+            raise RuntimeError(
+                f"BUILD CHECK FAILED: {page} پیدا نشد"
+            )
+
+        start_html, end_html, _ = block
+        html = check[start_html:end_html]
+
+        for banner_id in banner_ids:
+            if f'id="{banner_id}"' in html:
+                raise RuntimeError(
+                    f"BUILD CHECK FAILED: بنر {banner_id} "
+                    f"در {page} باقی مانده است"
                 )
 
     # =========================================================

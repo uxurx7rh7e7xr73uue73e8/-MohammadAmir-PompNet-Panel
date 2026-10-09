@@ -1,443 +1,245 @@
 /* =========================================================
-   POMP NET — CRYSTAL GLASS UI V2
-   فقط ظاهر — بدون تغییر منطق، API، مسیرها یا قابلیت‌ها
+   POMP NET — RESPONSIVE LAYOUT PATCH
+   اصلاح عرض داشبورد و فضای خالی موبایل
+   سازگار با CRYSTAL GLASS UI V2
    ========================================================= */
 
-:root {
-    --pn-glass: rgba(20, 24, 46, .30);
-    --pn-glass-strong: rgba(20, 24, 46, .42);
-    --pn-glass-border: rgba(255, 255, 255, .13);
-
-    --pn-cyan: #28d7ff;
-    --pn-violet: #8b5cff;
-    --pn-pink: #ff4fc4;
-    --pn-blue: #3b9dff;
-}
-
-/* =========================================================
-   BACKGROUND
-   ========================================================= */
-
-html,
-body {
-    background: #050711 !important;
+/* جلوگیری از بزرگ‌شدن صفحه به‌دلیل محتوای داخلی */
+html {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
 }
 
 body {
-    background:
-        radial-gradient(
-            circle at 15% 18%,
-            rgba(139, 92, 255, .24) 0,
-            transparent 24%
-        ),
-        radial-gradient(
-            circle at 86% 14%,
-            rgba(40, 215, 255, .20) 0,
-            transparent 23%
-        ),
-        radial-gradient(
-            circle at 76% 78%,
-            rgba(255, 79, 196, .17) 0,
-            transparent 26%
-        ),
-        radial-gradient(
-            circle at 22% 88%,
-            rgba(59, 157, 255, .15) 0,
-            transparent 24%
-        ),
-        linear-gradient(
-            135deg,
-            #050711 0%,
-            #0b1023 48%,
-            #050711 100%
-        ) !important;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
 }
 
-/* =========================================================
-   رنگ‌های نورانی پس‌زمینه
-   ========================================================= */
-
-body::before {
-    width: 780px;
-    height: 780px;
-    top: -280px;
-    right: -260px;
-
-    background:
-        radial-gradient(
-            circle at 25% 25%,
-            rgba(40, 215, 255, .65) 0 5px,
-            transparent 9px
-        ),
-        radial-gradient(
-            circle at 60% 32%,
-            rgba(255, 79, 196, .58) 0 6px,
-            transparent 10px
-        ),
-        radial-gradient(
-            circle at 44% 62%,
-            rgba(139, 92, 255, .60) 0 5px,
-            transparent 9px
-        ),
-        linear-gradient(
-            28deg,
-            transparent 47%,
-            rgba(92, 116, 255, .13) 48%,
-            transparent 49%
-        ),
-        linear-gradient(
-            152deg,
-            transparent 49%,
-            rgba(255, 79, 196, .12) 50%,
-            transparent 51%
-        );
-
-    filter: blur(10px);
-    opacity: .85;
-
-    box-shadow:
-        0 0 90px rgba(139, 92, 255, .18);
+/* محاسبه صحیح اندازه عناصر */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-body::after {
-    width: 700px;
-    height: 700px;
-    bottom: -300px;
-    left: -250px;
-
-    background:
-        radial-gradient(
-            circle at 62% 28%,
-            rgba(255, 79, 196, .60) 0 6px,
-            transparent 10px
-        ),
-        radial-gradient(
-            circle at 35% 58%,
-            rgba(40, 215, 255, .55) 0 5px,
-            transparent 9px
-        ),
-        radial-gradient(
-            circle at 72% 72%,
-            rgba(139, 92, 255, .55) 0 5px,
-            transparent 9px
-        ),
-        linear-gradient(
-            20deg,
-            transparent 47%,
-            rgba(40, 215, 255, .12) 48%,
-            transparent 49%
-        ),
-        linear-gradient(
-            160deg,
-            transparent 49%,
-            rgba(139, 92, 255, .12) 50%,
-            transparent 51%
-        );
-
-    filter: blur(12px);
-    opacity: .72;
+/* جلوگیری از بیرون‌زدگی محتوای اصلی */
+main,
+main.container,
+.dashboard,
+.dashboard-container,
+.dashboard-content,
+.main-content,
+.content-wrapper,
+.page-content {
+    min-width: 0;
+    max-width: 100%;
 }
 
-/* =========================================================
-   CRYSTAL GLASS
-   ========================================================= */
-
+/* جلوگیری از بیرون‌زدگی کارت‌ها */
 .card,
 .panel,
 .box,
-.modal,
-.modal-content,
-.container-card,
 .dashboard-card,
 .stat-card,
 .user-card,
 .server-card,
 .settings-card,
 .form-card,
+.container-card {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+/* تصاویر و عناصر رسانه‌ای */
+img,
+svg,
+canvas,
+video,
+iframe {
+    max-width: 100%;
+}
+
+/* جدول‌های بزرگ */
 .table-container,
-header,
-nav,
-aside,
-footer {
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, .075),
-            rgba(255, 255, 255, .018)
-        ),
-        var(--pn-glass) !important;
-
-    border:
-        1px solid var(--pn-glass-border) !important;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .10),
-        inset 0 0 35px rgba(139, 92, 255, .035),
-        0 18px 55px rgba(0, 0, 0, .34),
-        0 0 35px rgba(92, 74, 255, .09) !important;
-
-    backdrop-filter:
-        blur(28px)
-        saturate(150%) !important;
-
-    -webkit-backdrop-filter:
-        blur(28px)
-        saturate(150%) !important;
+.table-responsive,
+.table-wrapper,
+.responsive-table {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
-/* =========================================================
-   HOVER
-   ========================================================= */
-
-.card:hover,
-.panel:hover,
-.box:hover,
-.dashboard-card:hover,
-.stat-card:hover,
-.user-card:hover,
-.server-card:hover {
-
-    border-color:
-        rgba(110, 205, 255, .28) !important;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .12),
-        0 20px 60px rgba(0, 0, 0, .38),
-        0 0 42px rgba(139, 92, 255, .14) !important;
-}
-
-/* =========================================================
-   POMP NET GLASS BRAND
-   ========================================================= */
-
+/* عنوان برند */
 #pompnet-brand-banner {
-
     position: relative;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    min-height: 46px;
-
-    padding: 8px 14px;
-
-    overflow: hidden;
-
-    background:
-        rgba(12, 16, 34, .26) !important;
-
-    border:
-        1px solid rgba(255, 255, 255, .14) !important;
-
-    border-radius: 16px !important;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .12),
-        0 0 32px rgba(139, 92, 255, .10) !important;
-
-    backdrop-filter:
-        blur(24px)
-        saturate(160%) !important;
-
-    -webkit-backdrop-filter:
-        blur(24px)
-        saturate(160%) !important;
+    z-index: 2;
+    max-width: 100%;
+    text-align: center;
 }
 
 /* =========================================================
-   علامت رنگی POMP NET
+   MOBILE — رفع فضای خالی سمت راست
    ========================================================= */
 
-#pompnet-brand-banner::before {
+@media screen and (max-width: 700px) {
 
-    content: "PN";
-
-    flex: 0 0 30px;
-
-    width: 30px;
-    height: 30px;
-
-    display: grid;
-
-    place-items: center;
-
-    border-radius: 10px;
-
-    font-size: 10px;
-
-    font-weight: 900;
-
-    letter-spacing: .5px;
-
-    color: #ffffff;
-
-    background:
-        linear-gradient(
-            135deg,
-            #22d3ee 0%,
-            #7c3aed 48%,
-            #ec4899 100%
-        );
-
-    box-shadow:
-        0 0 12px rgba(34, 211, 238, .55),
-        0 0 25px rgba(124, 58, 237, .38),
-        0 0 38px rgba(236, 72, 153, .20);
-}
-
-/* =========================================================
-   نور متحرک روی شیشه
-   ========================================================= */
-
-#pompnet-brand-banner::after {
-
-    content: "";
-
-    position: absolute;
-
-    inset: -45%;
-
-    background:
-        linear-gradient(
-            110deg,
-            transparent 42%,
-            rgba(255, 255, 255, .10) 50%,
-            transparent 58%
-        );
-
-    transform:
-        translateX(-35%);
-
-    animation:
-        pnGlassShine
-        5s
-        ease-in-out
-        infinite;
-
-    pointer-events: none;
-}
-
-#pompnet-brand-banner
-.pompnet-banner-text {
-
-    position: relative;
-
-    z-index: 1;
-
-    color: #f6f3ff !important;
-
-    text-shadow:
-        0 0 14px
-        rgba(139, 92, 255, .35);
-}
-
-/* =========================================================
-   BUTTONS
-   ========================================================= */
-
-button,
-.btn,
-.button,
-input[type="submit"],
-input[type="button"] {
-
-    border-color:
-        rgba(255, 255, 255, .14) !important;
-
-    box-shadow:
-        0 10px 28px rgba(91, 37, 190, .22),
-        inset 0 1px rgba(255, 255, 255, .10) !important;
-}
-
-/* =========================================================
-   INPUTS
-   ========================================================= */
-
-input,
-textarea,
-select {
-
-    background:
-        rgba(7, 10, 22, .34) !important;
-
-    border-color:
-        rgba(255, 255, 255, .12) !important;
-
-    backdrop-filter:
-        blur(18px) !important;
-
-    -webkit-backdrop-filter:
-        blur(18px) !important;
-}
-
-/* =========================================================
-   TABLE
-   ========================================================= */
-
-thead {
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(139, 92, 255, .12),
-            rgba(40, 215, 255, .08)
-        ) !important;
-}
-
-tbody tr:hover {
-
-    background:
-        rgba(139, 92, 255, .07) !important;
-}
-
-/* =========================================================
-   GLASS SHINE ANIMATION
-   ========================================================= */
-
-@keyframes pnGlassShine {
-
-    0%,
-    35% {
-        transform:
-            translateX(-55%);
+    html,
+    body {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        overflow-x: hidden;
     }
 
-    65%,
-    100% {
-        transform:
-            translateX(55%);
+    /*
+     * پوسته‌های متداول برنامه.
+     * عرض کامل صفحه بدون تغییر مسیرها و منطق پنل.
+     */
+    body > #app,
+    body > .app,
+    body > .wrapper,
+    body > .layout,
+    body > .app-container,
+    body > .main-wrapper {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
     }
-}
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
+    main,
+    main.container,
+    .dashboard,
+    .dashboard-container,
+    .dashboard-content,
+    .main-content,
+    .content-wrapper,
+    .page-content {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+    }
 
-@media (max-width: 700px) {
+    /*
+     * منوی کناری مستقل باقی بماند.
+     * موقعیت و رفتار باز و بسته‌شدن آن حفظ شود.
+     */
+    aside,
+    .sidebar,
+    #sidebar,
+    .sidebar-menu,
+    .dashboard-sidebar {
+        min-width: 0;
+        flex-shrink: 0;
+    }
 
+    /*
+     * کارت‌ها در عرض موبایل جا بگیرند.
+     */
+    .card,
+    .panel,
+    .box,
+    .dashboard-card,
+    .stat-card,
+    .user-card,
+    .server-card,
+    .settings-card,
+    .form-card,
+    .container-card {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    /*
+     * حفظ ظاهر شیشه‌ای عنوان POMP NET
+     */
     #pompnet-brand-banner {
-
+        width: 100%;
+        max-width: 100%;
         min-height: 42px;
-
         padding: 7px 10px;
-
+        margin-bottom: 12px;
         gap: 8px;
     }
 
     #pompnet-brand-banner::before {
-
         width: 27px;
-
         height: 27px;
-
         flex-basis: 27px;
-
         border-radius: 9px;
+    }
+
+    /* جدول‌ها */
+    table {
+        max-width: 100%;
+        font-size: 12px;
+    }
+
+    /* دکمه‌ها */
+    button,
+    .btn,
+    .button,
+    input[type="submit"],
+    input[type="button"] {
+        max-width: 100%;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    /* ورودی‌ها */
+    input,
+    textarea,
+    select {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    /* جلوگیری از ایجاد عرض اضافی توسط تزئینات */
+    body::before,
+    body::after {
+        pointer-events: none;
+    }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media screen and (min-width: 701px) and (max-width: 1100px) {
+
+    .dashboard,
+    .dashboard-container,
+    .dashboard-content,
+    .main-content,
+    .content-wrapper,
+    .page-content {
+        min-width: 0;
+        max-width: 100%;
+    }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+    }
+
+    #pompnet-brand-banner::after {
+        animation: none !important;
     }
 }

@@ -1,16 +1,33 @@
 /* =========================================================
-   POMP NET — RESPONSIVE LAYOUT PATCH
-   اصلاح عرض داشبورد و فضای خالی موبایل
-   سازگار با CRYSTAL GLASS UI V2
+   POMP NET — RESPONSIVE GLASS UI
+   اصلاح اندازه داشبورد و حذف استایل بنر سازنده
+   بدون تغییر API و مسیرهای برنامه
    ========================================================= */
 
-/* جلوگیری از بزرگ‌شدن صفحه به‌دلیل محتوای داخلی */
+:root {
+    --pn-glass: rgba(20, 24, 46, .30);
+    --pn-glass-strong: rgba(20, 24, 46, .42);
+    --pn-glass-border: rgba(255, 255, 255, .12);
+    --pn-purple: #8b35ff;
+    --pn-blue: #168cff;
+    --pn-pink: #ff3dbb;
+    --pn-background: #050509;
+}
+
+/* اندازه‌گیری صحیح عناصر */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* جلوگیری از بزرگ‌شدن صفحه در عرض */
 html {
     width: 100%;
     min-width: 0;
     max-width: 100%;
     min-height: 100%;
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 body {
@@ -19,17 +36,10 @@ body {
     max-width: 100%;
     min-height: 100vh;
     margin: 0;
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
-/* محاسبه صحیح اندازه عناصر */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-/* جلوگیری از بیرون‌زدگی محتوای اصلی */
+/* جلوگیری از بیرون‌زدگی داشبورد */
 main,
 main.container,
 .dashboard,
@@ -42,7 +52,7 @@ main.container,
     max-width: 100%;
 }
 
-/* جلوگیری از بیرون‌زدگی کارت‌ها */
+/* کارت‌ها */
 .card,
 .panel,
 .box,
@@ -58,7 +68,7 @@ main.container,
     overflow-wrap: anywhere;
 }
 
-/* تصاویر و عناصر رسانه‌ای */
+/* عناصر رسانه‌ای */
 img,
 svg,
 canvas,
@@ -79,32 +89,19 @@ iframe {
     -webkit-overflow-scrolling: touch;
 }
 
-/* عنوان برند */
-#pompnet-brand-banner {
-    position: relative;
-    z-index: 2;
-    max-width: 100%;
-    text-align: center;
-}
-
 /* =========================================================
-   MOBILE — رفع فضای خالی سمت راست
+   MOBILE
    ========================================================= */
 
 @media screen and (max-width: 700px) {
-
     html,
     body {
         width: 100%;
         min-width: 0;
         max-width: 100%;
-        overflow-x: hidden;
+        overflow-x: clip;
     }
 
-    /*
-     * پوسته‌های متداول برنامه.
-     * عرض کامل صفحه بدون تغییر مسیرها و منطق پنل.
-     */
     body > #app,
     body > .app,
     body > .wrapper,
@@ -124,14 +121,13 @@ iframe {
     .main-content,
     .content-wrapper,
     .page-content {
-        width: 100%;
         min-width: 0;
         max-width: 100%;
     }
 
     /*
-     * منوی کناری مستقل باقی بماند.
-     * موقعیت و رفتار باز و بسته‌شدن آن حفظ شود.
+     * منو و سایدبار مستقل می‌مانند.
+     * رفتار باز و بسته‌شدن منو را تغییر نمی‌دهیم.
      */
     aside,
     .sidebar,
@@ -142,9 +138,6 @@ iframe {
         flex-shrink: 0;
     }
 
-    /*
-     * کارت‌ها در عرض موبایل جا بگیرند.
-     */
     .card,
     .panel,
     .box,
@@ -159,26 +152,7 @@ iframe {
         max-width: 100%;
     }
 
-    /*
-     * حفظ ظاهر شیشه‌ای عنوان POMP NET
-     */
-    #pompnet-brand-banner {
-        width: 100%;
-        max-width: 100%;
-        min-height: 42px;
-        padding: 7px 10px;
-        margin-bottom: 12px;
-        gap: 8px;
-    }
-
-    #pompnet-brand-banner::before {
-        width: 27px;
-        height: 27px;
-        flex-basis: 27px;
-        border-radius: 9px;
-    }
-
-    /* جدول‌ها */
+    /* جدول‌ها در موبایل اسکرول افقی داشته باشند */
     table {
         max-width: 100%;
         font-size: 12px;
@@ -195,7 +169,7 @@ iframe {
         overflow-wrap: anywhere;
     }
 
-    /* ورودی‌ها */
+    /* فیلدهای فرم */
     input,
     textarea,
     select {
@@ -203,10 +177,12 @@ iframe {
         min-width: 0;
     }
 
-    /* جلوگیری از ایجاد عرض اضافی توسط تزئینات */
-    body::before,
-    body::after {
-        pointer-events: none;
+    /* جلوگیری از بیرون‌زدگی محتوای فلکس و گرید */
+    .row,
+    [class*="grid"],
+    [class*="flex"] {
+        min-width: 0;
+        max-width: 100%;
     }
 }
 
@@ -215,7 +191,6 @@ iframe {
    ========================================================= */
 
 @media screen and (min-width: 701px) and (max-width: 1100px) {
-
     .dashboard,
     .dashboard-container,
     .dashboard-content,
@@ -232,14 +207,12 @@ iframe {
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-
     *,
     *::before,
     *::after {
         scroll-behavior: auto !important;
-    }
-
-    #pompnet-brand-banner::after {
-        animation: none !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
     }
 }

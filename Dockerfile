@@ -8,18 +8,18 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PIP_NO_CACHE_DIR=1
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 ENV PYTHONHASHSEED=random
 
 ENV PORT=8080
 ENV DATA_DIR=/data
 
-# ورود مالک، طبق درخواست
+# اطلاعات ورود مدیر
+# برای استقرار عمومی، رمز را در Variables ریلیوی تغییر بده.
 ENV ADMIN_USERNAME=admin
 ENV ADMIN_PASSWORD=admin
 
-# کلیدهای امنیتی را به مقدار ثابت و ساختگی تبدیل نکن.
-# هسته اصلی باید بتواند کلید خود را تولید و مدیریت کند.
-
+# تنظیمات امنیتی موجود
 ENV POMPNET_MAX_WS_CONNECTIONS=256
 ENV POMPNET_WS_HANDSHAKE_LIMIT=60
 ENV POMPNET_WS_HANDSHAKE_WINDOW=60
@@ -39,7 +39,7 @@ RUN apt-get update \
 
 # ============================================================
 # ORIGINAL PANEL CORE
-# دریافت نسخه مشخص هسته اصلی
+# هسته اصلی حفظ می‌شود؛ نام داخلی مخزن را تغییر نده.
 # ============================================================
 
 RUN git clone \
@@ -73,7 +73,7 @@ RUN arch="$(uname -m)" \
     && rm -rf /tmp/xray /tmp/xray.zip
 
 # ============================================================
-# POMP NET BRANDING
+# POMP NET BRANDING FILES
 # ============================================================
 
 COPY pompnet.css /app/pompnet.css
@@ -114,6 +114,8 @@ RUN test -f /app/main.py \
     && test -f /app/pompnet_runtime.py \
     && test -f /app/app_wrapper.py \
     && test -f /app/requirements.txt \
+    && test -f /tmp/pompnet_login.css \
+    && test -f /tmp/pompnet_login.js \
     && test -f /tmp/pompnet_brand.py \
     && test -f /tmp/pompnet_brand_fix.py \
     && test -f /tmp/pompnet_login_patch.py \

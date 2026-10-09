@@ -48,7 +48,6 @@ def get_sub_route(data: str):
     )
 
     match = pattern.search(data)
-
     return match.group(0) if match else None
 
 
@@ -56,9 +55,7 @@ def replace_inside_html(data: str, variable: str, replacements: dict):
     block = get_html_block(data, variable)
 
     if not block:
-        raise RuntimeError(
-            f"ERROR: {variable} پیدا نشد"
-        )
+        raise RuntimeError(f"ERROR: {variable} پیدا نشد")
 
     start, end, _ = block
     html = data[start:end]
@@ -73,32 +70,25 @@ def inject_css(data: str, variable: str, css: str, css_id: str):
     block = get_html_block(data, variable)
 
     if not block:
-        raise RuntimeError(
-            f"ERROR: {variable} پیدا نشد"
-        )
+        raise RuntimeError(f"ERROR: {variable} پیدا نشد")
 
     start, end, _ = block
     html = data[start:end]
 
-    if f'id="{css_id}"' in html:
+    if re.search(
+        r'<style\b[^>]*\bid=["\']'
+        + re.escape(css_id)
+        + r'["\']',
+        html,
+        re.I,
+    ):
         return data
 
     if "</head>" not in html:
-        raise RuntimeError(
-            f"ERROR: </head> داخل {variable} پیدا نشد"
-        )
+        raise RuntimeError(f"ERROR: </head> داخل {variable} پیدا نشد")
 
-    tag = (
-        f'<style id="{css_id}">\n'
-        f'{css}\n'
-        f'</style>\n'
-    )
-
-    html = html.replace(
-        "</head>",
-        tag + "</head>",
-        1
-    )
+    tag = f'<style id="{css_id}">\n{css}\n</style>\n'
+    html = html.replace("</head>", tag + "</head>", 1)
 
     return data[:start] + html + data[end:]
 
@@ -107,39 +97,33 @@ def inject_login_assets(data: str, login_css: str, login_js: str):
     block = get_html_block(data, "LOGIN_HTML")
 
     if not block:
-        raise RuntimeError(
-            "ERROR: LOGIN_HTML پیدا نشد"
-        )
+        raise RuntimeError("ERROR: LOGIN_HTML پیدا نشد")
 
     start, end, _ = block
     html = data[start:end]
 
     if 'id="pompnet-login-css"' not in html:
         if "</head>" not in html:
-            raise RuntimeError(
-                "ERROR: </head> داخل LOGIN_HTML پیدا نشد"
-            )
+            raise RuntimeError("ERROR: </head> داخل LOGIN_HTML پیدا نشد")
 
         html = html.replace(
             "</head>",
             '<style id="pompnet-login-css">\n'
             + login_css
             + "\n</style>\n</head>",
-            1
+            1,
         )
 
     if 'id="pompnet-login-js"' not in html:
         if "</body>" not in html:
-            raise RuntimeError(
-                "ERROR: </body> داخل LOGIN_HTML پیدا نشد"
-            )
+            raise RuntimeError("ERROR: </body> داخل LOGIN_HTML پیدا نشد")
 
         html = html.replace(
             "</body>",
             '<script id="pompnet-login-js">\n'
             + login_js
             + "\n</script>\n</body>",
-            1
+            1,
         )
 
     return data[:start] + html + data[end:]
@@ -148,30 +132,24 @@ def inject_login_assets(data: str, login_css: str, login_js: str):
 def replace_constant(data: str, name: str, value: str):
     pattern = re.compile(
         rf'^{re.escape(name)}\s*=\s*["\'][^"\']*["\']',
-        re.M
+        re.M,
     )
 
     updated, count = pattern.subn(
         f'{name} = "{value}"',
         data,
-        count=1
+        count=1,
     )
 
     if count != 1:
         raise RuntimeError(
-            f"ERROR: مقدار {name} پیدا نشد؛ "
-            "برای جلوگیری از تغییر اشتباه، عملیات متوقف شد."
+            f"ERROR: مقدار {name} پیدا نشد؛ عملیات متوقف شد."
         )
 
     return updated
 
 
 def atomic_write(path: Path, content: str):
-    """
-    ابتدا فایل موقت می‌سازد و سپس با os.replace
-    فایل نهایی را به‌صورت اتمیک جایگزین می‌کند.
-    """
-
     temp_path = None
 
     try:
@@ -182,18 +160,14 @@ def atomic_write(path: Path, content: str):
             dir=str(path.parent),
             prefix=f".{path.name}.",
             suffix=".tmp",
-            delete=False
+            delete=False,
         ) as temp_file:
             temp_path = Path(temp_file.name)
-
             temp_file.write(content)
             temp_file.flush()
             os.fsync(temp_file.fileno())
 
-        os.replace(
-            str(temp_path),
-            str(path)
-        )
+        os.replace(str(temp_path), str(path))
 
     finally:
         if temp_path is not None and temp_path.exists():
@@ -201,94 +175,154 @@ def atomic_write(path: Path, content: str):
 
 
 def remove_creator_banners(data: str, variable: str):
-    """
-    حذف بنرهای شناخته‌شدهٔ سازنده از HTML صفحه.
-    فقط عناصر دارای شناسه‌های مشخص‌شده حذف می‌شوند.
-    """
+    """حذف متن سازنده و بنرهای مشخص‌شده، فقط از HTML صفحه موردنظر."""
 
     block = get_html_block(data, variable)
 
     if not block:
-        raise RuntimeError(
-            f"ERROR: {variable} پیدا نشد"
-        )
+        raise RuntimeError(f"ERROR: {variable} پیدا نشد")
 
     start, end, _ = block
     html = data[start:end]
 
-    banner_ids = (
+    # حذف دقیق متن، حتی اگر فاصله‌ها یا نوع نیم‌فاصله فرق داشته باشد.
+    credit_patterns = [
+        r'✦\s*کدنویسی\s*شده\s*توسط\s*تیم\s*پمپ[\s‌]*نت'
+        r'\s*[•·\-–—]?\s*محمد\s*و\s*امیر\s*✦?',
+        r'کدنویسی\s*شده\s*توسط\s*تیم\s*پمپ[\s‌]*نت'
+        r'\s*[•·\-–—]?\s*محمد\s*و\s*امیر',
+        r'کدنویسی\s*شده\s*توسط\s*تیم\s*پمپ[\s‌]*نت',
+        r'کدنویسی\s*شده\s*توسط\s*پمپ[\s‌]*نت',
+        r'Created\s+By\s+POMP\s+NET',
+        r'Coded\s+by\s+POMP\s+NET(?:\s+team)?',
+    ]
+
+    for pattern in credit_patterns:
+        html = re.sub(
+            pattern,
+            "",
+            html,
+            flags=re.I,
+        )
+
+    # حذف بنرهای مشخص، بدون دست‌زدن به بقیه عناصر صفحه.
+    for banner_id in (
         "pompnet-brand-banner",
         "pompnet-sub-brand-banner",
-    )
-
-    for banner_id in banner_ids:
+    ):
         pattern = (
-            r'<div\b(?=[^>]*\bid=["\']'
+            r'<([a-z][a-z0-9]*)\b'
+            r'(?=[^>]*\bid=["\']'
             + re.escape(banner_id)
-            + r'["\'])[^>]*>.*?</div\s*>'
+            + r'["\'])[^>]*>.*?</\1\s*>'
         )
 
         html = re.sub(
             pattern,
             "",
             html,
-            flags=re.I | re.S
+            count=1,
+            flags=re.I | re.S,
         )
 
     return data[:start] + html + data[end:]
 
 
+def fix_dashboard_layout(css: str) -> str:
+    """افزودن اصلاحات واکنش‌گرا به CSS داشبورد."""
+
+    marker = "/* POMP NET DASHBOARD RESPONSIVE FIX */"
+
+    if marker in css:
+        return css
+
+    layout_css = r"""
+
+/* POMP NET DASHBOARD RESPONSIVE FIX */
+html,
+body {
+    max-width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+}
+
+table {
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .dashboard,
+    .dashboard-container,
+    .dashboard-content,
+    .main-content,
+    .content-wrapper,
+    .container {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .dashboard,
+    .dashboard-container,
+    .dashboard-content,
+    .main-content,
+    .content-wrapper {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+        max-width: 100%;
+    }
+}
+"""
+    return css.rstrip() + "\n\n" + marker + "\n" + layout_css
+
+
 def main():
-
-    # =========================================================
-    # بررسی فایل‌های موردنیاز
-    # =========================================================
-
-    for path in (
-        MAIN,
-        CSS,
-        LOGIN_CSS,
-        LOGIN_JS
-    ):
+    for path in (MAIN, CSS, LOGIN_CSS, LOGIN_JS):
         if not path.exists():
-            raise RuntimeError(
-                f"ERROR: فایل موردنیاز پیدا نشد: {path}"
-            )
+            raise RuntimeError(f"ERROR: فایل موردنیاز پیدا نشد: {path}")
 
-    original_data = MAIN.read_text(
-        encoding="utf-8"
-    )
-
+    original_data = MAIN.read_text(encoding="utf-8")
     data = original_data
 
-    # =========================================================
-    # حفاظت از مسیر Subscription
-    # =========================================================
-
+    # محافظت از مسیر Subscription
     sub_before = get_sub_route(original_data)
 
     if not sub_before:
-        raise RuntimeError(
-            "ERROR: مسیر واقعی /sub/{uuid} پیدا نشد"
-        )
+        raise RuntimeError("ERROR: مسیر واقعی /sub/{uuid} پیدا نشد")
 
     sub_hash_before = hashlib.sha256(
         sub_before.encode("utf-8")
     ).hexdigest()
 
-    # =========================================================
-    # برند POMP NET و اصلاح رابط کاربری
-    # =========================================================
-
     ui_replacements = {
-        # برند قدیمی
         "AHB PANEL": "POMP NET",
         "AHB Panel": "POMP NET",
         "AHBPanel": "POMP NET",
         "AHB panel": "POMP NET",
         "ای اچ بی پنل": "POMP NET",
 
-        # حذف متن سازنده
         "✦ کدنویسی شده توسط تیم پمپ‌نت • محمد و امیر ✦": "",
         "کدنویسی شده توسط تیم پمپ‌نت • محمد و امیر": "",
         "کدنویسی شده توسط تیم پمپ نت • محمد و امیر": "",
@@ -304,22 +338,16 @@ def main():
         "coded by POMP NET team": "",
         "Coded by POMP NET": "",
 
-        # متن‌های رابط کاربری
         "به پنل مدیریت AHB خوش آمدید":
             "به پنل مدیریت POMP NET خوش آمدید",
-
-        "درگاه عمومی AHB Panel":
-            "درگاه عمومی POMP NET",
-
+        "درگاه عمومی AHB Panel": "درگاه عمومی POMP NET",
         "این صفحه، درگاه عمومی AHB Panel است.":
             "این صفحه، درگاه عمومی POMP NET است.",
-
         "AHB Panel · 14.3.0": "POMP NET",
         "خطای داخلی AHB Panel": "خطای داخلی POMP NET",
         "خطای داخلی AHB": "خطای داخلی POMP NET",
         "AHB Panel Error": "POMP NET Error",
 
-        # لینک‌ها و نام‌های قدیمی
         "https://t.me/ahb_panel": "https://t.me/NovaTunneli",
         "https://t.me/ahbpanel": "https://t.me/NovaTunneli",
         "https://t.me/ahbpanelgap": "https://t.me/NovaTunneli",
@@ -329,13 +357,10 @@ def main():
         "@ahbpanelgap": "@NovaTunneli",
         "reymit.ir/moditor": "@NovaTunneli",
 
-        # لینک مخزن
         "https://github.com/ahb-panel/ahb_panel":
             "https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel",
-
         "https://github.com/ahb-panell/ahb_panel":
             "https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel",
-
         "ahb-panel/ahb_panel":
             "uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel",
     }
@@ -344,96 +369,52 @@ def main():
         "LANDING_HTML",
         "LOGIN_HTML",
         "PUBLIC_SUB_HTML",
-        "DASHBOARD_HTML"
+        "DASHBOARD_HTML",
     )
 
-    # =========================================================
-    # اعمال تغییرات فقط در HTML صفحات شناخته‌شده
-    # =========================================================
-
     for page in pages:
-        data = replace_inside_html(
-            data,
-            page,
-            ui_replacements
-        )
+        data = replace_inside_html(data, page, ui_replacements)
 
-    # =========================================================
-    # جایگزینی AHB باقی‌مانده در HTML صفحات
-    # =========================================================
-
+    # جایگزینی برند قدیمی فقط در HTML صفحات شناخته‌شده
     for page in pages:
         block = get_html_block(data, page)
 
         if not block:
-            raise RuntimeError(
-                f"ERROR: {page} پیدا نشد"
-            )
+            raise RuntimeError(f"ERROR: {page} پیدا نشد")
 
         start, end, _ = block
         html = data[start:end]
 
         html = re.sub(
-            r"(?<![A-Za-z0-9_])AHB(?![A-Za-z0-9_])",
-            "POMP NET",
-            html
-        )
-
-        html = re.sub(
             r"(?<![A-Za-z0-9_])AHBPanel(?![A-Za-z0-9_])",
             "POMP NET",
-            html
+            html,
+        )
+        html = re.sub(
+            r"(?<![A-Za-z0-9_])AHB(?![A-Za-z0-9_])",
+            "POMP NET",
+            html,
         )
 
         data = data[:start] + html + data[end:]
 
-    # =========================================================
-    # حذف بنر سازنده از داشبورد و سابسکریپشن
-    # =========================================================
+    # حذف متن سازنده از داشبورد و صفحه سابسکریپشن
+    for page in ("DASHBOARD_HTML", "PUBLIC_SUB_HTML"):
+        data = remove_creator_banners(data, page)
 
-    for page in (
-        "DASHBOARD_HTML",
-        "PUBLIC_SUB_HTML"
-    ):
-        data = remove_creator_banners(
-            data,
-            page
-        )
-
-    # =========================================================
-    # تنظیم نام برنامه
-    # =========================================================
-
-    data = replace_constant(
-        data,
-        "APP_NAME",
-        "POMP NET"
-    )
-
-    # =========================================================
-    # مشخصات پشتیبانی
-    # =========================================================
-
-    data = replace_constant(
-        data,
-        "SUPPORT_USERNAME",
-        "@NovaTunneli"
-    )
-
+    data = replace_constant(data, "APP_NAME", "POMP NET")
+    data = replace_constant(data, "SUPPORT_USERNAME", "@NovaTunneli")
     data = replace_constant(
         data,
         "SUPPORT_URL",
-        "https://t.me/NovaTunneli"
+        "https://t.me/NovaTunneli",
     )
 
-    # =========================================================
-    # اضافه‌کردن CSS به صفحات موجود
-    # =========================================================
+    # خواندن و اصلاح CSS
+    css = CSS.read_text(encoding="utf-8")
+    css = fix_dashboard_layout(css)
 
-    css = CSS.read_text(
-        encoding="utf-8"
-    )
-
+    # درج CSS اصلاح‌شده در صفحات HTML
     css_pages = (
         ("LANDING_HTML", "pompnet-landing-css"),
         ("LOGIN_HTML", "pompnet-main-login-css"),
@@ -442,41 +423,18 @@ def main():
     )
 
     for page, css_id in css_pages:
-        data = inject_css(
-            data,
-            page,
-            css,
-            css_id
-        )
+        data = inject_css(data, page, css, css_id)
 
-    # =========================================================
-    # فایل‌های CSS و JavaScript صفحه ورود
-    # =========================================================
+    login_css = LOGIN_CSS.read_text(encoding="utf-8")
+    login_js = LOGIN_JS.read_text(encoding="utf-8")
 
-    login_css = LOGIN_CSS.read_text(
-        encoding="utf-8"
-    )
+    data = inject_login_assets(data, login_css, login_js)
 
-    login_js = LOGIN_JS.read_text(
-        encoding="utf-8"
-    )
-
-    data = inject_login_assets(
-        data,
-        login_css,
-        login_js
-    )
-
-    # =========================================================
-    # بررسی مسیر Subscription قبل از ذخیره
-    # =========================================================
-
+    # بررسی عدم تغییر مسیر سابسکریپشن
     sub_after = get_sub_route(data)
 
     if not sub_after:
-        raise RuntimeError(
-            "BUILD CHECK FAILED: مسیر /sub/{uuid} حذف شده است"
-        )
+        raise RuntimeError("BUILD CHECK FAILED: مسیر Subscription حذف شده است")
 
     sub_hash_after = hashlib.sha256(
         sub_after.encode("utf-8")
@@ -484,34 +442,14 @@ def main():
 
     if sub_hash_before != sub_hash_after:
         raise RuntimeError(
-            "BUILD CHECK FAILED: "
-            "مسیر /sub/{uuid} تغییر کرده است"
+            "BUILD CHECK FAILED: مسیر Subscription تغییر کرده است"
         )
 
-    # =========================================================
-    # بررسی نحو پایتون قبل از تغییر فایل اصلی
-    # =========================================================
-
-    with tempfile.TemporaryDirectory(
-        prefix="pompnet-check-"
-    ) as temp_dir:
+    # بررسی سینتکس Python پیش از ذخیره
+    with tempfile.TemporaryDirectory(prefix="pompnet-check-") as temp_dir:
         candidate = Path(temp_dir) / "main.py"
-
-        candidate.write_text(
-            data,
-            encoding="utf-8"
-        )
-
-        py_compile.compile(
-            str(candidate),
-            doraise=True
-        )
-
-    check = data
-
-    # =========================================================
-    # بررسی موارد ضروری
-    # =========================================================
+        candidate.write_text(data, encoding="utf-8")
+        py_compile.compile(str(candidate), doraise=True)
 
     required = (
         "/sub/{uuid}",
@@ -527,15 +465,12 @@ def main():
     )
 
     for item in required:
-        if item not in check:
+        if item not in data:
             raise RuntimeError(
                 f"BUILD CHECK FAILED: مورد ضروری پیدا نشد: {item}"
             )
 
-    # =========================================================
-    # بررسی باقی‌نماندن برند قدیمی در HTML
-    # =========================================================
-
+    # بررسی متن سازنده و برند قدیمی در صفحات
     forbidden = (
         "AHB PANEL",
         "AHB Panel",
@@ -546,79 +481,44 @@ def main():
         "https://t.me/ahbpanel",
         "https://t.me/logictop12",
         "ahb-panel/ahb_panel",
+        "کدنویسی شده توسط تیم پمپ‌نت",
+        "کدنویسی شده توسط تیم پمپ نت",
+        "محمد و امیر",
     )
 
     for page in pages:
-        block = get_html_block(check, page)
+        block = get_html_block(data, page)
 
         if not block:
-            raise RuntimeError(
-                f"BUILD CHECK FAILED: {page} پیدا نشد"
-            )
+            raise RuntimeError(f"BUILD CHECK FAILED: {page} پیدا نشد")
 
         start, end, _ = block
-        html = check[start:end]
+        html = data[start:end]
 
         for item in forbidden:
             if item in html:
                 raise RuntimeError(
-                    "BUILD CHECK FAILED: "
-                    f"برند قدیمی در {page} باقی مانده: {item}"
+                    f"BUILD CHECK FAILED: عبارت ناخواسته در {page}: {item}"
                 )
 
-    # =========================================================
-    # بررسی حذف بنرهای سازنده
-    # =========================================================
+    # ذخیره CSS با پشتیبان ویرایش‌نشده
+    css_backup = CSS.with_suffix(".css.before-pompnet-fix.bak")
 
-    banner_ids = (
-        "pompnet-brand-banner",
-        "pompnet-sub-brand-banner",
-    )
+    if not css_backup.exists():
+        atomic_write(css_backup, CSS.read_text(encoding="utf-8"))
 
-    for page in (
-        "DASHBOARD_HTML",
-        "PUBLIC_SUB_HTML"
-    ):
-        block = get_html_block(check, page)
+    atomic_write(CSS, css)
 
-        if not block:
-            raise RuntimeError(
-                f"BUILD CHECK FAILED: {page} پیدا نشد"
-            )
+    # ذخیره main.py فقط پس از عبور از بررسی‌ها
+    main_backup = MAIN.with_suffix(".py.before-pompnet-brand.bak")
 
-        start_html, end_html, _ = block
-        html = check[start_html:end_html]
+    if not main_backup.exists():
+        atomic_write(main_backup, original_data)
 
-        for banner_id in banner_ids:
-            if re.search(
-                r'\bid=["\']'
-                + re.escape(banner_id)
-                + r'["\']',
-                html,
-                re.I
-            ):
-                raise RuntimeError(
-                    f"BUILD CHECK FAILED: بنر {banner_id} "
-                    f"در {page} باقی مانده است"
-                )
+    atomic_write(MAIN, data)
 
-    # =========================================================
-    # ذخیره فقط پس از عبور از بررسی‌ها
-    # =========================================================
-
-    atomic_write(
-        MAIN,
-        check
-    )
-
-    # =========================================================
-    # بررسی فایل ذخیره‌شده
-    # =========================================================
-
-    saved_data = MAIN.read_text(
-        encoding="utf-8"
-    )
-
+    # بررسی مجدد فایل ذخیره‌شده
+    saved_data = MAIN.read_text(encoding="utf-8")
     saved_sub = get_sub_route(saved_data)
 
     if not saved_sub:
@@ -632,26 +532,17 @@ def main():
 
     if saved_hash != sub_hash_before:
         raise RuntimeError(
-            "POST-WRITE CHECK FAILED: "
-            "هش مسیر Subscription تغییر کرده است"
+            "POST-WRITE CHECK FAILED: هش مسیر Subscription تغییر کرده است"
         )
-
-    # =========================================================
-    # نتیجه
-    # =========================================================
 
     print("=" * 60)
     print("POMP NET BUILD CHECK: OK")
     print("PYTHON SYNTAX: OK")
-    print("APP NAME: UPDATED")
+    print("DASHBOARD CREATOR TEXT: REMOVED")
+    print("DASHBOARD RESPONSIVE CSS: ADDED")
     print("SUPPORT: @NovaTunneli")
-    print("BRANDING: POMP NET")
-    print("CREATOR BANNER: REMOVED")
-    print("LOGIN HTML: CHECKED")
-    print("DASHBOARD HTML: CHECKED")
-    print("SUBSCRIPTION HTML: CHECKED")
     print("SUBSCRIPTION ROUTE: PRESERVED")
-    print("ATOMIC FILE WRITE: OK")
+    print("BACKUPS: CREATED IF NOT ALREADY PRESENT")
     print("=" * 60)
 
 

@@ -12,15 +12,22 @@ ENV PYTHONHASHSEED=random
 
 ENV PORT=8080
 ENV DATA_DIR=/app/data
-ENV ADMIN_USERNAME=admin
 
-# رمزها و کلیدهای امنیتی را در Railway Variables تنظیم کن.
-# هیچ رمز ثابت مدیریتی در Image قرار نمی‌گیرد.
+# ورود مالک، طبق درخواست
+ENV ADMIN_USERNAME=admin
+ENV ADMIN_PASSWORD=admin
+
+# کلیدهای امنیتی را به مقدار ثابت و ساختگی تبدیل نکن.
+# هسته اصلی باید بتواند کلید خود را تولید و مدیریت کند.
 
 ENV POMPNET_MAX_WS_CONNECTIONS=256
 ENV POMPNET_WS_HANDSHAKE_LIMIT=60
 ENV POMPNET_WS_HANDSHAKE_WINDOW=60
 ENV POMPNET_HSTS=1
+
+# ============================================================
+# SYSTEM PACKAGES
+# ============================================================
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -30,7 +37,11 @@ RUN apt-get update \
        unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# دریافت نسخه مشخص‌شده هسته اصلی پنل
+# ============================================================
+# ORIGINAL PANEL CORE
+# دریافت نسخه مشخص هسته اصلی
+# ============================================================
+
 RUN git clone \
       https://github.com/uxurx7rh7e7xr73uue73e8/ahbpanel.git \
       /tmp/ahb-core \
@@ -40,7 +51,10 @@ RUN git clone \
     && rm -rf /tmp/ahb-core \
     && test -f /app/main.py
 
-# نصب Xray
+# ============================================================
+# XRAY CORE
+# ============================================================
+
 RUN arch="$(uname -m)" \
     && case "$arch" in \
         x86_64) XRAY_ARCH="64" ;; \
@@ -58,7 +72,10 @@ RUN arch="$(uname -m)" \
     && /usr/local/bin/xray version \
     && rm -rf /tmp/xray /tmp/xray.zip
 
-# فایل‌های برند POMP NET
+# ============================================================
+# POMP NET BRANDING
+# ============================================================
+
 COPY pompnet.css /app/pompnet.css
 COPY pompnet_login.css /tmp/pompnet_login.css
 COPY pompnet_login.js /tmp/pompnet_login.js
@@ -66,25 +83,36 @@ COPY pompnet_login.js /tmp/pompnet_login.js
 COPY pompnet_brand.py /tmp/pompnet_brand.py
 COPY pompnet_brand_fix.py /tmp/pompnet_brand_fix.py
 
+# ============================================================
+# EXISTING APPLICATION MODULES
+# ============================================================
+
 COPY pompnet_security.py /app/pompnet_security.py
 COPY pompnet_xray.py /app/pompnet_xray.py
 COPY xray_manager.py /app/xray_manager.py
 COPY pompnet_runtime.py /app/pompnet_runtime.py
 COPY app_wrapper.py /app/app_wrapper.py
+
 COPY requirements.txt /app/requirements.txt
 
-# اصلاح ورود
+# ============================================================
+# LOGIN PATCHES
+# ============================================================
+
 COPY pompnet_login_patch.py /tmp/pompnet_login_patch.py
 COPY pompnet_login_credit.py /tmp/pompnet_login_credit.py
 
-# بررسی وجود فایل‌های ضروری
+# ============================================================
+# REQUIRED FILE CHECK
+# ============================================================
+
 RUN test -f /app/main.py \
+    && test -f /app/pompnet.css \
     && test -f /app/pompnet_security.py \
     && test -f /app/pompnet_xray.py \
     && test -f /app/xray_manager.py \
     && test -f /app/pompnet_runtime.py \
     && test -f /app/app_wrapper.py \
-    && test -f /app/pompnet.css \
     && test -f /app/requirements.txt \
     && test -f /tmp/pompnet_brand.py \
     && test -f /tmp/pompnet_brand_fix.py \
@@ -92,21 +120,36 @@ RUN test -f /app/main.py \
     && test -f /tmp/pompnet_login_credit.py \
     && /usr/local/bin/xray version
 
-# اصلاح ظاهر بدون حذف مسیرهای اصلی پنل
+# ============================================================
+# APPLY POMP NET BRANDING
+# ============================================================
+
 RUN python /tmp/pompnet_brand.py \
     && python /tmp/pompnet_brand_fix.py
 
-# اصلاح ورود واقعی
+# ============================================================
+# APPLY OWNER LOGIN PATCH
+# ============================================================
+
 RUN python /tmp/pompnet_login_patch.py
 
-# اعتبار برند در صفحه ورود
+# ============================================================
+# LOGIN BRAND CREDIT
+# ============================================================
+
 RUN python /tmp/pompnet_login_credit.py
 
-# وابستگی‌ها
+# ============================================================
+# INSTALL DEPENDENCIES
+# ============================================================
+
 RUN python -m pip install --upgrade pip \
     && python -m pip install --no-cache-dir -r /app/requirements.txt
 
-# بررسی نحو فایل‌های Python
+# ============================================================
+# PYTHON SYNTAX CHECK
+# ============================================================
+
 RUN python -m py_compile \
     /app/main.py \
     /app/pompnet_security.py \
@@ -119,7 +162,10 @@ RUN python -m py_compile \
     /tmp/pompnet_login_patch.py \
     /tmp/pompnet_login_credit.py
 
-# اجرای برنامه با کاربر غیر root
+# ============================================================
+# NON-ROOT USER
+# ============================================================
+
 RUN useradd \
       --system \
       --uid 10001 \

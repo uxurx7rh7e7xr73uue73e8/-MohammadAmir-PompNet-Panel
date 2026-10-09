@@ -1,7 +1,7 @@
 /* =========================================================
    POMP NET — RESPONSIVE GLASS UI
-   اصلاح اندازه داشبورد و حذف استایل بنر سازنده
-   بدون تغییر API و مسیرهای برنامه
+   Dashboard layout + mobile fixes
+   No API, route, menu, or JavaScript changes
    ========================================================= */
 
 :root {
@@ -12,47 +12,124 @@
     --pn-blue: #168cff;
     --pn-pink: #ff3dbb;
     --pn-background: #050509;
+
+    --pn-text: #f5f5ff;
+    --pn-text-muted: #aaaac4;
+    --pn-radius: 16px;
+    --pn-card-padding: 18px;
+    --pn-content-gap: 16px;
 }
 
-/* اندازه‌گیری صحیح عناصر */
+/* =========================================================
+   GLOBAL RESET
+   ========================================================= */
+
 *,
 *::before,
 *::after {
     box-sizing: border-box;
 }
 
-/* جلوگیری از بزرگ‌شدن صفحه در عرض */
 html {
     width: 100%;
-    min-width: 0;
     max-width: 100%;
+    min-width: 0;
     min-height: 100%;
     overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 body {
     width: 100%;
-    min-width: 0;
     max-width: 100%;
+    min-width: 0;
     min-height: 100vh;
     margin: 0;
     overflow-x: clip;
+    background-color: var(--pn-background);
+    color: var(--pn-text);
 }
 
-/* جلوگیری از بیرون‌زدگی داشبورد */
+img,
+svg,
+canvas,
+video,
+iframe {
+    max-width: 100%;
+}
+
+img,
+video,
+iframe {
+    height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+    max-width: 100%;
+}
+
+a {
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   LAYOUT WIDTH
+   ========================================================= */
+
 main,
 main.container,
+#app,
+.app,
+.wrapper,
+.layout,
+.app-container,
+.main-wrapper,
 .dashboard,
 .dashboard-container,
 .dashboard-content,
 .main-content,
 .content-wrapper,
-.page-content {
+.page-content,
+.content,
+.content-area {
     min-width: 0;
     max-width: 100%;
 }
 
-/* کارت‌ها */
+/* اجازه کوچک‌شدن فرزندان در Flex و Grid */
+main,
+.dashboard,
+.dashboard-container,
+.dashboard-content,
+.main-content,
+.content-wrapper,
+.page-content,
+.content,
+.content-area {
+    overflow-wrap: anywhere;
+}
+
+.row,
+[class*="grid"],
+[class*="flex"] {
+    min-width: 0;
+}
+
+/* =========================================================
+   GLASS CARDS
+   ========================================================= */
+
 .card,
 .panel,
 .box,
@@ -66,31 +143,185 @@ main.container,
     min-width: 0;
     max-width: 100%;
     overflow-wrap: anywhere;
+    border-color: var(--pn-glass-border);
 }
 
-/* عناصر رسانه‌ای */
-img,
-svg,
-canvas,
-video,
-iframe {
+/* ظاهر شیشه‌ای فقط برای کارت‌هایی که پس‌زمینه ندارند */
+.dashboard-card,
+.stat-card,
+.user-card,
+.server-card,
+.settings-card,
+.form-card,
+.container-card {
+    background-color: var(--pn-glass);
+    border: 1px solid var(--pn-glass-border);
+    border-radius: var(--pn-radius);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+/* جلوگیری از کشیده‌شدن متن‌های طولانی */
+.card *,
+.panel *,
+.box *,
+.dashboard-card *,
+.stat-card *,
+.user-card *,
+.server-card *,
+.settings-card *,
+.form-card *,
+.container-card * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   DASHBOARD CONTENT
+   ========================================================= */
+
+.dashboard,
+.dashboard-container,
+.dashboard-content,
+.main-content,
+.content-wrapper,
+.page-content {
+    width: 100%;
+    margin-inline: auto;
+}
+
+.dashboard-content,
+.main-content,
+.content-wrapper,
+.page-content {
+    padding: var(--pn-card-padding);
+}
+
+.dashboard .card,
+.dashboard-container .card,
+.dashboard-content .card,
+.main-content .card {
+    margin-bottom: var(--pn-content-gap);
+}
+
+/* =========================================================
+   SIDEBAR AND MENU
+   Preserve existing menu behavior
+   ========================================================= */
+
+aside,
+.sidebar,
+#sidebar,
+.sidebar-menu,
+.dashboard-sidebar {
+    box-sizing: border-box;
+    min-width: 0;
     max-width: 100%;
 }
 
-/* جدول‌های بزرگ */
+/* از تغییر اجباری position و display منو خودداری می‌کنیم */
+.sidebar,
+#sidebar,
+.sidebar-menu,
+.dashboard-sidebar {
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
 .table-container,
 .table-responsive,
 .table-wrapper,
 .responsive-table {
+    display: block;
     width: 100%;
     max-width: 100%;
     min-width: 0;
     overflow-x: auto;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
 }
 
+table {
+    max-width: 100%;
+    border-collapse: collapse;
+}
+
+.table-responsive table,
+.table-container table,
+.table-wrapper table,
+.responsive-table table {
+    width: 100%;
+}
+
+th,
+td {
+    overflow-wrap: anywhere;
+}
+
 /* =========================================================
-   MOBILE
+   FORMS
+   ========================================================= */
+
+form {
+    min-width: 0;
+    max-width: 100%;
+}
+
+input,
+textarea,
+select {
+    min-width: 0;
+    max-width: 100%;
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+button,
+.btn,
+.button,
+input[type="submit"],
+input[type="button"] {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+button,
+.btn,
+.button {
+    cursor: pointer;
+}
+
+/* =========================================================
+   BRAND COLORS
+   ========================================================= */
+
+:focus-visible {
+    outline: 2px solid var(--pn-blue);
+    outline-offset: 3px;
+}
+
+::selection {
+    background: rgba(139, 53, 255, .35);
+    color: #ffffff;
+}
+
+/* =========================================================
+   MOBILE — MAX 700px
    ========================================================= */
 
 @media screen and (max-width: 700px) {
@@ -120,22 +351,25 @@ iframe {
     .dashboard-content,
     .main-content,
     .content-wrapper,
-    .page-content {
+    .page-content,
+    .content,
+    .content-area {
+        width: 100%;
         min-width: 0;
         max-width: 100%;
     }
 
-    /*
-     * منو و سایدبار مستقل می‌مانند.
-     * رفتار باز و بسته‌شدن منو را تغییر نمی‌دهیم.
-     */
-    aside,
-    .sidebar,
-    #sidebar,
-    .sidebar-menu,
-    .dashboard-sidebar {
-        min-width: 0;
-        flex-shrink: 0;
+    .dashboard-content,
+    .main-content,
+    .content-wrapper,
+    .page-content {
+        padding: 12px;
+    }
+
+    :root {
+        --pn-card-padding: 12px;
+        --pn-content-gap: 12px;
+        --pn-radius: 13px;
     }
 
     .card,
@@ -152,13 +386,23 @@ iframe {
         max-width: 100%;
     }
 
-    /* جدول‌ها در موبایل اسکرول افقی داشته باشند */
+    /* منو و سایدبار مستقل می‌مانند */
+    aside,
+    .sidebar,
+    #sidebar,
+    .sidebar-menu,
+    .dashboard-sidebar {
+        min-width: 0;
+        flex-shrink: 0;
+    }
+
+    /* جدول‌ها اسکرول افقی داشته باشند */
     table {
         max-width: 100%;
         font-size: 12px;
     }
 
-    /* دکمه‌ها */
+    /* دکمه‌ها در صفحه کوچک از کادر بیرون نزنند */
     button,
     .btn,
     .button,
@@ -173,21 +417,23 @@ iframe {
     input,
     textarea,
     select {
-        max-width: 100%;
         min-width: 0;
+        max-width: 100%;
     }
 
-    /* جلوگیری از بیرون‌زدگی محتوای فلکس و گرید */
-    .row,
-    [class*="grid"],
-    [class*="flex"] {
-        min-width: 0;
-        max-width: 100%;
+    /* کارت‌های آماری در صورت استفاده از Grid */
+    .stats-grid,
+    .dashboard-grid,
+    .cards-grid {
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(min(100%, 140px), 1fr)
+        );
     }
 }
 
 /* =========================================================
-   TABLET
+   TABLET — 701px TO 1100px
    ========================================================= */
 
 @media screen and (min-width: 701px) and (max-width: 1100px) {
@@ -199,6 +445,37 @@ iframe {
     .page-content {
         min-width: 0;
         max-width: 100%;
+    }
+
+    .dashboard-content,
+    .main-content,
+    .content-wrapper,
+    .page-content {
+        padding: 16px;
+    }
+
+    .card,
+    .panel,
+    .box,
+    .dashboard-card,
+    .stat-card,
+    .user-card,
+    .server-card {
+        min-width: 0;
+        max-width: 100%;
+    }
+}
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media screen and (min-width: 1101px) {
+    .dashboard-content,
+    .main-content,
+    .content-wrapper,
+    .page-content {
+        min-width: 0;
     }
 }
 

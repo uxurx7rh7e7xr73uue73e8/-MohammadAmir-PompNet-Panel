@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: -mohammadamir-pompnet-panel
+  labels:
+    app.kubernetes.io/name: -mohammadamir-pompnet-panel
+  annotations:
+    ankra.io/generated: "true"
+    cert-manager.io/cluster-issuer: ${{ ankra.ingress_tls_issuer }}
+spec:
+  ingressClassName: ${{ ankra.ingress_class }}
+  tls:
+    - hosts:
+        - ${{ ankra.ingress_host }}
+      secretName: -mohammadamir-pompnet-panel-tls
+  rules:
+    - host: ${{ ankra.ingress_host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: -mohammadamir-pompnet-panel
+                port:
+                  number: 80

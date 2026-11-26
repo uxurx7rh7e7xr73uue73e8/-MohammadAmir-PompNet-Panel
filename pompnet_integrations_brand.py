@@ -79,7 +79,7 @@ def patch_bot():
         f"از منوی زیر یک بخش را انتخاب کنید:"
     )
 '''
-        source, count = welcome_pattern.subn(welcome.rstrip(), source, count=1)
+        source, count = welcome_pattern.subn(lambda _match: welcome.rstrip(), source, count=1)
         if count != 1:
             raise SystemExit("SAFE STOP: Telegram welcome function did not match exactly once")
 

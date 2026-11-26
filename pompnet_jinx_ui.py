@@ -148,7 +148,11 @@ def main():
         raise SystemExit("SAFE STOP: unique subscription info insertion point did not match exactly once")
     block = block.replace(data_anchor, data_replacement, 1)
 
-    config_section = '''  <div class="pn-config-toolbar"><span>کانفیگ‌های واقعی این اشتراک</span><button type="button" class="pn-config-btn pn-copy-all" data-config="{all_config_attr}" onclick="copyConfig(this)">کپی همه</button></div>
+    config_section = '''  <div class="pn-subscription-live">
+    <div><strong>اشتراک زندهٔ POMP NET</strong><small>دریافت مستقیم از مسیر اصلی /sub/{uid}؛ خروجی هستهٔ فعال، نه دادهٔ نمونه</small></div>
+    <a class="pn-config-btn pn-sub-download" href="{sub_e}" target="_blank" rel="noopener">دریافت اشتراک واقعی ↗</a>
+  </div>
+  <div class="pn-config-toolbar"><span>کانفیگ‌های ساخته‌شده از اطلاعات همین کاربر</span><button type="button" class="pn-config-btn pn-copy-all" data-config="{all_config_attr}" onclick="copyConfig(this)">کپی همه</button></div>
   <div class="pn-config-list">{config_cards_html}</div>
 '''
     profile_anchor = '  <section class="card section">\n    <div class="section-title"><h2>پروفایل اتصال واقعی</h2>'
@@ -176,6 +180,13 @@ def main():
 .pn-config-btn{{border:1px solid rgba(139,53,255,.28);border-radius:11px;padding:9px 12px;background:rgba(139,53,255,.12);color:#e9dcff;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer}}
 .pn-config-btn:hover{{background:rgba(139,53,255,.22)}}
 .pn-copy-all{{white-space:nowrap}}
+.pn-subscription-live{{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 16px;padding:15px;border:1px solid rgba(22,140,255,.28);border-radius:17px;background:linear-gradient(110deg,rgba(22,140,255,.10),rgba(139,53,255,.10)),rgba(5,5,12,.78)}}
+.pn-subscription-live>div{{display:grid;gap:5px;min-width:0}}
+.pn-subscription-live strong{{color:#f5f0ff;font-size:12px}}
+.pn-subscription-live small{{color:#a99cbd;font-size:10px;line-height:1.8}}
+.pn-sub-download{{white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(100deg,#168cff,#8b35ff);border:0}}
+@media(max-width:520px){{.pn-subscription-live{{align-items:stretch;flex-direction:column}}.pn-sub-download{{width:100%}}}}
+
 @media(max-width:430px){{.pn-config-row{{gap:7px;padding:9px}}.pn-config-index{{flex-basis:29px;height:31px}}.pn-config-main strong{{font-size:10px}}.pn-config-btn{{padding:8px 9px;font-size:9px}}}}
 
 

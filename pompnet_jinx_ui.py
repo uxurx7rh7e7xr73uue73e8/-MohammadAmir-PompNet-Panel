@@ -57,7 +57,7 @@ def main():
     replacements = {
         'snapshot.get("label", "AHB Panel")': 'snapshot.get("label", "POMP NET MOHAMMAD")',
         '<title>{label} | AHB PANEL</title>': '<title>{label} | POMP NET MOHAMMAD — SUPER JINX</title>',
-        '<div class="brand-mark">AHB</div>': '<div class="brand-mark">POMP</div>',
+        '<div class="brand-mark">AHB</div>': '<div class="brand-mark">PJ</div>',
         '<div class="brand-name">PANEL</div>': '<div class="brand-name">NET · SUPER JINX</div>',
         '<div class="brand-sub">اتصال سریع، بدون محدودیت</div>': '<div class="brand-sub">POMP NET MOHAMMAD</div>',
         '<h1>طرح ویژه</h1>': '<h1>اشتراک SUPER JINX</h1>',
@@ -89,7 +89,78 @@ def main():
     if section_count != 1:
         raise SystemExit("SAFE STOP: demo server cards were not found exactly once")
 
+    # Build cards from the same generator and parameters as the real /sub endpoint.
+    data_anchor = '    unique_ips = len(unique_ips_for_uuid(uid))\\n\\n    info_html = f"""'
+    data_replacement = '''    unique_ips = len(unique_ips_for_uuid(uid))
+
+    config_count = max(1, min(40, int(snapshot.get("config_count") or 1)))
+    clean_ips = snapshot.get("clean_ips") or []
+    if clean_ips:
+        config_hosts = list(clean_ips)
+        while len(config_hosts) < config_count:
+            config_hosts.extend(clean_ips)
+        config_hosts = config_hosts[:config_count]
+    else:
+        config_hosts = [host] * config_count
+
+    config_items = []
+    for index, config_host in enumerate(config_hosts, start=1):
+        config_name = f"POMP-NET-MOHAMMAD-SUPER-JINX-{index:02d}"
+        config_value = generate_vless_link(
+            uid, config_host, remark=config_name,
+            protocol=snapshot.get("protocol", DEFAULT_PROTOCOL),
+            fingerprint=snapshot.get("fingerprint", DEFAULT_FINGERPRINT),
+            alpn=snapshot.get("alpn"), port=snapshot.get("port", DEFAULT_PORT),
+        )
+        config_items.append((config_name, config_value))
+
+    config_cards_html = "".join(
+        f'<article class="pn-config-row"><div class="pn-config-index">{index:02d}</div>'
+        f'<div class="pn-config-main"><strong>{escape_html(name)}</strong>'
+        f'<small>{protocol} · {escape_html(str(snapshot.get("port", DEFAULT_PORT)))}</small></div>'
+        f'<div class="pn-config-actions">'
+        f'<button type="button" class="pn-config-btn" data-config="{escape_html(value)}" onclick="copyConfig(this)">کپی</button>'
+        f'<button type="button" class="pn-config-btn" data-config="{escape_html(value)}" onclick="openConfigQr(this.dataset.config)">QR</button>'
+        f'</div></article>'
+        for index, (name, value) in enumerate(config_items, start=1)
+    )
+    all_config_attr = escape_html("\\n".join(value for _, value in config_items))
+
+    info_html = f"""'''
+    if block.count(data_anchor) != 1:
+        raise SystemExit("SAFE STOP: unique subscription info insertion point did not match exactly once")
+    block = block.replace(data_anchor, data_replacement, 1)
+
+    config_section = '''  <div class="pn-config-toolbar"><span>کانفیگ‌های واقعی این اشتراک</span><button type="button" class="pn-config-btn pn-copy-all" data-config="{all_config_attr}" onclick="copyConfig(this)">کپی همه</button></div>
+  <div class="pn-config-list">{config_cards_html}</div>
+'''
+    profile_anchor = '  <section class="card section">\\n    <div class="section-title"><h2>پروفایل اتصال واقعی</h2>'
+    if block.count(profile_anchor) != 1:
+        raise SystemExit("SAFE STOP: connection profile insertion point did not match exactly once")
+    block = block.replace(profile_anchor, config_section + profile_anchor, 1)
+
+    qr_old = "function makeQr(id){{const box=document.getElementById(id);if(!box)return;box.innerHTML='';try{{const qr=qrcode(0,'L');qr.addData(vlessUrl);qr.make();box.innerHTML=qr.createImgTag(5,8)}}catch(e){{box.textContent='QR unavailable'}}}}"
+    qr_new = "function makeQr(id,value=vlessUrl){{const box=document.getElementById(id);if(!box)return;box.innerHTML='';try{{const qr=qrcode(0,'L');qr.addData(value);qr.make();box.innerHTML=qr.createImgTag(5,8)}}catch(e){{box.textContent='QR unavailable'}}}}\\nfunction openConfigQr(value){{document.getElementById('modal').classList.add('show');makeQr('qr-modal',value)}}\\nfunction copyConfig(btn){{const value=btn.dataset.config||'';if(!value)return;const done=()=>{{const old=btn.textContent;btn.textContent='✓ کپی شد';setTimeout(()=>btn.textContent=old,1400)}};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(value).then(done).catch(()=>fallback(value,done));else fallback(value,done)}}"
+    if block.count(qr_old) != 1:
+        raise SystemExit("SAFE STOP: original QR helper did not match exactly once")
+    block = block.replace(qr_old, qr_new, 1)
+
     theme_css = r"""
+
+/* POMP NET SUPER JINX REAL CONFIG LIST */
+.pn-config-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;color:#b8accb;font-size:11px}
+.pn-config-list{display:grid;gap:9px}
+.pn-config-row{display:flex;align-items:center;gap:11px;min-width:0;padding:12px;border:1px solid rgba(139,53,255,.20);border-radius:16px;background:linear-gradient(110deg,rgba(139,53,255,.09),rgba(22,140,255,.045)),rgba(5,5,12,.72)}
+.pn-config-index{flex:0 0 34px;height:34px;display:grid;place-items:center;border-radius:11px;background:rgba(139,53,255,.14);color:#b98cff;font-weight:900}
+.pn-config-main{flex:1;min-width:0;display:grid;gap:4px}
+.pn-config-main strong{font-size:12px;overflow-wrap:anywhere;color:#f5f0ff}
+.pn-config-main small{font-size:9px;color:#a99cbd;direction:ltr;text-align:right}
+.pn-config-actions{display:flex;gap:6px}
+.pn-config-btn{border:1px solid rgba(139,53,255,.28);border-radius:11px;padding:9px 12px;background:rgba(139,53,255,.12);color:#e9dcff;font:700 10px inherit;cursor:pointer}
+.pn-config-btn:hover{background:rgba(139,53,255,.22)}
+.pn-copy-all{white-space:nowrap}
+@media(max-width:430px){.pn-config-row{gap:7px;padding:9px}.pn-config-index{flex-basis:29px;height:31px}.pn-config-main strong{font-size:10px}.pn-config-btn{padding:8px 9px;font-size:9px}}
+
 /* POMP NET SUPER JINX INFO PAGE */
 :root{{--bg:#050509;--card:rgba(17,12,31,.94);--card2:rgba(20,13,37,.88);--line:rgba(139,53,255,.24);--text:#f7f4ff;--muted:#a99cbd;--blue:#168cff;--purple:#8b35ff;--pink:#8b35ff;--green:#16e6a0}}
 body{{background:radial-gradient(900px 500px at 8% -10%,rgba(139,53,255,.20),transparent 58%),radial-gradient(700px 500px at 100% 12%,rgba(22,140,255,.14),transparent 58%),#050509}}

@@ -736,3 +736,45 @@ body { padding:0 !important; }
 #pompnet-super-jinx-banner p{max-width:680px;font-size:12px}
 @media(max-width:700px){#pompnet-super-jinx-banner{min-height:0;padding:12px;gap:10px}#pompnet-super-jinx-banner .pn-jinx-mark{flex-basis:88px;width:88px;height:52px;border-radius:12px;padding:2px}#pompnet-super-jinx-banner .pn-jinx-mark img{border-radius:10px}#pompnet-super-jinx-banner strong{font-size:11px}#pompnet-super-jinx-banner small{font-size:10px}#pompnet-super-jinx-banner p{font-size:9px;line-height:1.7}}
 @media(max-width:390px){#pompnet-super-jinx-banner .pn-jinx-mark{flex-basis:68px;width:68px;height:44px}#pompnet-super-jinx-banner{gap:8px}}
+
+
+/* POMP NET MOHAMMAD × SUPER JINX — MOBILE DRAWER RECOVERY */
+:root{--pn-background:#050509}
+body,.sidebar,.sidebar.open,.mob-bar{background-color:#050509!important}
+.sidebar{background:#050509!important;border-color:rgba(139,53,255,.22)!important}
+.sidebar .nav-item{color:#c8c2d8!important}
+.sidebar .nav-item:hover,.sidebar .nav-item.on{color:#fff!important;background:linear-gradient(100deg,rgba(139,53,255,.18),rgba(22,140,255,.10))!important}
+.sidebar .sb-logo{border-bottom:1px solid rgba(139,53,255,.2)!important}
+.sidebar .sb-foot{background:#050509!important;border-top:1px solid rgba(139,53,255,.2)!important}
+.sidebar .sb-foot button,.sidebar .sb-foot a.btn{background:#0b0a12!important;border-color:rgba(139,53,255,.22)!important;color:#d8d1e8!important}
+.pompnet-joint-credit{display:block;margin-top:5px;color:#b98cff!important;font-size:10px!important;font-weight:800!important;letter-spacing:.8px!important;text-align:inherit!important;text-shadow:0 0 14px rgba(139,53,255,.3)}
+@media(max-width:900px){
+  .sidebar,.sidebar.collapsed,.sidebar.open,.sidebar.collapsed.open{
+    width:min(86vw,340px)!important;
+    max-width:calc(100vw - 24px)!important;
+    background:#050509!important;
+    border-left:1px solid rgba(139,53,255,.3)!important;
+    box-shadow:-24px 0 70px rgba(0,0,0,.72),0 0 28px rgba(139,53,255,.12)!important;
+  }
+  .sidebar.open .sb-logo-text,.sidebar.open .nav-label,.sidebar.open .nav-sec,.sidebar.open .sb-foot span,
+  .sidebar.collapsed.open .sb-logo-text,.sidebar.collapsed.open .nav-label,.sidebar.collapsed.open .nav-sec,.sidebar.collapsed.open .sb-foot span{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  .sidebar.open .sb-logo,.sidebar.collapsed.open .sb-logo{justify-content:flex-start!important;padding:18px 16px!important}
+  .sidebar.open .nav-item,.sidebar.collapsed.open .nav-item{
+    display:flex!important;justify-content:flex-start!important;align-items:center!important;
+    gap:12px!important;padding:12px 15px!important;margin:4px 10px!important;
+    width:calc(100% - 20px)!important;text-align:right!important;
+  }
+  .sidebar.open .nav-item svg,.sidebar.collapsed.open .nav-item svg{margin:0!important;flex:0 0 20px!important}
+  .sidebar.open .nav-sec,.sidebar.collapsed.open .nav-sec{padding:13px 18px 6px!important;color:#8f82a8!important}
+  .sidebar.open .sb-foot,.sidebar.collapsed.open .sb-foot{display:flex!important;padding:12px!important;background:#050509!important}
+  .sidebar.open .sb-foot button,.sidebar.open .sb-foot a.btn,
+  .sidebar.collapsed.open .sb-foot button,.sidebar.collapsed.open .sb-foot a.btn{
+    justify-content:center!important;gap:9px!important;padding:12px!important;
+  }
+  .sidebar.open .sb-foot span,.sidebar.collapsed.open .sb-foot span{display:inline!important}
+  .overlay{background:rgba(0,0,0,.62)!important;backdrop-filter:blur(2px)!important}
+}

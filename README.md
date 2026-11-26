@@ -1,604 +1,110 @@
 # POMP NET MOHAMMAD — SUPER JINX
 
-# 🚀 POMP NET
+<div align="center">
 
-## POMP NET MOHAMMAD — SUPER JINX
+**پنل مدیریت و اشتراک POMP NET**
 
-### POMP NET MOHAMMAD — SUPER JINX
+قدرت ساخت، آزادی انتخاب، کنترل در دستان تو
 
-پنل اختصاصی POMP NET با حفظ هسته و قابلیت‌های اصلی پنل.
+[کانال رسمی](https://t.me/pompnet) · [پشتیبانی](https://t.me/NovaTunneli) · [گروه](https://t.me/PompNett)
 
-هدف پروژه:
-
-- حفظ قابلیت‌های اصلی پنل
-- تغییر کامل برند و مشخصات به POMP NET
-- حفظ Subscription
-- حفظ VLESS
-- حفظ مدیریت کاربران
-- حفظ ترافیک و تاریخ انقضا
-- آماده‌سازی برای Deploy روی Railway
-- بدون ساخت پنل فیک
+</div>
 
 ---
 
-# 👑 BRAND
+## معرفی
 
-## POMP NET
+این مخزن لایهٔ بسته‌بندی، برندینگ و تنظیمات اجرایی POMP NET را روی نسخهٔ ثابت هستهٔ پنل قرار می‌دهد. هسته در زمان ساخت Docker از یک commit مشخص دریافت می‌شود؛ بنابراین این مخزن به‌تنهایی کپی کامل سورس هسته نیست.
 
-### POMP NET MOHAMMAD — SUPER JINX
+## وضعیت قابلیت‌ها
 
-### POMP NET MOHAMMAD — SUPER JINX
+| بخش | وضعیت فعلی |
+|---|---|
+| ورود و پوستهٔ برند POMP NET / SUPER JINX | وصلهٔ برندینگ در زمان Build |
+| داشبورد اصلی مدیریت | داشبورد واقعی هسته؛ مسیر `/dashboard` |
+| پیش‌نمایش POMP NET | مسیر `/pompnet-preview`؛ فقط‌خواندنی و آماری |
+| اشتراک | مسیر اصلی `/sub/{uuid}` حفظ شده |
+| صفحهٔ JINX PASS | `/pass/{uid}` و مسیر قبلی `/info/{uid}` |
+| ربات و اطلاعیه | وصلهٔ متون نمایشی و نام پیش‌فرض کانفیگ |
+| Xray سفارشی | ماژول جانبی؛ وضعیت واقعی فقط پس از اجرای محیط بررسی می‌شود |
+| ادغام SuperJinX و MarzbanUpdate | ادغام کامل کد/قابلیت‌ها هنوز انجام‌شده یا تأییدشده نیست |
 
----
+**مهم:** پیش‌نمایش `/pompnet-preview` داشبورد مدیریتی نیست و عملیات ساخت/ویرایش/حذف انجام نمی‌دهد. برای مدیریت واقعی از داشبورد اصلی هسته استفاده کنید. آمار پیش‌نمایش از حافظهٔ همان پردازش خوانده می‌شود و ممکن است با چند replica یا پس از restart تغییر کند.
 
-## 🚀 POMP NET
+## مسیرها
 
-Channel:
+- `/login` — ورود
+- `/dashboard` — داشبورد اصلی مدیریت هسته
+- `/pompnet-preview` — پیش‌نمایش آماری فقط‌خواندنی
+- `/sub/{uuid}` — خروجی Subscription اصلی
+- `/pass/{uid}` — صفحهٔ اشتراک SUPER JINX
+- `/info/{uid}` — مسیر سازگاری صفحهٔ قبلی
+- `/health` — سلامت سرویس
+- `/api/pompnet/xray` — وضعیت Xray با توکن اختصاصی `POMPNET_STATUS_TOKEN`
 
-https://t.me/pompnet
+## نام کانفیگ
 
-Group:
+نام پیشنهادی/پیش‌فرض ربات:
 
-https://t.me/+UV34C7Ohs9hiZTc0
+```text
+Mohammad Pomp Net | SUPER JINX-XXXX
+```
 
----
+پسوند کوتاه برای یکتایی اضافه می‌شود. این تغییر فقط روی نام نمایشی کانفیگ‌های جدیدی اثر دارد که از مسیرهای وصله‌شده ساخته می‌شوند؛ نام کانفیگ‌های ذخیره‌شدهٔ قبلی بدون مهاجرت جداگانه بازنویسی نمی‌شود.
 
-## 🛟 SUPPORT
+## دیپلوی Railway
 
-@NovaTunneli
+1. مخزن را به‌عنوان سرویس Docker در Railway متصل کنید.
+2. یک **Volume پایدار** به مسیر `/data` متصل کنید تا فایل‌های داده در تعویض Container از بین نروند.
+3. متغیرهای زیر را در Railway تنظیم کنید:
 
-Support:
+| Variable | مقدار |
+|---|---|
+| `PORT` | توسط Railway تنظیم می‌شود؛ دستی ثابت نکنید |
+| `ADMIN_USERNAME` | نام کاربری مالک دلخواه |
+| `ADMIN_PASSWORD` | رمز قوی و یکتا؛ هرگز `admin` نگذارید |
+| `POMPNET_STATUS_TOKEN` | توکن تصادفی قوی برای API وضعیت Xray |
+| `DATA_DIR` | `/data`، در صورت نیاز به مسیر دادهٔ صریح |
 
-https://t.me/NovaTunneli
+4. پس از Deploy، لاگ Build و Runtime، سپس `/health`، ورود، داشبورد و لینک Subscription واقعی را بررسی کنید.
 
----
+**امنیت:** تا وقتی `ADMIN_USERNAME` و به‌خصوص `ADMIN_PASSWORD` امن در Variables ثبت نشده‌اند، پنل را عمومی نکنید. این README به معنی تغییر خودکار رمز در سرویس فعال نیست.
 
-## 💻 GITHUB
+## پایداری و حفظ داده
 
-https://github.com/uxurx7rh7e7xr73uue73e8
+- Volume موجود را حذف یا دوباره ایجاد نکنید.
+- مسیر دادهٔ فعلی را قبل از تغییر تنظیمات بررسی کنید.
+- این تغییرات ظاهری، فایل‌های پایدار کاربران را مهاجرت یا بازنویسی نمی‌کنند.
+- پورت داخلی Railway با پورت عمومی کانفیگ یکی نیست؛ پورت عمومی باید از تنظیم واقعی همان inbound خوانده شود.
+- در Railway فقط پروتکل‌ها و transportهایی قابل استفاده‌اند که محدودیت شبکه و ورودی‌های سرویس اجازه می‌دهد؛ وجود نام یک پروتکل در UI تضمین کارکرد آن نیست.
 
----
+## منابع مرجع و مرز ادغام
 
-# 📦 PROJECT
+پروژه‌های مرجع:
+- [SuperJinX](https://github.com/x4gpanell/SuperJinX)
+- [MarzbanUpdate](https://github.com/x4gpanell/MarzbanUpdate)
 
-Repository:
+این دو پروژه از نظر ساختار و وابستگی‌ها لزوماً با هستهٔ فعلی یکپارچه نیستند. کپی‌کردن فایل‌های رابط یا اسکریپت‌های مخصوص Marzban در این برنامه بدون بررسی API، مجوز، مدل داده و تست رگرسیون می‌تواند ورود، ساخت کانفیگ یا Subscription را خراب کند. در این نسخه ادغام کامل آن‌ها ادعا نمی‌شود. اطلاعیه‌های مجوز و انتساب upstream نیز نباید حذف شوند؛ برند POMP NET برای رابط کاربری است و جایگزین الزامات مجوز نیست.
 
-POMP-NET-MOHAMMAD-SUPER-JINX
+## بررسی قبل از انتشار
 
-Base:
+- [ ] Build ایمیج Docker موفق
+- [ ] اجرای کانتینر و پاسخ `/health`
+- [ ] ورود با رمز تنظیم‌شده در Railway
+- [ ] بازشدن داشبورد اصلی
+- [ ] ساخت کاربر آزمایشی و بررسی پورت/inbound واقعی
+- [ ] دریافت `/sub/{uuid}` و QR
+- [ ] بررسی Xray با لاگ و تست اتصال واقعی
+- [ ] تأیید Volume و باقی‌ماندن داده پس از restart
 
-POMP NET Core
-
----
-
-# ⚠️ معماری پروژه
-
-این Repository شامل لایه اختصاصی POMP NET برای برندینگ، ظاهر و تنظیمات نمایشی پنل است.
-
-در زمان Build، هسته اصلی برنامه دریافت و سپس Branding اختصاصی POMP NET روی آن اعمال می‌شود.
-
-مراحل:
-
-1. دریافت هسته اصلی
-2. استفاده از نسخه مشخص
-3. اجرای فایل Branding
-4. اعمال برندینگ POMP NET
-5. حفظ منطق اصلی برنامه
-6. اجرای برنامه
-
-منطق اصلی پنل برای تغییر برند بازنویسی یا شبیه‌سازی نمی‌شود.
-
----
-
-# 🧩 فایل‌های Repository
-
-فایل‌های اصلی این Repository:
-
-- Dockerfile
-- railway.json
-- requirements.txt
-- pompnet_brand.py
-- README.md
-- pompnet.css
-
-فایل Branding وظیفه اعمال ظاهر و مشخصات اختصاصی POMP NET را دارد.
-
----
-
-
-# 🤖 هویت رسمی ربات و کانفیگ‌ها
-
-- نام نمایشی ربات: **POMP NET MOHAMMAD**
-- نام انگلیسی ربات: **POMP NET SUPER JINX**
-- عنوان پیش‌فرض کانفیگ‌های ساخته‌شده با دکمه نام تصادفی ربات: **Mohammad Pomp Net | SUPER JINX** همراه شناسه کوتاه یکتا.
-- پیام‌های شروع، آمار، گزارش ربات و اطلاعیه پیش‌فرض با هویت POMP NET منتشر می‌شوند.
-- تنظیمات و توکن ربات قبلی در مسیر داده‌ها حفظ می‌شوند؛ فقط متن‌های نمایشی هنگام ساخت تصویر جدید اصلاح می‌شوند.
-
-# 🧭 داشبورد نمایشی و JINX PASS
-
-- پیش‌نمایش فقط‌خواندنی: `/pompnet-preview`؛ فقط آمار تجمیعی را نشان می‌دهد و هیچ عملیات مدیریتی ندارد.
-- صفحه اشتراک اختصاصی: `/pass/{uuid}` و مسیر قدیمی `/info/{uuid}` هر دو به صفحه واقعی اطلاعات همان کانفیگ می‌رسند.
-- لینک اشتراک واقعی و سازگار قبلی `/sub/{uuid}` حفظ شده و همچنان خروجی Subscription را می‌دهد.
-- پورت، پروتکل، اثر انگشت، حجم، زمان و QR از اطلاعات همان کانفیگ خوانده می‌شوند؛ پورت عمومی کانفیگ با پورت داخلی Railway یکی فرض نمی‌شود.
+CI فقط مواردی را که صریحاً در workflow آمده تست می‌کند؛ موفقیت Build به‌تنهایی اثبات اتصال واقعی VLESS یا Deploy زنده Railway نیست.
 
 ---
 
-# 🛡️ حفظ قابلیت‌های اصلی
-
-قابلیت‌های اصلی پنل نباید حذف یا خراب شوند.
-
-از جمله:
-
-- Dashboard
-- Users
-- VLESS
-- VMess
-- Trojan
-- Shadowsocks
-- XHTTP
-- Xray
-- Subscription
-- Traffic
-- Expiry
-- Speed Limit
-- Telegram
-- Admin
-- News
-
----
-
-# 🎨 BRANDING
-
-هویت پروژه:
-
-POMP NET
-
-عنوان:
-
-POMP NET MOHAMMAD — SUPER JINX
-
-تیم:
-
-POMP NET MOHAMMAD — SUPER JINX
-
-پشتیبانی:
-
-@NovaTunneli
-
-کانال:
-
-https://t.me/pompnet
-
----
-
-# 🔐 ADMIN LOGIN
-
-برای ورود اولیه:
-
-Username:
-
-admin
-
-Password:
-
-admin
-
-مقدار رمز از متغیر زیر دریافت می‌شود:
-
-ADMIN_PASSWORD
-
-برای تست اولیه Railway:
-
-ADMIN_PASSWORD=admin
-
-بعد از ورود اولیه بهتر است رمز تغییر داده شود.
-
----
-
-# 🚂 RAILWAY DEPLOYMENT
-
-## مرحله 1
-
-وارد Railway شوید.
-
-New Project
-
-سپس:
-
-Deploy from GitHub Repo
-
-را انتخاب کنید.
-
-Repository:
-
-POMP-NET-MOHAMMAD-SUPER-JINX
-
----
-
-# ⚙️ مرحله 2 — Variables
-
-در Railway وارد:
-
-Service
-
-↓
-
-Variables
-
-شوید.
-
-برای ورود اولیه:
-
-ADMIN_PASSWORD=admin
-
-قرار دهید.
-
----
-
-# 🔌 مرحله 3 — PORT
-
-برنامه باید روی Port اختصاص داده‌شده توسط Railway اجرا شود.
-
-Dockerfile پروژه از:
-
-0.0.0.0
-
-و:
-
-$PORT
-
-استفاده می‌کند.
-
-بنابراین نباید Port ثابت مثل:
-
-443
-
-تنظیم شود.
-
----
-
-# ▶️ مرحله 4 — DEPLOY
-
-بعد از اتصال GitHub:
-
-Deploy
-
-را انجام دهید.
-
-مراحل:
-
-BUILD
-
-↓
-
-DEPLOY
-
-↓
-
-RUNNING
-
----
-
-# 🩺 HEALTH CHECK
-
-پنل دارای Health Check است:
-
-/health
-
-در صورت موفق بودن:
-
-HTTP 200
-
-برمی‌گردد.
-
-Railway از این مسیر برای بررسی وضعیت سرویس استفاده می‌کند.
-
----
-
-# 🌐 مرحله 5 — DOMAIN
-
-بعد از Deploy موفق:
-
-Service
-
-↓
-
-Settings
-
-↓
-
-Networking
-
-↓
-
-Generate Domain
-
-را انتخاب کنید.
-
-Railway یک Domain HTTPS ایجاد می‌کند.
-
-مثلاً:
-
-https://xxxxx.up.railway.app
-
----
-
-# 🔐 مرحله 6 — LOGIN
-
-بعد از باز شدن پنل:
-
-Username:
-
-admin
-
-Password:
-
-admin
-
-اگر ADMIN_PASSWORD در Railway تغییر کرده باشد، همان رمز جدید استفاده می‌شود.
-
----
-
-# 🧪 بررسی پنل
-
-بعد از Deploy باید قابلیت‌های موجود بررسی شوند.
-
-## Dashboard
-
-- Dashboard
-- وضعیت سرویس
-- آمار
-
-## Users
-
-- ایجاد کاربر
-- ویرایش
-- حذف
-- حجم
-- تاریخ انقضا
-- وضعیت کاربر
-
-## Protocols
-
-- VLESS
-- VMess
-- Trojan
-- Shadowsocks
-- XHTTP
-- Xray
-
-## Subscription
-
-- Subscription
-- لینک اتصال
-- Copy
-- QR
-
-## Traffic
-
-- مصرف ترافیک
-- Volume
-- محدودیت حجم
-
-## Expiry
-
-- تاریخ انقضا
-- محدودیت زمانی
-
-## Speed
-
-- Speed Limit
-
-## Telegram
-
-- Telegram
-- Bot
-- امکانات موجود
-
-## Admin
-
-- Owner
-- Admin
-- مدیریت کاربران مدیریتی
-
-## News
-
-- News
-
----
-
-# 🟢 اصل مهم پروژه
-
-POMP NET یک پنل فیک نیست.
-
-هدف:
-
-حفظ قابلیت‌های واقعی پنل
-
-+
-
-POMP NET Branding
-
-است.
-
-منطق اصلی برنامه نباید برای تغییر برند بازنویسی شود.
-
----
-
-# 🔄 AUTO DEPLOY
-
-در صورت اتصال صحیح GitHub به Railway:
-
-GitHub
-
-↓
-
-Commit
-
-↓
-
-Railway
-
-↓
-
-Automatic Deploy
-
-بنابراین تغییرات جدید Repository می‌توانند به صورت خودکار Deploy شوند.
-
----
-
-# 💾 STORAGE
-
-در Deploy اولیه Railway Volume الزامی نیست.
-
-اما اطلاعاتی که برنامه فقط روی فایل‌های محلی Container ذخیره می‌کند ممکن است بعد از تعویض یا حذف Container باقی نماند.
-
-برای تست:
-
-Volume لازم نیست.
-
-برای استفاده دائمی:
-
-Persistent Storage
-
-باید در نظر گرفته شود.
-
----
-
-# 🛠️ اگر پنل باز نشد
-
-اول:
-
-Railway
-
-↓
-
-Service
-
-↓
-
-Deployments
-
-↓
-
-View Logs
-
-را بررسی کنید.
-
-اگر Build موفق شد ولی پنل باز نشد:
-
-Settings
-
-↓
-
-Networking
-
-↓
-
-Domain
-
-را بررسی کنید.
-
-همچنین:
-
-/health
-
-را بررسی کنید.
-
----
-
-# ❌ کارهایی که نباید انجام شوند
-
-❌ حذف هسته اصلی
-
-❌ ساخت main.py فیک
-
-❌ ساخت pages.py فیک
-
-❌ حذف requirements اصلی
-
-❌ تغییر منطق اصلی فقط برای Branding
-
-❌ تغییر Port به 443
-
-❌ حذف Dockerfile
-
-❌ حذف railway.json
-
----
-
-# 🎯 ساختار نهایی
-
-POMP NET Core
-
-↓
-
-Docker Build
-
-↓
-
-دریافت نسخه اصلی
-
-↓
-
-POMP NET Branding
-
-↓
-
-FastAPI / Uvicorn
-
-↓
-
-Railway
-
-↓
-
-HTTPS Domain
-
-↓
-
-POMP NET Panel
-
----
-
-# 👑 FINAL BRAND
-
-POMP NET
-
-POMP NET MOHAMMAD — SUPER JINX
-
-POMP NET MOHAMMAD — SUPER JINX
-
-Support:
-
-@NovaTunneli
-
-Telegram:
-
-https://t.me/pompnet
-
-GitHub:
-
-https://github.com/uxurx7rh7e7xr73uue73e8
-
----
-
-# 🔐 INITIAL LOGIN
-
-Username:
-
-admin
-
-Password:
-
-admin
-
----
-
-## هدف نهایی
-
-حفظ قابلیت‌های واقعی پنل همراه با برندینگ اختصاصی:
-
-# POMP NET
-
-### POMP NET MOHAMMAD — SUPER JINX
+## هویت رسمی
+
+**POMP NET MOHAMMAD — SUPER JINX**  
+پشتیبانی: [@NovaTunneli](https://t.me/NovaTunneli)  
+کانال: [@pompnet](https://t.me/pompnet)  
+گروه: [@PompNett](https://t.me/PompNett)  
+GitHub: [POMP NET](https://github.com/uxurx7rh7e7xr73uue73e8)

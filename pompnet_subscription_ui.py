@@ -10,6 +10,14 @@ if not target.is_file():
     raise SystemExit("POMP NET subscription UI: /app/main.py not found")
 source = target.read_text(encoding="utf-8")
 
+# Railway terminates public HTTPS on 443; make that public subscription port explicit.
+old_sub_url = 'sub_url = f"https://{host}/sub/{uid}"'
+new_sub_url = 'sub_url = f"https://{host}:443/sub/{uid}"'
+if source.count(old_sub_url) == 1:
+    source = source.replace(old_sub_url, new_sub_url, 1)
+elif new_sub_url not in source:
+    raise SystemExit("POMP NET subscription UI: expected subscription URL builder not found")
+
 match = re.search(r'(?m)^    info_html = f"""', source)
 if not match:
     raise SystemExit("POMP NET subscription UI: info_html template not found")

@@ -18,7 +18,7 @@
 
 [![Build](https://img.shields.io/github/actions/workflow/status/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/docker-build.yml?branch=main&style=flat-square&label=build)](https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/main?style=flat-square)](https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/commits/main)
-[![License](https://img.shields.io/badge/license-see%20LICENSE-lightgrey?style=flat-square)](./LICENSE)
+> وضعیت مجوز: فایل `LICENSE` در شاخهٔ اصلی این مخزن موجود نیست؛ پیش از انتشار عمومی، مجوز پروژه باید به‌صورت رسمی مشخص و اضافه شود.
 
 [🌐 وب‌سایت](https://pomp-net.botpool.ai/) · [📢 کانال](https://t.me/pompnet) · [💬 گروه](https://t.me/PompNett) · [🛟 پشتیبانی](https://t.me/NovaTunneli)
 

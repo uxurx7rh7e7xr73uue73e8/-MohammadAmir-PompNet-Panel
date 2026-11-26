@@ -1,26 +1,77 @@
 <div align="center">
 
 # ⚡ POMP NET MOHAMMAD
-## SUPER JINX · CONTROL CENTER
+### SUPER JINX // NEXUS CONTROL DECK
 
-**پنل مدیریت، ساخت کانفیگ و اشتراک با هویت اختصاصی POMP NET**
+**فراتر از یک پوسته؛ یک تجربهٔ مدیریتی با امضای اختصاصی POMP NET.**
+
+`DARK CORE`　·　`NEON IDENTITY`　·　`REAL SUBSCRIPTION`　·　`PERSIAN FIRST`
 
 قدرت ساخت، آزادی انتخاب، کنترل در دستان تو
 
-[![Railway](https://img.shields.io/badge/Deploy-Railway-7B2CF5?style=for-the-badge&logo=railway&logoColor=white)](https://railway.com)
-[![Docker](https://img.shields.io/badge/Container-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
-[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Brand](https://img.shields.io/badge/Brand-POMP%20NET%20%7C%20SUPER%20JINX-8B35FF?style=for-the-badge)](#هویت-و-برند)
+<p>
+  <img src="https://img.shields.io/badge/PROJECT-SUPER%20JINX-8B35FF?style=for-the-badge&logo=github&logoColor=white" alt="Super Jinx">
+  <img src="https://img.shields.io/badge/INTERFACE-PERSIAN%20RTL-168CFF?style=for-the-badge" alt="Persian RTL">
+  <img src="https://img.shields.io/badge/DEPLOY-RAILWAY-7B2CF5?style=for-the-badge&logo=railway&logoColor=white" alt="Railway">
+  <img src="https://img.shields.io/badge/CONTAINER-DOCKER-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+</p>
 
-[کانال رسمی](https://t.me/pompnet) · [گروه](https://t.me/PompNett) · [پشتیبانی](https://t.me/NovaTunneli) · [وب‌سایت](https://pomp-net.botpool.ai/)
+[![Build](https://img.shields.io/github/actions/workflow/status/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/docker-build.yml?branch=main&style=flat-square&label=build)](https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/main?style=flat-square)](https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/commits/main)
+[![License](https://img.shields.io/badge/license-see%20LICENSE-lightgrey?style=flat-square)](./LICENSE)
+
+[🌐 وب‌سایت](https://pomp-net.botpool.ai/) · [📢 کانال](https://t.me/pompnet) · [💬 گروه](https://t.me/PompNett) · [🛟 پشتیبانی](https://t.me/NovaTunneli)
 
 <br>
 
-<img src="assets/pompnet-super-jinx-showcase.svg" width="100%" alt="پیش‌نمایش طراحی POMP NET MOHAMMAD SUPER JINX">
+<img src="assets/pompnet-super-jinx-showcase.svg" width="100%" alt="POMP NET MOHAMMAD SUPER JINX — interface showcase">
 
-<sub>پیش‌نمایش گرافیکی رابط ورود و داشبورد؛ مقادیر داخل تصویر نمونهٔ طراحی هستند و آمار نسخهٔ اجرایی از هستهٔ فعال خوانده می‌شود.</sub>
+<sub>تصویر معرفی رابط کاربری است؛ اعداد و داده‌های داخل تصویر نمونهٔ بصری‌اند، نه وضعیت زندهٔ سرور.</sub>
 
 </div>
+
+> [!IMPORTANT]
+> **اصل توسعهٔ POMP NET:** ارتقای ظاهر و تجربهٔ کاربری بدون جایگزین‌کردن هسته، حذف کاربران، دست‌کاری UUIDها، پاک‌کردن inboundها یا آسیب‌زدن به دیتابیس. هر قابلیت عملیاتی باید به داده و منطق واقعی هسته متصل باشد.
+
+## ◈ خوش آمدی به Control Deck
+
+> پنل را مثل یک محصول مستقل ببین: هستهٔ عملیاتی در مرکز، تجربهٔ کاربری در لایهٔ اختصاصی، و دسترسی اشتراک در یک مسیر روشن. این README نقشهٔ فنی همین ساختار است؛ نه فهرستی از قابلیت‌های فرضی.
+
+<div align="center">
+
+| `01 / CORE` | `02 / CONTROL` | `03 / CONNECT` | `04 / IDENTITY` |
+|:---:|:---:|:---:|:---:|
+| هسته و داده‌ها | داشبورد مدیر | Subscription | برند POMP NET |
+| حفظ منطق اصلی | مسیرهای واقعی پنل | UUID هر کاربر | فارسی و RTL |
+
+</div>
+
+## 🧭 راهنمای سریع
+
+| بخش | دسترسی |
+|---|---|
+| معرفی و قابلیت‌ها | [دربارهٔ پروژه](#-دربارهٔ-پروژه) |
+| مسیرهای پنل و اشتراک | [مسیرهای مهم](#-مسیرهای-مهم) |
+| لینک اشتراک کاربران | [اشتراک واقعی](#-لینک-اشتراک-واقعی-هر-کاربر) |
+| صفحهٔ اختصاصی JINX PASS | [JINX PASS](#-صفحهٔ-اشتراک-jinx-pass) |
+| معماری و پروژه‌های مرجع | [معماری](#-معماری-و-مرز-ادغام) |
+| نصب و استقرار | [Railway](#-استقرار-روی-railway) |
+| امنیت و حفظ اطلاعات | [حفظ داده](#-حفظ-داده-و-امنیت) |
+| وضعیت تست | [چک‌لیست تست](#-وضعیت-تست) |
+| ارتباط | [پشتیبانی](#-پشتیبانی-و-ارتباط) |
+
+## ✦ نمای کلی محصول
+
+<div align="center">
+
+| 🖤 CORE | 💜 IDENTITY | 🔵 ACCESS |
+|:---:|:---:|:---:|
+| حفظ هستهٔ اصلی | برند POMP NET | اشتراک کاربر |
+| مسیرهای اصلی پنل | رابط فارسی و RTL | لینک شخصی UUID |
+| داده‌های موجود | تم نئونی اختصاصی | QR و کپی کانفیگ |
+
+</div>
+
 
 ---
 
@@ -31,6 +82,8 @@
 > **اصل مهم پروژه:** ظاهر و تجربهٔ کاربری ارتقا پیدا می‌کند؛ اما مسیرهای اصلی، داده‌های کاربران، منطق هسته و اشتراک‌ها نباید با یک تغییر ظاهری جایگزین یا پاک شوند.
 
 ## ✨ قابلیت‌ها و وضعیت فعلی
+
+> **راهنمای خواندن وضعیت:** «موجود» یعنی مسیر/وصله در سورس این مخزن تعریف شده است؛ «عملیاتی» فقط پس از استقرار و تست روی سرویس واقعی قابل تأیید است. هیچ Badge یا تصویر نمایشی به‌تنهایی وضعیت زندهٔ سرویس را اثبات نمی‌کند.
 
 | بخش | وضعیت / توضیح |
 |---|---|
@@ -121,6 +174,18 @@ flowchart TD
     H --> F
 ```
 
+## 🧬 تجربهٔ محصول در یک نگاه
+
+| تجربه | مسیر | منبع داده |
+|---|---|---|
+| مدیریت | `/dashboard` | هستهٔ اصلی پنل |
+| اشتراک | `/sub/{uuid}` | UUID و generator هسته |
+| کارت اشتراک | `/pass/{uid}` | رکورد همان کاربر |
+| سلامت سرویس | `/health` | فرایند برنامه |
+| وضعیت Xray | `/api/pompnet/xray` | وضعیت هسته با توکن |
+
+**قانون طلایی:** هیچ مقدار نمایشی نباید جای دادهٔ واقعی کاربر را بگیرد؛ اگر داده‌ای در هسته وجود نداشته باشد، باید شفاف نمایش داده شود، نه اینکه ساختگی تولید شود.
+
 ## 🎨 هویت و برند
 
 - نام محصول: **POMP NET MOHAMMAD — SUPER JINX**
@@ -203,7 +268,7 @@ flowchart TD
 - [ ] تست اتصال واقعی هر inbound و پروتکل
 - [ ] تأیید ماندگاری داده پس از Restart
 
-## 🛠️ ساختار اجرایی مهم
+## 🧰 نقشهٔ فایل‌های کلیدی
 
 | فایل | نقش |
 |---|---|
@@ -214,6 +279,16 @@ flowchart TD
 | `pompnet_jinx_ui.py` | تغییرات رابط JINX PASS |
 | `pompnet_integrations_brand.py` | وصله‌های هویت و نام کانفیگ در ادغام‌ها |
 | `README.md` | راهنمای پروژه |
+
+## 🛰️ مسیرهای توسعهٔ بعدی
+
+این موارد به‌عنوان مسیر توسعه ثبت می‌شوند و تا زمان پیاده‌سازی و تست، قابلیت فعال محسوب نمی‌شوند:
+
+- [ ] تست خودکار رگرسیون مسیرهای ورود، داشبورد و اشتراک
+- [ ] تست قرارداد خروجی Subscription برای کلاینت‌های رایج
+- [ ] بررسی سازگاری صفحهٔ JINX PASS در نمایشگرهای کوچک
+- [ ] گزارش شفاف نسخهٔ هسته، نسخهٔ Xray و وضعیت Deploy
+- [ ] مستندسازی Backup و بازیابی امن Volume
 
 ## 🤝 پشتیبانی و ارتباط
 
@@ -231,6 +306,9 @@ flowchart TD
 
 <div align="center">
 
-**ساخته‌شده برای تجربه‌ای حرفه‌ای‌تر؛ با حفظ هسته، داده‌ها و شفافیت فنی.**
+**POMP NET MOHAMMAD — SUPER JINX**  
+`ENGINEERED WITH CARE · BUILT AROUND THE REAL CORE`
+
+ساخته‌شده برای تجربه‌ای حرفه‌ای‌تر؛ با حفظ هسته، داده‌ها و شفافیت فنی.
 
 </div>

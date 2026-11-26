@@ -30,7 +30,7 @@ jobs:
       - name: Start the panel container
         run: docker run -d --name pompnet-smoke -p 8080:8080 -e PORT=8080 -e ADMIN_USERNAME=admin -e ADMIN_PASSWORD=smoke-test pompnet-super-jinx:ci
 
-      - name: Verify health, preview and preserved routes
+      - name: Verify health endpoint
         run: |
           for attempt in $(seq 1 45); do
             if curl --fail --silent http://127.0.0.1:8080/health > /tmp/health.json; then
@@ -39,9 +39,16 @@ jobs:
             sleep 2
           done
           cat /tmp/health.json
-          grep -q 'healthy' /tmp/health.json
+          grep -Eq '"status"[[:space:]]*:[[:space:]]*"(ok|healthy)"' /tmp/health.json
+
+      - name: Verify read-only dashboard preview
+        run: |
           curl --fail --silent http://127.0.0.1:8080/pompnet-preview > /tmp/preview.html
           grep -q 'POMP NET MOHAMMAD' /tmp/preview.html
+          grep -q 'READ ONLY' /tmp/preview.html
+
+      - name: Verify preserved subscription routes
+        run: |
           docker exec pompnet-smoke python -c "from main import app; paths={getattr(r,'path','') for r in app.routes}; assert '/sub/{uuid}' in paths; assert '/info/{uid}' in paths; assert '/pass/{uid}' in paths; print('SUBSCRIPTION ROUTES: OK')"
 
       - name: Container logs on failure

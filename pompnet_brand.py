@@ -342,7 +342,7 @@ def now_ir():'''
 
     data = data.replace(
         'mix_label = "Mix-" + random_config_name()[:6]',
-        'mix_label = "POMP-NET-MOHAMMAD-SUPER-JINX-MIX-" + secrets.token_hex(2).upper()',
+        'mix_label = "⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX-MIX-" + secrets.token_hex(2).upper()',
     )
 
     banner = """<div id="pompnet-super-jinx-banner" role="region" aria-label="POMP NET SUPER JINX">

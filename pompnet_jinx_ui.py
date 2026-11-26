@@ -124,7 +124,7 @@ def main():
         f'</div></article>'
         for index, (name, value) in enumerate(config_items, start=1)
     )
-    all_config_attr = escape_html("\n".join(value for _, value in config_items))
+    all_config_attr = escape_html("\\n".join(value for _, value in config_items))
 
 '''
     if block.count(data_anchor) != 1:

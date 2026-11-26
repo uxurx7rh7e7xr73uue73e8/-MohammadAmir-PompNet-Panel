@@ -298,6 +298,73 @@ table {
     return css.rstrip() + "\n\n" + marker + "\n" + layout_css
 
 
+
+def apply_super_jinx_identity(data: str) -> str:
+    """Brand new configuration remarks and add a dashboard identity banner."""
+    name_pattern = re.compile(
+        r"def random_config_name\(existing=None\):.*?\n\ndef now_ir\(\):",
+        re.S,
+    )
+    replacement = '''def random_config_name(existing=None):
+    existing = existing or set()
+    for _ in range(80):
+        name = "POMP-NET-MOHAMMAD-SUPER-JINX-" + secrets.token_hex(3).upper()
+        if name not in existing:
+            return name
+    return "POMP-NET-MOHAMMAD-SUPER-JINX-" + secrets.token_hex(5).upper()
+
+
+def sanitize_config_name(name: str) -> str:
+    prefix = "POMP-NET-MOHAMMAD-SUPER-JINX"
+    cleaned = "".join(
+        ch for ch in str(name or "")
+        if ch.isascii() and (ch.isalnum() or ch in "-_")
+    ).strip("-_")
+    if not cleaned or cleaned == prefix:
+        return random_config_name()
+    if cleaned.upper().startswith(prefix):
+        return cleaned[:40]
+    suffix = cleaned[:12].strip("-_")
+    return (prefix + ("-" + suffix if suffix else "-" + secrets.token_hex(2).upper()))[:40]
+
+
+def auto_config_name() -> str:
+    return random_config_name()
+
+
+def now_ir():'''
+    data, count = name_pattern.subn(replacement, data, count=1)
+    if count != 1:
+        raise RuntimeError("SAFE STOP: config-name functions did not match exactly once")
+
+    data = data.replace(
+        'mix_label = "Mix-" + random_config_name()[:6]',
+        'mix_label = "POMP-NET-MOHAMMAD-SUPER-JINX-MIX-" + secrets.token_hex(2).upper()',
+    )
+
+    banner = """<div id="pompnet-super-jinx-banner" role="region" aria-label="POMP NET SUPER JINX">
+  <div class="pn-jinx-mark" aria-hidden="true"><span>P</span><b>J</b></div>
+  <div class="pn-jinx-copy">
+    <strong>POMP NET MOHAMMAD <em>SUPER JINX</em></strong>
+    <small>قدرت ساخت، آزادی انتخاب، کنترل در دستان تو</small>
+    <p>پنل مدیریت و اشتراک اختصاصی محمد؛ مدیریت کانفیگ‌ها، کاربران و سرویس‌ها در یک محیط یکپارچه.</p>
+  </div>
+  <span class="pn-jinx-status"><i></i> SUPER JINX SYSTEM</span>
+</div>"""
+    page = "DASHBOARD_HTML"
+    block = get_html_block(data, page)
+    if not block:
+        raise RuntimeError("SAFE STOP: dashboard page not found for brand banner")
+    start, end, _ = block
+    html = data[start:end]
+    if 'id="pompnet-super-jinx-banner"' not in html:
+        if "<body>" not in html:
+            raise RuntimeError("SAFE STOP: dashboard body tag not found")
+        html = html.replace("<body>", "<body>\\n" + banner, 1)
+        data = data[:start] + html + data[end:]
+    return data
+
+
 def main():
     for path in (MAIN, CSS, LOGIN_CSS, LOGIN_JS):
         if not path.exists():
@@ -305,6 +372,7 @@ def main():
 
     original_data = MAIN.read_text(encoding="utf-8")
     data = original_data
+    data = apply_super_jinx_identity(data)
 
     # محافظت از مسیر Subscription
     sub_before = get_sub_route(original_data)

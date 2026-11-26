@@ -90,7 +90,7 @@ def main():
         raise SystemExit("SAFE STOP: demo server cards were not found exactly once")
 
     # Build cards from the same generator and parameters as the real /sub endpoint.
-    data_anchor = '    unique_ips = len(unique_ips_for_uuid(uid))\n\n    info_html = f"""'
+    data_anchor = '    unique_ips = len(unique_ips_for_uuid(uid))'
     data_replacement = '''    unique_ips = len(unique_ips_for_uuid(uid))
 
     config_count = max(1, min(40, int(snapshot.get("config_count") or 1)))
@@ -126,7 +126,7 @@ def main():
     )
     all_config_attr = escape_html("\n".join(value for _, value in config_items))
 
-    info_html = f"""'''
+'''
     if block.count(data_anchor) != 1:
         raise SystemExit("SAFE STOP: unique subscription info insertion point did not match exactly once")
     block = block.replace(data_anchor, data_replacement, 1)

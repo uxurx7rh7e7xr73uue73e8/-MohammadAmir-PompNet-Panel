@@ -445,6 +445,22 @@ def main():
     for page in pages:
         data = replace_inside_html(data, page, ui_replacements)
 
+    # POMP NET SUPER JINX LANDING PORTAL DESIGN
+    landing_logo = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23168cff'/%3E%3Cstop offset='.52' stop-color='%236338ff'/%3E%3Cstop offset='1' stop-color='%23a12dff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='8' y='8' width='240' height='240' rx='58' fill='%23090713' stroke='url(%23g)' stroke-width='8'/%3E%3Cpath d='M56 74h75c34 0 55 19 55 48s-21 48-55 48H99v31H56V74zm43 36v25h31c9 0 14-5 14-13s-5-12-14-12H99z' fill='white'/%3E%3Cpath d='M155 74h45v127h-45z' fill='%23d8caff'/%3E%3C/svg%3E"
+    landing_changes = {
+        '<div class="card">': '<div class="card pompnet-entry-card">',
+        '<div class="logo">P</div>': '<div class="logo pompnet-entry-logo"><img src="' + landing_logo + '" alt="POMP NET SUPER JINX"></div>',
+        '<div class="brand-name">\nAHB Panel\n</div>': '<div class="brand-name">POMP NET MOHAMMAD</div>',
+        '<div class="version">\n14.3.0\n</div>': '<div class="version">SUPER JINX · SECURE ACCESS</div>',
+        '<div class="status">\n● سیستم آنلاین و فعال است\n</div>': '<div class="status">● درگاه رسمی ورود به پنل</div>',
+        'برای ورود به پنل\n<br>\nابتدا وارد شوید': 'به دنیای SUPER JINX خوش آمدید',
+        'این صفحه، درگاه عمومی AHB Panel است.\nبرای دسترسی به داشبورد مدیریت از مسیر ورود استفاده کنید.': 'مرکز اختصاصی مدیریت کاربران، ساخت کانفیگ و اشتراک‌های POMP NET MOHAMMAD؛ برای ورود امن به داشبورد، ادامه دهید.',
+        '<div class="path">\n/login\n</div>': '<div class="path">POMP NET MOHAMMAD · SUPER JINX</div>',
+        'ورود به پنل': 'ورود امن به پنل',
+        'AHB Panel · 14.3.0': 'POMP NET MOHAMMAD — SUPER JINX',
+    }
+    data = replace_inside_html(data, "LANDING_HTML", landing_changes)
+
     # جایگزینی برند قدیمی فقط در HTML صفحات شناخته‌شده
     for page in pages:
         block = get_html_block(data, page)

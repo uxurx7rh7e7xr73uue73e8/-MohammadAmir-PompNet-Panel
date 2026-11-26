@@ -90,7 +90,7 @@ def main():
         raise SystemExit("SAFE STOP: demo server cards were not found exactly once")
 
     # Build cards from the same generator and parameters as the real /sub endpoint.
-    data_anchor = '    unique_ips = len(unique_ips_for_uuid(uid))\\n\\n    info_html = f"""'
+    data_anchor = '    unique_ips = len(unique_ips_for_uuid(uid))\n\n    info_html = f"""'
     data_replacement = '''    unique_ips = len(unique_ips_for_uuid(uid))
 
     config_count = max(1, min(40, int(snapshot.get("config_count") or 1)))
@@ -124,7 +124,7 @@ def main():
         f'</div></article>'
         for index, (name, value) in enumerate(config_items, start=1)
     )
-    all_config_attr = escape_html("\\n".join(value for _, value in config_items))
+    all_config_attr = escape_html("\n".join(value for _, value in config_items))
 
     info_html = f"""'''
     if block.count(data_anchor) != 1:
@@ -134,13 +134,13 @@ def main():
     config_section = '''  <div class="pn-config-toolbar"><span>کانفیگ‌های واقعی این اشتراک</span><button type="button" class="pn-config-btn pn-copy-all" data-config="{all_config_attr}" onclick="copyConfig(this)">کپی همه</button></div>
   <div class="pn-config-list">{config_cards_html}</div>
 '''
-    profile_anchor = '  <section class="card section">\\n    <div class="section-title"><h2>پروفایل اتصال واقعی</h2>'
+    profile_anchor = '  <section class="card section">\n    <div class="section-title"><h2>پروفایل اتصال واقعی</h2>'
     if block.count(profile_anchor) != 1:
         raise SystemExit("SAFE STOP: connection profile insertion point did not match exactly once")
     block = block.replace(profile_anchor, config_section + profile_anchor, 1)
 
     qr_old = "function makeQr(id){{const box=document.getElementById(id);if(!box)return;box.innerHTML='';try{{const qr=qrcode(0,'L');qr.addData(vlessUrl);qr.make();box.innerHTML=qr.createImgTag(5,8)}}catch(e){{box.textContent='QR unavailable'}}}}"
-    qr_new = "function makeQr(id,value=vlessUrl){{const box=document.getElementById(id);if(!box)return;box.innerHTML='';try{{const qr=qrcode(0,'L');qr.addData(value);qr.make();box.innerHTML=qr.createImgTag(5,8)}}catch(e){{box.textContent='QR unavailable'}}}}\\nfunction openConfigQr(value){{document.getElementById('modal').classList.add('show');makeQr('qr-modal',value)}}\\nfunction copyConfig(btn){{const value=btn.dataset.config||'';if(!value)return;const done=()=>{{const old=btn.textContent;btn.textContent='✓ کپی شد';setTimeout(()=>btn.textContent=old,1400)}};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(value).then(done).catch(()=>fallback(value,done));else fallback(value,done)}}"
+    qr_new = "function makeQr(id,value=vlessUrl){{const box=document.getElementById(id);if(!box)return;box.innerHTML='';try{{const qr=qrcode(0,'L');qr.addData(value);qr.make();box.innerHTML=qr.createImgTag(5,8)}}catch(e){{box.textContent='QR unavailable'}}}}\nfunction openConfigQr(value){{document.getElementById('modal').classList.add('show');makeQr('qr-modal',value)}}\nfunction copyConfig(btn){{const value=btn.dataset.config||'';if(!value)return;const done=()=>{{const old=btn.textContent;btn.textContent='✓ کپی شد';setTimeout(()=>btn.textContent=old,1400)}};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(value).then(done).catch(()=>fallback(value,done));else fallback(value,done)}}"
     if block.count(qr_old) != 1:
         raise SystemExit("SAFE STOP: original QR helper did not match exactly once")
     block = block.replace(qr_old, qr_new, 1)
@@ -156,7 +156,7 @@ def main():
 .pn-config-main strong{font-size:12px;overflow-wrap:anywhere;color:#f5f0ff}
 .pn-config-main small{font-size:9px;color:#a99cbd;direction:ltr;text-align:right}
 .pn-config-actions{display:flex;gap:6px}
-.pn-config-btn{border:1px solid rgba(139,53,255,.28);border-radius:11px;padding:9px 12px;background:rgba(139,53,255,.12);color:#e9dcff;font:700 10px inherit;cursor:pointer}
+.pn-config-btn{border:1px solid rgba(139,53,255,.28);border-radius:11px;padding:9px 12px;background:rgba(139,53,255,.12);color:#e9dcff;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer}
 .pn-config-btn:hover{background:rgba(139,53,255,.22)}
 .pn-copy-all{white-space:nowrap}
 @media(max-width:430px){.pn-config-row{gap:7px;padding:9px}.pn-config-index{flex-basis:29px;height:31px}.pn-config-main strong{font-size:10px}.pn-config-btn{padding:8px 9px;font-size:9px}}

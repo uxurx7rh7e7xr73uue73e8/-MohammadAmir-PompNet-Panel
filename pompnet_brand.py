@@ -343,7 +343,7 @@ def now_ir():'''
     )
 
     banner = """<div id="pompnet-super-jinx-banner" role="region" aria-label="POMP NET SUPER JINX">
-  <div class="pn-jinx-mark" aria-hidden="true"><span>P</span><b>J</b></div>
+  <div class="pn-jinx-mark" aria-hidden="true"><img alt="" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 256%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%23168cff%22/%3E%3Cstop offset=%22.52%22 stop-color=%22%236338ff%22/%3E%3Cstop offset=%221%22 stop-color=%22%23a12dff%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x=%228%22 y=%228%22 width=%22240%22 height=%22240%22 rx=%2258%22 fill=%22%23090713%22 stroke=%22url(%23g)%22 stroke-width=%228%22/%3E%3Cpath d=%22M56 74h75c34 0 55 19 55 48s-21 48-55 48H99v31H56V74zm43 36v25h31c9 0 14-5 14-13s-5-12-14-12H99z%22 fill=%22white%22/%3E%3Cpath d=%22M155 74h45v127h-45z%22 fill=%22%23d8caff%22/%3E%3C/svg%3E"></div>
   <div class="pn-jinx-copy">
     <strong>POMP NET MOHAMMAD <em>SUPER JINX</em></strong>
     <small>قدرت ساخت، آزادی انتخاب، کنترل در دستان تو</small>
@@ -453,11 +453,11 @@ def main():
         '<div class="brand-name">\nPOMP NET\n</div>': '<div class="brand-name">POMP NET MOHAMMAD</div>',
         '<div class="version">\n14.3.0\n</div>': '<div class="version">SUPER JINX · SECURE ACCESS</div>',
         '<div class="status">\n● سیستم آنلاین و فعال است\n</div>': '<div class="status">● درگاه رسمی ورود به پنل</div>',
-        'برای ورود به پنل\n<br>\nابتدا وارد شوید': 'به دنیای SUPER JINX خوش آمدید',
+        '<h1>\nبرای ورود به پنل\n<br>\nابتدا وارد شوید\n</h1>': '<h1>به دنیای SUPER JINX خوش آمدید</h1>',
         'این صفحه، درگاه عمومی POMP NET است.\nبرای دسترسی به داشبورد مدیریت از مسیر ورود استفاده کنید.': 'مرکز اختصاصی مدیریت کاربران، ساخت کانفیگ و اشتراک‌های POMP NET MOHAMMAD؛ برای ورود امن به داشبورد، ادامه دهید.',
         '<div class="path">\n/login\n</div>': '<div class="path">POMP NET MOHAMMAD · SUPER JINX</div>',
         'ورود به پنل': 'ورود امن به پنل',
-        'POMP NET · 14.3.0': 'POMP NET MOHAMMAD — SUPER JINX',
+        'POMP NET': 'POMP NET MOHAMMAD — SUPER JINX',
     }
     data = replace_inside_html(data, "LANDING_HTML", landing_changes)
 

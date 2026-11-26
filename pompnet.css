@@ -724,3 +724,15 @@ body { padding:0 !important; }
   .mob-bar{display:flex!important}
   #pompnet-super-jinx-banner{width:100%!important;margin:0 auto 14px!important}
 }
+
+
+/* SUPER JINX HERO — shared winged artwork */
+#pompnet-super-jinx-banner{min-height:112px;padding:16px 20px;border-color:rgba(139,53,255,.42);background:radial-gradient(ellipse at 100% 0%,rgba(22,140,255,.2),transparent 42%),radial-gradient(ellipse at 0% 100%,rgba(139,53,255,.2),transparent 48%),linear-gradient(120deg,rgba(15,9,31,.99),rgba(5,8,19,.99));box-shadow:0 22px 62px rgba(0,0,0,.35),0 0 32px rgba(139,53,255,.11),inset 0 1px rgba(255,255,255,.07)}
+#pompnet-super-jinx-banner .pn-jinx-mark{flex:0 0 132px;width:132px;height:72px;border-radius:15px;padding:3px;background:rgba(4,5,15,.68);border:1px solid rgba(139,53,255,.28);box-shadow:0 0 28px rgba(139,53,255,.2)}
+#pompnet-super-jinx-banner .pn-jinx-mark img{width:100%;height:100%;object-fit:contain;border-radius:12px;filter:drop-shadow(0 0 9px rgba(139,53,255,.35))}
+#pompnet-super-jinx-banner .pn-jinx-copy{position:relative;z-index:1}
+#pompnet-super-jinx-banner strong{font-size:clamp(14px,1.5vw,19px);letter-spacing:.45px}
+#pompnet-super-jinx-banner small{font-size:12px}
+#pompnet-super-jinx-banner p{max-width:680px;font-size:12px}
+@media(max-width:700px){#pompnet-super-jinx-banner{min-height:0;padding:12px;gap:10px}#pompnet-super-jinx-banner .pn-jinx-mark{flex-basis:88px;width:88px;height:52px;border-radius:12px;padding:2px}#pompnet-super-jinx-banner .pn-jinx-mark img{border-radius:10px}#pompnet-super-jinx-banner strong{font-size:11px}#pompnet-super-jinx-banner small{font-size:10px}#pompnet-super-jinx-banner p{font-size:9px;line-height:1.7}}
+@media(max-width:390px){#pompnet-super-jinx-banner .pn-jinx-mark{flex-basis:68px;width:68px;height:44px}#pompnet-super-jinx-banner{gap:8px}}

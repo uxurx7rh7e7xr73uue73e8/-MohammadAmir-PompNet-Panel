@@ -532,3 +532,13 @@ body>.card>h1{display:none!important}
   #loginBox button[type=submit],#loginBox button,#setupBox button{min-height:56px!important}
 }
 @media(prefers-reduced-motion:reduce){body::before{animation:none!important}}
+
+
+/* SUPER JINX LOGIN FEATURE STRIP */
+.pompnet-logo-circle{border-color:rgba(151,103,255,.72)!important;box-shadow:0 0 0 4px rgba(139,53,255,.08),0 16px 45px rgba(54,32,132,.34),0 0 42px rgba(22,140,255,.14)!important}
+.pompnet-logo-circle img{object-position:center!important;filter:saturate(1.12) contrast(1.04)!important}
+.pompnet-login-perks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:15px 0 0;padding:12px 7px;border:1px solid rgba(139,53,255,.19);border-radius:15px;background:linear-gradient(100deg,rgba(139,53,255,.09),rgba(22,140,255,.06)),rgba(4,5,13,.72)}
+.pompnet-login-perks span{display:flex;align-items:center;justify-content:center;gap:5px;min-width:0;color:#bdb1d2;font-size:clamp(8px,2vw,10px);font-weight:700;white-space:nowrap}
+.pompnet-login-perks span+span{border-right:1px solid rgba(139,53,255,.2)}
+.pompnet-login-perks b{color:#b779ff;font-size:13px;text-shadow:0 0 12px rgba(139,53,255,.5)}
+@media(max-width:420px){.pompnet-login-perks{gap:4px;padding:10px 3px}.pompnet-login-perks span{font-size:8px;gap:3px}.pompnet-login-perks b{font-size:11px}}

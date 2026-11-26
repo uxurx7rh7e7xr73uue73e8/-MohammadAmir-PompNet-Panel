@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="930" viewBox="0 0 1200 930" role="img" aria-labelledby="t d">
+<title id="t">POMP NET SUPER JINX PASS subscription page preview</title><desc id="d">پیش‌نمایش گرافیکی صفحه اشتراک با وضعیت، حجم، زمان، QR و فهرست کانفیگ‌ها.</desc>
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#03050d"/><stop offset=".5" stop-color="#10091f"/><stop offset="1" stop-color="#030711"/></linearGradient>
+ <linearGradient id="line" x2="1" y2="1"><stop stop-color="#168cff"/><stop offset=".55" stop-color="#8b35ff"/><stop offset="1" stop-color="#d45bff"/></linearGradient>
+ <linearGradient id="btn" x2="1"><stop stop-color="#168cff"/><stop offset="1" stop-color="#8b35ff"/></linearGradient>
+ <radialGradient id="halo"><stop stop-color="#8b35ff" stop-opacity=".45"/><stop offset="1" stop-color="#080819" stop-opacity="0"/></radialGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="12" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="1200" height="930" rx="32" fill="url(#bg)"/>
+<circle cx="1000" cy="40" r="350" fill="url(#halo)"/>
+<circle cx="80" cy="850" r="320" fill="#168cff" opacity=".08"/>
+<rect x="24" y="24" width="1152" height="882" rx="28" fill="none" stroke="url(#line)" stroke-width="2"/>
+<rect x="50" y="48" width="1100" height="72" rx="18" fill="#0c0a18" stroke="#39245e"/>
+<g filter="url(#glow)">
+ <path d="M130 82c-30-26-65-27-98-10 30 1 52 12 74 26-24-7-42-4-62 5 33 5 58 1 86-8z" fill="#7137dc"/>
+ <path d="M140 82c30-26 65-27 98-10-30 1-52 12-74 26 24-7 42-4 62 5-33 5-58 1-86-8z" fill="#1c6bd7"/>
+ <text x="135" y="91" text-anchor="middle" font-family="Arial" font-size="35" font-weight="900" font-style="italic" fill="#fff">PJ</text>
+</g>
+<text x="280" y="80" font-family="Arial" font-size="23" font-weight="900" fill="#fff">POMP NET MOHAMMAD</text>
+<text x="280" y="103" font-family="Arial" font-size="16" font-weight="800" fill="#b36cff">SUPER JINX · JINX PASS</text>
+<rect x="930" y="68" width="190" height="34" rx="17" fill="#08271e" stroke="#20c78b"/>
+<circle cx="953" cy="85" r="6" fill="#32e6a0"/>
+<text x="1034" y="91" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#80efc0">اشتراک فعال</text>
+<rect x="50" y="145" width="1100" height="220" rx="24" fill="#0d0b1d" stroke="#56308e"/>
+<circle cx="980" cy="255" r="150" fill="url(#halo)"/>
+<text x="1080" y="200" text-anchor="end" font-family="sans-serif" font-size="18" fill="#b8a9cf">اشتراک اختصاصی شما</text>
+<text x="1080" y="250" text-anchor="end" font-family="sans-serif" font-size="36" font-weight="900" fill="#fff">SUPER JINX PASS</text>
+<text x="1080" y="292" text-anchor="end" font-family="sans-serif" font-size="19" fill="#bcb1ce">وضعیت، مصرف، زمان و کانفیگ‌ها در یک صفحه</text>
+<rect x="830" y="315" width="250" height="28" rx="14" fill="#0b2b22" stroke="#27c88d"/>
+<circle cx="853" cy="329" r="5" fill="#34e6a0"/>
+<text x="960" y="335" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#7fe9bc">فعال · دادهٔ واقعی کاربر</text>
+<g>
+ <rect x="50" y="390" width="255" height="145" rx="20" fill="#100d21" stroke="#523080"/>
+ <rect x="322" y="390" width="255" height="145" rx="20" fill="#100d21" stroke="#523080"/>
+ <rect x="594" y="390" width="255" height="145" rx="20" fill="#100d21" stroke="#523080"/>
+ <rect x="866" y="390" width="284" height="145" rx="20" fill="#100d21" stroke="#523080"/>
+ <g font-family="sans-serif" text-anchor="middle">
+  <g fill="#a995c9" font-size="17"><text x="177" y="432">حجم مصرف‌شده</text><text x="449" y="432">حجم باقیمانده</text><text x="721" y="432">زمان باقی‌مانده</text><text x="1008" y="432">پروتکل / پورت</text></g>
+  <g fill="#fff" font-size="27" font-weight="900"><text x="177" y="485">1.2 GB</text><text x="449" y="485">8.8 GB</text><text x="721" y="485">23 روز</text><text x="1008" y="485">VLESS · 443</text></g>
+  <g fill="#817590" font-size="13"><text x="177" y="513">از 10 GB</text><text x="449" y="513">مانده از پلن</text><text x="721" y="513">تا پایان اعتبار</text><text x="1008" y="513">مقادیر نمونهٔ تصویر</text></g>
+ </g>
+</g>
+<rect x="50" y="560" width="530" height="310" rx="22" fill="#0b0919" stroke="#523080"/>
+<text x="535" y="605" text-anchor="end" font-family="sans-serif" font-size="21" font-weight="800" fill="#fff">کانفیگ‌های اشتراک</text>
+<text x="535" y="630" text-anchor="end" font-family="sans-serif" font-size="13" fill="#a99abb">ساخته‌شده از تنظیمات واقعی inbound</text>
+<g font-family="sans-serif">
+ <rect x="75" y="650" width="480" height="58" rx="13" fill="#110d22" stroke="#44236e"/><text x="515" y="684" text-anchor="end" font-size="16" font-weight="800" fill="#f6efff">POMP-NET-MOHAMMAD-SUPER-JINX-01</text>
+ <rect x="75" y="720" width="480" height="58" rx="13" fill="#110d22" stroke="#44236e"/><text x="515" y="754" text-anchor="end" font-size="16" font-weight="800" fill="#f6efff">POMP-NET-MOHAMMAD-SUPER-JINX-02</text>
+ <rect x="75" y="790" width="480" height="58" rx="13" fill="#110d22" stroke="#44236e"/><text x="515" y="824" text-anchor="end" font-size="16" font-weight="800" fill="#f6efff">POMP-NET-MOHAMMAD-SUPER-JINX-03</text>
+</g>
+<rect x="605" y="560" width="545" height="310" rx="22" fill="#0b0919" stroke="#523080"/>
+<text x="1105" y="605" text-anchor="end" font-family="sans-serif" font-size="21" font-weight="800" fill="#fff">QR و لینک اشتراک</text>
+<rect x="655" y="640" width="150" height="150" rx="12" fill="#fff"/>
+<g fill="#050509"><path d="M670 655h42v42h-42zM679 664v24h24v-24zM748 655h42v42h-42zM757 664v24h24v-24zM670 730h42v42h-42zM679 739v24h24v-24zM725 660h10v10h-10zM725 680h10v20h-10zM740 710h10v10h-10zM760 715h10v10h-10zM730 740h10v10h-10zM750 755h10v10h-10zM780 735h10v30h-10z"/></g>
+<rect x="835" y="650" width="275" height="52" rx="13" fill="#080712" stroke="#3d2860"/>
+<text x="1088" y="682" text-anchor="end" font-family="sans-serif" font-size="14" fill="#a9a0ba">https://…/sub/UUID</text>
+<rect x="835" y="720" width="275" height="48" rx="13" fill="url(#btn)"/>
+<text x="972" y="751" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="900" fill="#fff">کپی لینک اشتراک</text>
+<text x="1080" y="813" text-anchor="end" font-family="sans-serif" font-size="14" fill="#a99cbb">QR برای هر کانفیگ · کپی تکی · کپی همه</text>
+<text x="600" y="892" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#8e82a7">طرح گرافیکی معرفی؛ اعداد و QR داخل این تصویر نمونه هستند.</text>
+</svg>

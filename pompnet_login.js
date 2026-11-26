@@ -48,7 +48,7 @@
             <div class="pompnet-login-title">
 
                 <span class="pompnet-title-main">
-                    MR. MOHAMMAD
+                    POMP NET MOHAMMAD
                 </span>
 
                 <span class="pompnet-title-divider">
@@ -56,13 +56,13 @@
                 </span>
 
                 <span class="pompnet-title-brand">
-                    POMPNET
+                    SUPER JINX
                 </span>
 
             </div>
 
             <div class="pompnet-login-credit">
-                ✦ کدنویسی و توسعه اختصاصی توسط تیم پمپ‌نت • آقا امیر ✦
+                قدرت ساخت، آزادی انتخاب، کنترل در دستان تو
             </div>
         `;
 

@@ -39,7 +39,7 @@ if old_auth in text:
 
 elif '"username": _env_user or "admin"' not in text:
     raise SystemExit(
-        "ERROR: AHB AUTH block not found; stopped safely"
+        "ERROR: CORE AUTH block not found; stopped safely"
     )
 
 
@@ -99,7 +99,7 @@ new_login = '''    owner_username = str(
             }
 
     # ========================================================
-    # REAL AHB SUB-ADMIN LOGIN
+    # REAL SUB-ADMIN LOGIN
     # ========================================================
 
     elif username:
@@ -180,7 +180,7 @@ print("POMP NET REAL LOGIN PATCH: OK")
 print("OWNER USERNAME: ADMIN_USERNAME")
 print("OWNER PASSWORD: ADMIN_PASSWORD")
 print("BLANK USERNAME OWNER LOGIN: PRESERVED")
-print("AHB SUB-ADMIN LOGIN: PRESERVED")
+print("SUB-ADMIN LOGIN: PRESERVED")
 print("NO DASHBOARD CHANGES")
 print("NO SUBSCRIPTION CHANGES")
 print("NO VLESS CHANGES")

@@ -61,7 +61,7 @@ def main():
     if not login_js_path.is_file():
         raise SystemExit("SAFE STOP: login artwork source is missing")
     login_js_source = login_js_path.read_text(encoding="utf-8")
-    logo_match = re.search(r"const logoSvg = [\x60]([\\s\\S]*?)[\x60];", login_js_source)
+    logo_match = re.search(r"const logoSvg = [\x60]([\s\S]*?)[\x60];", login_js_source)
     if not logo_match:
         raise SystemExit("SAFE STOP: SUPER JINX logo SVG was not found")
     logo_b64 = base64.b64encode(logo_match.group(1).encode("utf-8")).decode("ascii")
@@ -75,7 +75,6 @@ def main():
         '<div class="brand-mark">AHB</div>': logo_html,
         'snapshot.get("label", "AHB Panel")': 'snapshot.get("label", "POMP NET MOHAMMAD")',
         '<title>{label} | AHB PANEL</title>': '<title>{label} | POMP NET MOHAMMAD — SUPER JINX</title>',
-        '<div class="brand-mark">AHB</div>': '<div class="brand-mark">PJ</div>',
         '<div class="brand-name">PANEL</div>': '<div class="brand-name">NET · SUPER JINX</div>',
         '<div class="brand-sub">اتصال سریع، بدون محدودیت</div>': '<div class="brand-sub">POMP NET MOHAMMAD</div>',
         '<h1>طرح ویژه</h1>': '<h1>اشتراک SUPER JINX</h1>',

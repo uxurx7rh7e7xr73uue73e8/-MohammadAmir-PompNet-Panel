@@ -70,6 +70,19 @@
       <div class="pompnet-login-divider"><i></i><b>✦</b><i></i></div>
     `;
     anchor.parentNode.insertBefore(brand, anchor);
+    function addPerks(box) {
+      if (!box || box.querySelector(".pompnet-login-perks")) return;
+      const perks = document.createElement("div");
+      perks.className = "pompnet-login-perks";
+      perks.innerHTML = `
+        <span><b>✦</b> مدیریت یکپارچه</span>
+        <span><b>◈</b> QR و کپی کانفیگ</span>
+        <span><b>♛</b> اشتراک هوشمند</span>
+      `;
+      box.appendChild(perks);
+    }
+    addPerks(loginBox);
+    addPerks(setupBox);
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", addPompNetLoginBrand, {once:true});

@@ -25,7 +25,7 @@ new_auth = '''_env_user = os.environ.get(
 
 _env_pw = os.environ.get(
     "ADMIN_PASSWORD",
-    "admin",
+    "",
 ).strip()
 
 AUTH = {

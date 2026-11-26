@@ -131,15 +131,15 @@ def patch_news():
 
     if "POMP NET MOHAMMAD — SUPER JINX" not in message:
         message = message.rstrip() + (
-            "\\n\\n━━━━━━━━━━━━━━━━━━"
-            "\\n⚡ POMP NET MOHAMMAD — SUPER JINX"
-            "\\nقدرت ساخت، آزادی انتخاب، کنترل در دستان تو"
-            "\\nپشتیبانی: @NovaTunneli"
-            "\\nکانال رسمی: @pompnet"
+            "\n\n━━━━━━━━━━━━━━━━━━"
+            "\n⚡ POMP NET MOHAMMAD — SUPER JINX"
+            "\nقدرت ساخت، آزادی انتخاب، کنترل در دستان تو"
+            "\nپشتیبانی: @NovaTunneli"
+            "\nکانال رسمی: @pompnet"
         )
 
     data["message"] = message
-    atomic_write(NEWS, json.dumps(data, ensure_ascii=False, indent=2) + "\\n")
+    atomic_write(NEWS, json.dumps(data, ensure_ascii=False, indent=2) + "\n")
 
     saved = json.loads(NEWS.read_text(encoding="utf-8"))
     if (
@@ -149,7 +149,6 @@ def patch_news():
         or "@NovaTunneli" not in saved["message"]
     ):
         raise SystemExit("SAFE STOP: Telegram news branding validation failed")
-
 
 def main():
     patch_bot()

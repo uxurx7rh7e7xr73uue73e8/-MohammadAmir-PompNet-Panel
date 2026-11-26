@@ -148,18 +148,18 @@ def main():
     theme_css = r"""
 
 /* POMP NET SUPER JINX REAL CONFIG LIST */
-.pn-config-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;color:#b8accb;font-size:11px}
-.pn-config-list{display:grid;gap:9px}
-.pn-config-row{display:flex;align-items:center;gap:11px;min-width:0;padding:12px;border:1px solid rgba(139,53,255,.20);border-radius:16px;background:linear-gradient(110deg,rgba(139,53,255,.09),rgba(22,140,255,.045)),rgba(5,5,12,.72)}
-.pn-config-index{flex:0 0 34px;height:34px;display:grid;place-items:center;border-radius:11px;background:rgba(139,53,255,.14);color:#b98cff;font-weight:900}
-.pn-config-main{flex:1;min-width:0;display:grid;gap:4px}
-.pn-config-main strong{font-size:12px;overflow-wrap:anywhere;color:#f5f0ff}
-.pn-config-main small{font-size:9px;color:#a99cbd;direction:ltr;text-align:right}
-.pn-config-actions{display:flex;gap:6px}
-.pn-config-btn{border:1px solid rgba(139,53,255,.28);border-radius:11px;padding:9px 12px;background:rgba(139,53,255,.12);color:#e9dcff;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer}
-.pn-config-btn:hover{background:rgba(139,53,255,.22)}
-.pn-copy-all{white-space:nowrap}
-@media(max-width:430px){.pn-config-row{gap:7px;padding:9px}.pn-config-index{flex-basis:29px;height:31px}.pn-config-main strong{font-size:10px}.pn-config-btn{padding:8px 9px;font-size:9px}}
+.pn-config-toolbar{{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;color:#b8accb;font-size:11px}}
+.pn-config-list{{display:grid;gap:9px}}
+.pn-config-row{{display:flex;align-items:center;gap:11px;min-width:0;padding:12px;border:1px solid rgba(139,53,255,.20);border-radius:16px;background:linear-gradient(110deg,rgba(139,53,255,.09),rgba(22,140,255,.045)),rgba(5,5,12,.72)}}
+.pn-config-index{{flex:0 0 34px;height:34px;display:grid;place-items:center;border-radius:11px;background:rgba(139,53,255,.14);color:#b98cff;font-weight:900}}
+.pn-config-main{{flex:1;min-width:0;display:grid;gap:4px}}
+.pn-config-main strong{{font-size:12px;overflow-wrap:anywhere;color:#f5f0ff}}
+.pn-config-main small{{font-size:9px;color:#a99cbd;direction:ltr;text-align:right}}
+.pn-config-actions{{display:flex;gap:6px}}
+.pn-config-btn{{border:1px solid rgba(139,53,255,.28);border-radius:11px;padding:9px 12px;background:rgba(139,53,255,.12);color:#e9dcff;font-family:inherit;font-size:10px;font-weight:700;cursor:pointer}}
+.pn-config-btn:hover{{background:rgba(139,53,255,.22)}}
+.pn-copy-all{{white-space:nowrap}}
+@media(max-width:430px){{.pn-config-row{{gap:7px;padding:9px}}.pn-config-index{{flex-basis:29px;height:31px}}.pn-config-main strong{{font-size:10px}}.pn-config-btn{{padding:8px 9px;font-size:9px}}}}
 
 /* POMP NET SUPER JINX INFO PAGE */
 :root{{--bg:#050509;--card:rgba(17,12,31,.94);--card2:rgba(20,13,37,.88);--line:rgba(139,53,255,.24);--text:#f7f4ff;--muted:#a99cbd;--blue:#168cff;--purple:#8b35ff;--pink:#8b35ff;--green:#16e6a0}}

@@ -40,9 +40,7 @@
                 class="pompnet-logo-circle"
                 aria-label="PompNet"
             >
-                <span class="pompnet-logo-text">
-                    PN
-                </span>
+                <span class="pompnet-logo-text" aria-hidden="true">PJ</span>
             </div>
 
             <div class="pompnet-login-title">

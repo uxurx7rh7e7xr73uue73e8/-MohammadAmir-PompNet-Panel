@@ -26,7 +26,7 @@ marker = 'id="pompnet-subscription-special-style"'
 if marker not in html:
     if "</head>" not in html:
         raise SystemExit("POMP NET subscription UI: head element missing")
-    font_link = '<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">\\n'
+    font_link = '<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">\n'
     premium_style = """<style id="pompnet-subscription-special-style">
 /* POMP NET MOHAMMAD — premium subscription identity */
 :root {{ --pn-violet:#963cff; --pn-blue:#168cff; --pn-ink:#070510; }}

@@ -14,8 +14,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     POMPNET_WS_HANDSHAKE_LIMIT=60 \
     POMPNET_WS_HANDSHAKE_WINDOW=60 \
     POMPNET_HSTS=1 \
-    ADMIN_USERNAME=admin \
-    ADMIN_PASSWORD=admin
+    ADMIN_USERNAME=admin
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \

@@ -9,6 +9,12 @@ import main as panel
 
 from pompnet_security import install_security
 
+# Fail closed: never start with a built-in/default owner password.
+if not os.getenv("ADMIN_PASSWORD", "").strip():
+    raise RuntimeError(
+        "ADMIN_PASSWORD is required. Set a strong secret in Railway Variables."
+    )
+
 
 # ============================================================
 # POMP NET SECURITY

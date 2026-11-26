@@ -33,7 +33,7 @@ for old, new in replacements.items():
 
 # Vazirmatn is already loaded by the original page; add Space Grotesk for Latin branding.
 if "family=Space+Grotesk" not in html:
-    font_link = '<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">\\n'
+    font_link = '<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">\n'
     if "</head>" not in html:
         raise SystemExit("POMP NET subscription UI: head element missing")
     html = html.replace("</head>", font_link + "</head>", 1)
@@ -59,7 +59,7 @@ marker = "POMP NET NEXUS — premium subscription identity"
 if marker not in html:
     if html.count(style_marker) != 1:
         raise SystemExit("POMP NET subscription UI: expected exactly one style close in info page")
-    html = html.replace(style_marker, style_addition + "\\n" + style_marker, 1)
+    html = html.replace(style_marker, style_addition + "\n" + style_marker, 1)
 
 updated = source[:start] + html + source[end:]
 if updated != source:

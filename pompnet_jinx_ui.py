@@ -122,7 +122,7 @@ def main():
 
     config_items = []
     for index, config_host in enumerate(config_hosts, start=1):
-        config_name = f"POMP-NET-MOHAMMAD-SUPER-JINX-{index:02d}"
+        config_name = f"⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX-{index:02d}"
         config_value = generate_vless_link(
             uid, config_host, remark=config_name,
             protocol=snapshot.get("protocol", DEFAULT_PROTOCOL),

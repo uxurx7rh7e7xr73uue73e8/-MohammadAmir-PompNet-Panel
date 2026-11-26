@@ -361,7 +361,7 @@ def now_ir():'''
         main_anchor = '<main class="main" id="main">'
         if main_anchor not in html:
             raise RuntimeError("SAFE STOP: dashboard main container not found")
-        html = html.replace(main_anchor, main_anchor + "\\n" + banner, 1)
+        html = html.replace(main_anchor, main_anchor + "\n" + banner, 1)
         data = data[:start] + html + data[end:]
     return data
 

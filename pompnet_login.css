@@ -301,3 +301,68 @@
         padding: 0 8px;
     }
 }
+
+
+/* SUPER JINX LOGIN — responsive premium finish */
+body {
+  background:
+    radial-gradient(ellipse 52% 38% at 95% 8%,rgba(22,140,255,.17),transparent 72%),
+    radial-gradient(ellipse 48% 42% at 5% 90%,rgba(139,53,255,.20),transparent 70%),
+    linear-gradient(160deg,#050509,#10091d 56%,#050509) !important;
+}
+#loginBox {
+  position:relative;
+  z-index:2;
+  width:min(100%,520px) !important;
+  padding:clamp(22px,5vw,38px) !important;
+  border:1px solid rgba(139,53,255,.27) !important;
+  border-radius:26px !important;
+  background:linear-gradient(145deg,rgba(20,14,32,.97),rgba(8,8,15,.98)) !important;
+  box-shadow:0 28px 90px rgba(0,0,0,.48),0 0 55px rgba(139,53,255,.10),inset 0 1px rgba(255,255,255,.06) !important;
+}
+.pompnet-logo-circle {
+  width:clamp(92px,24vw,126px) !important;
+  height:clamp(92px,24vw,126px) !important;
+  border-radius:27px !important;
+  transform:rotate(-5deg);
+}
+.pompnet-logo-circle .pompnet-logo-text {
+  transform:rotate(5deg);
+  font:950 34px/1 Orbitron,system-ui,sans-serif;
+  letter-spacing:-3px;
+  color:#fff;
+  text-shadow:0 2px 14px rgba(0,0,0,.3);
+}
+.pompnet-login-title {
+  flex-wrap:wrap;
+  white-space:normal !important;
+  gap:5px 8px;
+  line-height:1.55;
+  font-size:clamp(15px,4.2vw,23px) !important;
+  padding:0 4px;
+}
+.pompnet-title-divider {display:none}
+.pompnet-title-brand {display:block}
+.pompnet-login-credit {line-height:2;max-width:100%;font-size:12px}
+#loginBox input:not([type=checkbox]):not([type=radio]) {
+  min-height:54px;
+  border-radius:15px;
+  border:1px solid rgba(139,53,255,.20);
+  background:rgba(5,5,12,.82);
+  color:#fff;
+}
+#loginBox input:focus {
+  border-color:#8b35ff;
+  box-shadow:0 0 0 3px rgba(139,53,255,.12),0 0 24px rgba(22,140,255,.12);
+}
+#loginBox button[type=submit], #loginBox button {
+  min-height:54px;
+  border-radius:15px;
+  background:linear-gradient(100deg,#168cff,#8b35ff);
+  box-shadow:0 12px 30px rgba(139,53,255,.25);
+}
+@media(max-width:600px) {
+  body {padding:12px !important}
+  #loginBox {width:100% !important;padding:22px 17px !important;border-radius:21px !important}
+  .pompnet-login-title {letter-spacing:.1px}
+}

@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1680" viewBox="0 0 1200 1680" role="img" aria-labelledby="t d">
+<title id="t">POMP NET MOHAMMAD — SUPER JINX interface preview</title><desc id="d">نمای مفهومی رابط ورود، داشبورد و اشتراک POMP NET SUPER JINX با تم مشکی، بنفش و آبی.</desc>
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#03040b"/><stop offset=".48" stop-color="#100824"/><stop offset="1" stop-color="#030711"/></linearGradient>
+ <linearGradient id="edge" x2="1" y2="1"><stop stop-color="#168cff"/><stop offset=".52" stop-color="#8b35ff"/><stop offset="1" stop-color="#d45bff"/></linearGradient>
+ <linearGradient id="button" x2="1"><stop stop-color="#087ff0"/><stop offset=".55" stop-color="#6541ff"/><stop offset="1" stop-color="#a52cff"/></linearGradient>
+ <linearGradient id="silver" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".5" stop-color="#b8c9ff"/><stop offset="1" stop-color="#8b55ff"/></linearGradient>
+ <radialGradient id="aura"><stop stop-color="#6632ff" stop-opacity=".55"/><stop offset="1" stop-color="#080819" stop-opacity="0"/></radialGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="12" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="shadow"><feGaussianBlur stdDeviation="24"/></filter>
+ <pattern id="grid" width="38" height="38" patternUnits="userSpaceOnUse"><path d="M38 0H0V38" fill="none" stroke="#bbaaff" stroke-opacity=".06"/></pattern>
+</defs>
+<rect width="1200" height="1680" rx="34" fill="url(#bg)"/>
+<rect width="1200" height="1680" rx="34" fill="url(#grid)"/>
+<circle cx="150" cy="90" r="340" fill="#168cff" opacity=".10" filter="url(#shadow)"/>
+<circle cx="1080" cy="700" r="400" fill="#8b35ff" opacity=".13" filter="url(#shadow)"/>
+<!-- login screen -->
+<rect x="24" y="22" width="1152" height="748" rx="32" fill="#080815" stroke="url(#edge)" stroke-width="3"/>
+<rect x="36" y="34" width="1128" height="724" rx="25" fill="url(#aura)" opacity=".65"/>
+<g opacity=".95" filter="url(#glow)">
+ <path d="M590 270C440 105 260 98 90 175c135 6 265 65 390 170-133-63-254-54-350-23 143 28 260 85 375 166-94-24-174-14-260 22 160 21 270 8 355-45z" fill="#5222c5" stroke="#9a83ff" stroke-width="3"/>
+ <path d="M610 270c150-165 330-172 500-95-135 6-265 65-390 170 133-63 254-54 350-23-143 28-260 85-375 166 94-24 174-14 260 22-160 21-270 8-355-45z" fill="#173c9d" stroke="#4aafff" stroke-width="3"/>
+ <circle cx="600" cy="260" r="125" fill="#09091c" stroke="url(#edge)" stroke-width="8"/>
+ <path d="M485 145l34-80 52 56 29-90 29 90 52-56 34 80" fill="none" stroke="url(#silver)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+ <text x="600" y="315" text-anchor="middle" font-family="Arial,sans-serif" font-size="160" font-style="italic" font-weight="900" fill="url(#silver)" stroke="#24104c" stroke-width="4" paint-order="stroke">PJ</text>
+</g>
+<text x="600" y="430" text-anchor="middle" font-family="Arial,sans-serif" font-size="36" font-weight="900" fill="#fff">POMP NET MOHAMMAD</text>
+<text x="600" y="478" text-anchor="middle" font-family="Arial,sans-serif" font-size="43" font-style="italic" font-weight="900" fill="#ad68ff">SUPER JINX</text>
+<text x="600" y="520" text-anchor="middle" font-family="sans-serif" font-size="21" fill="#d9d1ef">قدرت ساخت، آزادی انتخاب، کنترل در دستان تو</text>
+<rect x="170" y="555" width="860" height="175" rx="28" fill="#090816" stroke="url(#edge)" stroke-width="2"/>
+<text x="980" y="600" text-anchor="end" font-family="sans-serif" font-size="19" fill="#c8bddc">نام کاربری مدیر</text>
+<rect x="205" y="620" width="790" height="42" rx="12" fill="#03040c" stroke="#38265d"/>
+<text x="950" y="649" text-anchor="end" font-family="sans-serif" font-size="18" fill="#77718c">نام کاربری</text>
+<text x="980" y="692" text-anchor="end" font-family="sans-serif" font-size="19" fill="#c8bddc">رمز عبور</text>
+<rect x="205" y="705" width="790" height="10" rx="5" fill="url(#button)"/>
+<!-- dashboard -->
+<rect x="24" y="795" width="1152" height="858" rx="32" fill="#070711" stroke="url(#edge)" stroke-width="3"/>
+<rect x="25" y="796" width="1150" height="76" rx="30" fill="#0d0b1b"/>
+<path d="M25 872H1175" stroke="#58318d" stroke-width="2"/>
+<text x="95" y="844" font-family="Arial,sans-serif" font-size="24" font-weight="900" fill="#fff">♛</text>
+<text x="155" y="843" font-family="Arial,sans-serif" font-size="22" font-weight="900" fill="#fff">POMP NET MOHAMMAD</text>
+<text x="155" y="864" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#a85aff">SUPER JINX</text>
+<rect x="45" y="900" width="190" height="710" rx="20" fill="#0c0a19" stroke="#342057"/>
+<g font-family="sans-serif" font-size="19" fill="#d7c9ee">
+ <text x="205" y="955" text-anchor="end">داشبورد</text><text x="205" y="1020" text-anchor="end">مدیریت کاربران</text><text x="205" y="1085" text-anchor="end">ساخت کانفیگ</text><text x="205" y="1150" text-anchor="end">لیست کانفیگ‌ها</text><text x="205" y="1215" text-anchor="end">ساب پنل</text><text x="205" y="1280" text-anchor="end">تلگرام بات</text><text x="205" y="1345" text-anchor="end">تنظیمات</text>
+</g>
+<rect x="255" y="900" width="895" height="215" rx="24" fill="#0c0a1d" stroke="#53308a"/>
+<circle cx="1050" cy="1000" r="120" fill="url(#aura)"/>
+<g filter="url(#glow)">
+ <path d="M870 1010c-80-70-150-65-220-25 65 5 110 28 160 65-54-20-100-12-140 10 70 12 130 5 195-18z" fill="#5523b7"/>
+ <path d="M890 1010c80-70 150-65 220-25-65 5-110 28-160 65 54-20 100-12 140 10-70 12-130 5-195-18z" fill="#164cba"/>
+ <text x="880" y="1045" text-anchor="middle" font-family="Arial,sans-serif" font-size="84" font-style="italic" font-weight="900" fill="url(#silver)">PJ</text>
+</g>
+<text x="610" y="980" text-anchor="middle" font-family="sans-serif" font-size="26" font-weight="900" fill="#fff">به پنل پمپ نت محمد خوش آمدید</text>
+<text x="610" y="1020" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="900" fill="#b16cff">POMP NET MOHAMMAD — SUPER JINX</text>
+<text x="610" y="1060" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#b6a9ca">مدیریت هوشمند کاربران، کانفیگ‌ها و اشتراک‌ها</text>
+<g>
+ <rect x="255" y="1135" width="210" height="125" rx="18" fill="#100d21" stroke="#53308a"/>
+ <rect x="480" y="1135" width="210" height="125" rx="18" fill="#100d21" stroke="#53308a"/>
+ <rect x="705" y="1135" width="210" height="125" rx="18" fill="#100d21" stroke="#53308a"/>
+ <rect x="930" y="1135" width="220" height="125" rx="18" fill="#100d21" stroke="#53308a"/>
+ <g font-family="sans-serif" text-anchor="middle"><g fill="#9f69ff" font-size="18"><text x="360" y="1178">اتصال‌های فعال</text><text x="585" y="1178">کل حجم مصرفی</text><text x="810" y="1178">کل کاربران</text><text x="1040" y="1178">وضعیت سرویس</text></g><g fill="#fff" font-size="26" font-weight="900"><text x="360" y="1227">∞</text><text x="585" y="1227">—</text><text x="810" y="1227">—</text><text x="1040" y="1227">LIVE</text></g></g>
+</g>
+<rect x="255" y="1280" width="435" height="165" rx="20" fill="#0e0b1d" stroke="#53308a"/>
+<rect x="710" y="1280" width="440" height="165" rx="20" fill="#0e0b1d" stroke="#53308a"/>
+<text x="650" y="1325" text-anchor="end" font-family="sans-serif" font-size="21" fill="#fff">وضعیت سرویس</text>
+<text x="650" y="1370" text-anchor="end" font-family="sans-serif" font-size="18" fill="#38e9a7">● آنلاین</text>
+<text x="650" y="1410" text-anchor="end" font-family="sans-serif" font-size="16" fill="#bcaed1">اطلاعات از هستهٔ فعال پنل خوانده می‌شود</text>
+<text x="1110" y="1325" text-anchor="end" font-family="sans-serif" font-size="21" fill="#fff">اطلاعات سریع</text>
+<text x="1110" y="1370" text-anchor="end" font-family="sans-serif" font-size="17" fill="#bcaed1">پروتکل و پورت واقعی</text>
+<text x="1110" y="1410" text-anchor="end" font-family="sans-serif" font-size="17" fill="#bcaed1">مصرف و وضعیت کاربران</text>
+<rect x="255" y="1465" width="895" height="110" rx="20" fill="#100b22" stroke="#53308a"/>
+<text x="700" y="1515" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#fff">POMP NET · SUPER JINX</text>
+<text x="700" y="1550" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#b99bdf">پیش‌نمایش گرافیکی رابط — داده‌های نمایشی داخل تصویر ثابت هستند</text>
+<text x="600" y="1620" text-anchor="middle" font-family="sans-serif" font-size="17" fill="#a99cbd">POMP NET MOHAMMAD · SUPER JINX</text>
+</svg>

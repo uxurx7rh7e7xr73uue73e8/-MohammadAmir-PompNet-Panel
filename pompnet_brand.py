@@ -3,6 +3,7 @@ import re
 import hashlib
 import py_compile
 import os
+import base64
 import tempfile
 
 
@@ -351,6 +352,24 @@ def now_ir():'''
   </div>
   <span class="pn-jinx-status"><i></i> SUPER JINX SYSTEM</span>
 </div>"""
+    # SUPER JINX SHARED WINGED ARTWORK
+    login_js_source = LOGIN_JS.read_text(encoding="utf-8")
+    logo_match = re.search(r"const logoSvg = [\x60]([\s\S]*?)[\x60];", login_js_source)
+    if not logo_match:
+        raise RuntimeError("SAFE STOP: shared SUPER JINX logo artwork not found")
+    logo_b64 = base64.b64encode(logo_match.group(1).encode("utf-8")).decode("ascii")
+    logo_uri = "data:image/svg+xml;base64," + logo_b64
+    mark_pattern = re.compile(
+        r'(<div class="pn-jinx-mark" aria-hidden="true"><img alt="" src=")[^"]+("></div>)'
+    )
+    banner, logo_count = mark_pattern.subn(
+        lambda match: match.group(1) + logo_uri + match.group(2),
+        banner,
+        count=1,
+    )
+    if logo_count != 1:
+        raise RuntimeError("SAFE STOP: dashboard logo image anchor did not match exactly once")
+
     page = "DASHBOARD_HTML"
     block = get_html_block(data, page)
     if not block:

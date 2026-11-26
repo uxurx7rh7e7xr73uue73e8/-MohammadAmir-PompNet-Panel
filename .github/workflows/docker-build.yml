@@ -1,0 +1,60 @@
+name: Docker and runtime smoke test
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  docker-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build the production image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: pompnet-super-jinx:ci
+
+      - name: Start the panel container
+        run: docker run -d --name pompnet-smoke -p 8080:8080 -e PORT=8080 -e ADMIN_USERNAME=admin -e ADMIN_PASSWORD=smoke-test pompnet-super-jinx:ci
+
+      - name: Verify health endpoint
+        run: |
+          for attempt in $(seq 1 45); do
+            if curl --fail --silent http://127.0.0.1:8080/health > /tmp/health.json; then
+              break
+            fi
+            sleep 2
+          done
+          cat /tmp/health.json
+          grep -Eq '"status"[[:space:]]*:[[:space:]]*"(ok|healthy)"' /tmp/health.json
+
+      - name: Verify read-only dashboard preview
+        run: |
+          curl --fail --silent http://127.0.0.1:8080/pompnet-preview > /tmp/preview.html
+          grep -q 'POMP NET MOHAMMAD' /tmp/preview.html
+          grep -q 'READ ONLY' /tmp/preview.html
+
+      - name: Verify preserved subscription routes
+        run: |
+          docker exec pompnet-smoke python -c "from main import app; paths={getattr(r,'path','') for r in app.routes}; assert '/sub/{uuid}' in paths; assert '/info/{uid}' in paths; assert '/pass/{uid}' in paths; print('SUBSCRIPTION ROUTES: OK')"
+
+      - name: Container logs on failure
+        if: failure()
+        run: docker logs pompnet-smoke || true
+
+      - name: Stop smoke-test container
+        if: always()
+        run: docker rm -f pompnet-smoke || true

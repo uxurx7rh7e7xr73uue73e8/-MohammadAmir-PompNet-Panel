@@ -1,10 +1,10 @@
-# MohammadAmir-PompNet
+# POMP NET MOHAMMAD — SUPER JINX
 
 # 🚀 POMP NET
 
-## MR: Mohammad Pomp NetPanel
+## POMP NET MOHAMMAD — SUPER JINX
 
-### Mohammad & Amir
+### POMP NET MOHAMMAD — SUPER JINX
 
 پنل اختصاصی POMP NET با حفظ هسته و قابلیت‌های اصلی پنل.
 
@@ -25,23 +25,12 @@
 
 ## POMP NET
 
-### MR: Mohammad Pomp NetPanel
+### POMP NET MOHAMMAD — SUPER JINX
 
-### Mohammad & Amir
-
----
-
-## 👤 AMIR
-
-Telegram:
-
-@vpnstan2
-
-Channel:
-
-https://t.me/vpnstan1
+### POMP NET MOHAMMAD — SUPER JINX
 
 ---
+
 
 ## 🚀 POMP NET
 
@@ -75,7 +64,7 @@ https://github.com/uxurx7rh7e7xr73uue73e8
 
 Repository:
 
-MohammadAmir-PompNet
+POMP-NET-MOHAMMAD-SUPER-JINX
 
 Base:
 
@@ -117,6 +106,15 @@ POMP NET Core
 
 ---
 
+# 🧭 داشبورد نمایشی و JINX PASS
+
+- پیش‌نمایش فقط‌خواندنی: `/pompnet-preview`؛ فقط آمار تجمیعی را نشان می‌دهد و هیچ عملیات مدیریتی ندارد.
+- صفحه اشتراک اختصاصی: `/pass/{uuid}` و مسیر قدیمی `/info/{uuid}` هر دو به صفحه واقعی اطلاعات همان کانفیگ می‌رسند.
+- لینک اشتراک واقعی و سازگار قبلی `/sub/{uuid}` حفظ شده و همچنان خروجی Subscription را می‌دهد.
+- پورت، پروتکل، اثر انگشت، حجم، زمان و QR از اطلاعات همان کانفیگ خوانده می‌شوند؛ پورت عمومی کانفیگ با پورت داخلی Railway یکی فرض نمی‌شود.
+
+---
+
 # 🛡️ حفظ قابلیت‌های اصلی
 
 قابلیت‌های اصلی پنل نباید حذف یا خراب شوند.
@@ -149,11 +147,11 @@ POMP NET
 
 عنوان:
 
-MR: Mohammad Pomp NetPanel
+POMP NET MOHAMMAD — SUPER JINX
 
 تیم:
 
-Mohammad & Amir
+POMP NET MOHAMMAD — SUPER JINX
 
 پشتیبانی:
 
@@ -205,7 +203,7 @@ Deploy from GitHub Repo
 
 Repository:
 
-MohammadAmir-PompNet
+POMP-NET-MOHAMMAD-SUPER-JINX
 
 ---
 
@@ -559,9 +557,9 @@ POMP NET Panel
 
 POMP NET
 
-MR: Mohammad Pomp NetPanel
+POMP NET MOHAMMAD — SUPER JINX
 
-Mohammad & Amir
+POMP NET MOHAMMAD — SUPER JINX
 
 Support:
 
@@ -595,4 +593,4 @@ admin
 
 # POMP NET
 
-### Mohammad & Amir
+### POMP NET MOHAMMAD — SUPER JINX

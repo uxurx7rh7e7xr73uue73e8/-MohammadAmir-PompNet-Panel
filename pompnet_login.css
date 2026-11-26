@@ -29,16 +29,16 @@
     background:
         linear-gradient(
             135deg,
-            #7c3aed,
-            #2563eb,
-            #ec4899,
-            #7c3aed
+            #8b35ff,
+            #168cff,
+            #8b35ff,
+            #8b35ff
         );
 
     box-shadow:
-        0 0 18px rgba(37,99,235,.75),
-        0 0 38px rgba(124,58,237,.55),
-        0 0 65px rgba(236,72,153,.25);
+        0 0 18px rgba(22,140,255,.75),
+        0 0 38px rgba(139,53,255,.55),
+        0 0 65px rgba(139,53,255,.25);
 
     overflow: hidden;
 
@@ -85,25 +85,25 @@
 
     text-shadow:
         0 0 8px rgba(255,255,255,.35),
-        0 0 20px rgba(37,99,235,.65);
+        0 0 20px rgba(22,140,255,.65);
 }
 
 .pompnet-title-divider {
-    color: #ec4899;
+    color: #8b35ff;
 
     font-weight: 900;
 
     text-shadow:
-        0 0 10px rgba(236,72,153,.9);
+        0 0 10px rgba(139,53,255,.9);
 }
 
 .pompnet-title-brand {
     background:
         linear-gradient(
             90deg,
-            #60a5fa,
-            #a78bfa,
-            #f472b6
+            #168cff,
+            #8b35ff,
+            #8b35ff
         );
 
     -webkit-background-clip: text;
@@ -112,7 +112,7 @@
     -webkit-text-fill-color: transparent;
 
     text-shadow:
-        0 0 18px rgba(124,58,237,.45);
+        0 0 18px rgba(139,53,255,.45);
 }
 
 /* متن اختصاصی */
@@ -130,7 +130,7 @@
     letter-spacing: .2px;
 
     text-shadow:
-        0 0 8px rgba(124,58,237,.35);
+        0 0 8px rgba(139,53,255,.35);
 
     position: relative;
 }
@@ -155,7 +155,7 @@
             transparent,
             #8b35ff,
             #168cff,
-            #ff3dbb,
+            #8b35ff,
             #8b35ff,
             transparent
         );
@@ -221,18 +221,18 @@
         transform: scale(1);
 
         box-shadow:
-            0 0 18px rgba(37,99,235,.75),
-            0 0 38px rgba(124,58,237,.55),
-            0 0 65px rgba(236,72,153,.25);
+            0 0 18px rgba(22,140,255,.75),
+            0 0 38px rgba(139,53,255,.55),
+            0 0 65px rgba(139,53,255,.25);
     }
 
     50% {
         transform: scale(1.025);
 
         box-shadow:
-            0 0 25px rgba(37,99,235,.9),
-            0 0 50px rgba(124,58,237,.7),
-            0 0 75px rgba(236,72,153,.35);
+            0 0 25px rgba(22,140,255,.9),
+            0 0 50px rgba(139,53,255,.7),
+            0 0 75px rgba(139,53,255,.35);
     }
 }
 

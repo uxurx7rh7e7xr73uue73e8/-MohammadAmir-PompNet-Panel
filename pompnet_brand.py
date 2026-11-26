@@ -309,24 +309,26 @@ def apply_super_jinx_identity(data: str) -> str:
     replacement = '''def random_config_name(existing=None):
     existing = existing or set()
     for _ in range(80):
-        name = "POMP-NET-MOHAMMAD-SUPER-JINX-" + secrets.token_hex(3).upper()
+        name = "⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX-" + secrets.token_hex(3).upper()
         if name not in existing:
             return name
-    return "POMP-NET-MOHAMMAD-SUPER-JINX-" + secrets.token_hex(5).upper()
+    return "⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX-" + secrets.token_hex(5).upper()
 
 
 def sanitize_config_name(name: str) -> str:
-    prefix = "POMP-NET-MOHAMMAD-SUPER-JINX"
+    prefix = "⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX"
+    allowed_symbols = {"⚡", "👑", "✨", "💎", "🚀", "🪽", "🔮", "🌌", "✦", "•"}
     cleaned = "".join(
         ch for ch in str(name or "")
-        if ch.isascii() and (ch.isalnum() or ch in "-_")
-    ).strip("-_")
+        if (ch.isascii() and (ch.isalnum() or ch in "-_ "))
+        or ch in allowed_symbols
+    ).strip("-_ ")
     if not cleaned or cleaned == prefix:
         return random_config_name()
-    if cleaned.upper().startswith(prefix):
-        return cleaned[:40]
-    suffix = cleaned[:12].strip("-_")
-    return (prefix + ("-" + suffix if suffix else "-" + secrets.token_hex(2).upper()))[:40]
+    if cleaned.startswith(prefix):
+        return cleaned[:64]
+    suffix = cleaned[:12].strip("-_ ")
+    return (prefix + ("-" + suffix if suffix else "-" + secrets.token_hex(2).upper()))[:64]
 
 
 def auto_config_name() -> str:
@@ -340,7 +342,7 @@ def now_ir():'''
 
     data = data.replace(
         'mix_label = "Mix-" + random_config_name()[:6]',
-        'mix_label = "POMP-NET-MOHAMMAD-SUPER-JINX-MIX-" + secrets.token_hex(2).upper()',
+        'mix_label = "⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX-MIX-" + secrets.token_hex(2).upper()',
     )
 
     banner = """<div id="pompnet-super-jinx-banner" role="region" aria-label="POMP NET SUPER JINX">

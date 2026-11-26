@@ -60,7 +60,7 @@ def patch_bot():
             ),
             (
                 'label = data.get("label") or "px-" + os.urandom(3).hex()',
-                'label = data.get("label") or "POMP-NET-MOHAMMAD-SUPER-JINX-" + os.urandom(3).hex().upper()',
+                'label = data.get("label") or "⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX-" + os.urandom(3).hex().upper()',
             ),
         )
         for old, new in changes:
@@ -102,7 +102,7 @@ def patch_bot():
         MARKER,
         'BOT_NAME = "POMP NET MOHAMMAD"',
         'BOT_NAME_EN = "POMP NET SUPER JINX"',
-        "POMP-NET-MOHAMMAD-SUPER-JINX-",
+        "⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX-",
         "مدیریت واقعی پنل از تلگرام",
         "@pompnet",
         "@NovaTunneli",
@@ -169,7 +169,7 @@ def patch_core_config_names():
         replacement = '''# POMP NET MOHAMMAD SUPER JINX DEFAULT CONFIG NAMES
 def random_config_name(existing=None):
     existing = existing or set()
-    prefix = "POMP-NET-MOHAMMAD-SUPER-JINX-"
+    prefix = "⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX-"
     alphabet = string.ascii_uppercase + string.digits
     for _ in range(80):
         suffix = "".join(secrets.choice(alphabet) for _ in range(8))
@@ -189,7 +189,7 @@ def random_config_name(existing=None):
         atomic_write(MAIN, source)
 
     saved = MAIN.read_text(encoding="utf-8")
-    if marker not in saved or 'prefix = "POMP-NET-MOHAMMAD-SUPER-JINX-"' not in saved:
+    if marker not in saved or 'prefix = "⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX-"' not in saved:
         raise SystemExit("SAFE STOP: branded default config name validation failed")
     py_compile.compile(str(MAIN), doraise=True)
 
@@ -346,7 +346,7 @@ async function createSelectedJinxProtocols(){
   const created=[];let last=null;
   if(typeof toast==='function')toast('در حال ساخت اشتراک‌های چندپروتکلی…');
   for(const protocol of protocols){
-    const label=(name?name+'-':'')+'POMP-NET-MOHAMMAD-SUPER-JINX-'+protocol.toUpperCase().replace(/[^A-Z0-9-]/g,'-');
+    const label=(name?name+'-':'')+'⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX-'+protocol.toUpperCase().replace(/[^A-Z0-9-]/g,'-');
     const result=await api('/api/links',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,label,protocol})});
     if(result){created.push(protocol);last=result;}
   }

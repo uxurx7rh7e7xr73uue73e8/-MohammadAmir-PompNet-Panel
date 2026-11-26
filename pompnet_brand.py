@@ -450,14 +450,14 @@ def main():
     landing_changes = {
         '<div class="card">': '<div class="card pompnet-entry-card">',
         '<div class="logo">P</div>': '<div class="logo pompnet-entry-logo"><img src="' + landing_logo + '" alt="POMP NET SUPER JINX"></div>',
-        '<div class="brand-name">\nAHB Panel\n</div>': '<div class="brand-name">POMP NET MOHAMMAD</div>',
+        '<div class="brand-name">\nPOMP NET\n</div>': '<div class="brand-name">POMP NET MOHAMMAD</div>',
         '<div class="version">\n14.3.0\n</div>': '<div class="version">SUPER JINX · SECURE ACCESS</div>',
         '<div class="status">\n● سیستم آنلاین و فعال است\n</div>': '<div class="status">● درگاه رسمی ورود به پنل</div>',
         'برای ورود به پنل\n<br>\nابتدا وارد شوید': 'به دنیای SUPER JINX خوش آمدید',
-        'این صفحه، درگاه عمومی AHB Panel است.\nبرای دسترسی به داشبورد مدیریت از مسیر ورود استفاده کنید.': 'مرکز اختصاصی مدیریت کاربران، ساخت کانفیگ و اشتراک‌های POMP NET MOHAMMAD؛ برای ورود امن به داشبورد، ادامه دهید.',
+        'این صفحه، درگاه عمومی POMP NET است.\nبرای دسترسی به داشبورد مدیریت از مسیر ورود استفاده کنید.': 'مرکز اختصاصی مدیریت کاربران، ساخت کانفیگ و اشتراک‌های POMP NET MOHAMMAD؛ برای ورود امن به داشبورد، ادامه دهید.',
         '<div class="path">\n/login\n</div>': '<div class="path">POMP NET MOHAMMAD · SUPER JINX</div>',
         'ورود به پنل': 'ورود امن به پنل',
-        'AHB Panel · 14.3.0': 'POMP NET MOHAMMAD — SUPER JINX',
+        'POMP NET · 14.3.0': 'POMP NET MOHAMMAD — SUPER JINX',
     }
     data = replace_inside_html(data, "LANDING_HTML", landing_changes)
 

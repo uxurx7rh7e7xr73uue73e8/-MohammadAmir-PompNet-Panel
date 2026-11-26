@@ -48,7 +48,7 @@ def patch_bot():
     if MARKER not in source:
         changes = (
             ('BOT_NAME = "ای اچ بی بات"', 'BOT_NAME = "POMP NET MOHAMMAD"'),
-            ('BOT_NAME_EN = "AHB BOT"', 'BOT_NAME_EN = "SUPER JINX"'),
+            ('BOT_NAME_EN = "AHB BOT"', 'BOT_NAME_EN = "POMP NET SUPER JINX"'),
             (
                 'description=f"{BOT_NAME} ({BOT_NAME_EN}) — مدیریت کامل پنل AHBPanel از تلگرام",',
                 'description=f"{BOT_NAME} — {BOT_NAME_EN} | مدیریت پنل اختصاصی محمد از تلگرام | @pompnet",',
@@ -96,7 +96,7 @@ def patch_bot():
     required = (
         MARKER,
         'BOT_NAME = "POMP NET MOHAMMAD"',
-        'BOT_NAME_EN = "SUPER JINX"',
+        'BOT_NAME_EN = "POMP NET SUPER JINX"',
         "POMP-NET-MOHAMMAD-SUPER-JINX-",
         "مدیریت واقعی پنل از تلگرام",
         "@pompnet",

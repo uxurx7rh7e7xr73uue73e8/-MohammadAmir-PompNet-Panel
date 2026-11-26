@@ -138,6 +138,33 @@ a.btn.secondary{{background:rgba(255,255,255,.06);border:1px solid var(--line)}}
 footer{{text-align:center;color:#776c8c;font-size:10px;margin-top:22px}}
 @media(max-width:700px){{.wrap{{padding-top:17px}}header{{align-items:flex-start;flex-direction:column}}.grid{{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}}.card{{padding:14px}}.hero{{padding:18px}}}}
 @media(max-width:390px){{.grid{{grid-template-columns:1fr 1fr}}.badge{{font-size:10px}}}}
+
+/* SUPER JINX premium dashboard polish — presentation only */
+:root{color-scheme:dark}
+body{background-image:radial-gradient(900px 520px at 88% -8%,rgba(139,53,255,.25),transparent 62%),radial-gradient(680px 440px at 4% 24%,rgba(22,140,255,.16),transparent 66%),linear-gradient(180deg,#050509 0%,#090711 58%,#050509 100%)}
+.wrap{max-width:1180px;padding-top:34px}
+header{padding:14px 17px;border:1px solid rgba(139,53,255,.22);border-radius:20px;background:rgba(10,9,17,.82);box-shadow:0 14px 48px rgba(0,0,0,.28);backdrop-filter:blur(14px)}
+.logo{position:relative;border:1px solid rgba(255,255,255,.22);background:linear-gradient(145deg,#8b35ff 0%,#5120a8 55%,#168cff 100%);box-shadow:0 0 0 5px rgba(139,53,255,.07),0 12px 32px rgba(139,53,255,.28)}
+.logo:after{content:"";position:absolute;inset:-5px;border:1px solid rgba(139,53,255,.22);border-radius:19px}
+.hero{position:relative;overflow:hidden;padding:clamp(22px,4vw,34px);background:radial-gradient(440px 210px at 100% 0%,rgba(139,53,255,.22),transparent 70%),linear-gradient(125deg,rgba(23,14,40,.97),rgba(8,12,25,.97));border-color:rgba(166,112,255,.32);box-shadow:0 24px 72px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.05)}
+.hero:after{content:"SUPER JINX";position:absolute;left:22px;bottom:8px;font:900 38px/1 system-ui;letter-spacing:5px;color:rgba(255,255,255,.025);pointer-events:none}
+.hero h2{font-size:clamp(21px,4vw,29px);letter-spacing:-.5px}
+.grid{gap:15px}
+.card{position:relative;overflow:hidden;border-color:rgba(139,53,255,.22);background:linear-gradient(145deg,rgba(24,17,39,.96),rgba(10,10,18,.98));box-shadow:0 15px 38px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.035);transition:transform .2s ease,border-color .2s ease}
+.card:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,transparent,#8b35ff,#168cff,transparent);opacity:.72}
+.card:hover{transform:translateY(-3px);border-color:rgba(139,53,255,.48)}
+.value{font-variant-numeric:tabular-nums;letter-spacing:-.7px}
+.section{border-color:rgba(139,53,255,.2);background:linear-gradient(145deg,rgba(19,14,31,.96),rgba(8,9,16,.96));box-shadow:0 14px 36px rgba(0,0,0,.2)}
+.pill{border-radius:999px;background:rgba(139,53,255,.13);color:#e8d9ff}
+.pill.port{color:#cbe5ff}
+a.btn{box-shadow:0 9px 26px rgba(139,53,255,.23);transition:transform .18s ease,filter .18s ease}
+a.btn:hover{transform:translateY(-2px);filter:brightness(1.12)}
+a.btn.secondary{background:rgba(255,255,255,.045);box-shadow:none}
+.note{border-color:rgba(22,140,255,.24);background:linear-gradient(110deg,rgba(22,140,255,.09),rgba(139,53,255,.06))}
+footer{padding-top:16px;border-top:1px solid rgba(139,53,255,.13);letter-spacing:.3px}
+@media(max-width:700px){.wrap{padding-top:14px}.grid{gap:10px}header{padding:12px;border-radius:16px}.hero:after{font-size:27px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+
 </style>
 </head>
 <body>

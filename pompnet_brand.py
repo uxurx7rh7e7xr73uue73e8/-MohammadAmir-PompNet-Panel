@@ -458,7 +458,7 @@ def main():
         'این صفحه، درگاه عمومی POMP NET است.\nبرای دسترسی به داشبورد مدیریت از مسیر ورود استفاده کنید.': 'مرکز اختصاصی مدیریت کاربران، ساخت کانفیگ و اشتراک‌های POMP NET MOHAMMAD؛ برای ورود امن به داشبورد، ادامه دهید.',
         '<div class="path">\n/login\n</div>': '<div class="path">POMP NET MOHAMMAD · SUPER JINX</div>',
         'ورود به پنل': 'ورود امن به پنل',
-        'POMP NET': 'POMP NET MOHAMMAD — SUPER JINX',
+        '<span>\\nPOMP NET\\n</span>': '<span>POMP NET MOHAMMAD — SUPER JINX</span>',
     }
     data = replace_inside_html(data, "LANDING_HTML", landing_changes)
 

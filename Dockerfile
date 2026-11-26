@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-ARG AHB_CORE_COMMIT=f95c118169fd6c66e6e5b155a716cbdfc6e330c7
+ARG POMPNET_BASE_COMMIT=f95c118169fd6c66e6e5b155a716cbdfc6e330c7
 ARG XRAY_VERSION=26.7.28
 
 WORKDIR /app
@@ -22,12 +22,12 @@ RUN apt-get update \
        git ca-certificates curl unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# دریافت هسته واقعی پنل در نسخه مشخص
+# دریافت نسخه ثابت هسته پایه پنل
 RUN git clone \
       https://github.com/uxurx7rh7e7xr73uue73e8/ahbpanel.git \
       /tmp/panel-core \
     && cd /tmp/panel-core \
-    && git checkout --detach "${AHB_CORE_COMMIT}" \
+    && git checkout --detach "${POMPNET_BASE_COMMIT}" \
     && cp -a . /app/ \
     && rm -rf /tmp/panel-core \
     && test -f /app/main.py
@@ -59,6 +59,7 @@ COPY pompnet_brand_fix.py /tmp/pompnet_brand_fix.py
 COPY pompnet_login_patch.py /tmp/pompnet_login_patch.py
 COPY pompnet_login_credit.py /tmp/pompnet_login_credit.py
 COPY pompnet_jinx_ui.py /tmp/pompnet_jinx_ui.py
+COPY pompnet_integrations_brand.py /tmp/pompnet_integrations_brand.py
 
 # ماژول‌های موجود پروژه
 COPY pompnet_security.py /app/pompnet_security.py
@@ -78,6 +79,7 @@ RUN test -f /app/main.py \
     && test -f /tmp/pompnet_login_patch.py \
     && test -f /tmp/pompnet_login_credit.py \
     && test -f /tmp/pompnet_jinx_ui.py \
+    && test -f /tmp/pompnet_integrations_brand.py \
     && test -f /app/pompnet_security.py \
     && test -f /app/pompnet_xray.py \
     && test -f /app/xray_manager.py \
@@ -90,7 +92,8 @@ RUN python /tmp/pompnet_brand.py \
     && python /tmp/pompnet_brand_fix.py \
     && python /tmp/pompnet_login_patch.py \
     && python /tmp/pompnet_login_credit.py \
-    && python /tmp/pompnet_jinx_ui.py
+    && python /tmp/pompnet_jinx_ui.py \
+    && python /tmp/pompnet_integrations_brand.py
 
 # نصب وابستگی‌ها
 RUN python -m pip install --upgrade pip \
@@ -108,7 +111,8 @@ RUN python -m py_compile \
     /tmp/pompnet_brand_fix.py \
     /tmp/pompnet_login_patch.py \
     /tmp/pompnet_login_credit.py \
-    /tmp/pompnet_jinx_ui.py
+    /tmp/pompnet_jinx_ui.py \
+    /tmp/pompnet_integrations_brand.py
 
 RUN mkdir -p /data \
     && chmod 700 /data

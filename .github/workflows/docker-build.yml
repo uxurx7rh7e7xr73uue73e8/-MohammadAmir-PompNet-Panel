@@ -1,4 +1,4 @@
-name: Docker and runtime smoke test
+name: POMP NET SUPER JINX — Build and Runtime Verification
 
 on:
   pull_request:
@@ -46,6 +46,21 @@ jobs:
           curl --fail --silent http://127.0.0.1:8080/pompnet-preview > /tmp/preview.html
           grep -q 'POMP NET MOHAMMAD' /tmp/preview.html
           grep -q 'READ ONLY' /tmp/preview.html
+
+
+      - name: Verify login and Telegram branding
+        run: |
+          curl --fail --silent http://127.0.0.1:8080/login > /tmp/login.html
+          grep -q 'POMP NET MOHAMMAD' /tmp/login.html
+          grep -q 'SUPER JINX' /tmp/login.html
+          if grep -Eiq 'MR\\. MOHAMMAD|آقا امیر|AHB PANEL|AHBPanel' /tmp/login.html; then
+            echo "Unexpected legacy branding found on login page"
+            exit 1
+          fi
+          docker exec pompnet-smoke sh -c "grep -q 'BOT_NAME = \"POMP NET MOHAMMAD\"' /app/telegram_bot.py"
+          docker exec pompnet-smoke sh -c "grep -q 'BOT_NAME_EN = \"POMP NET SUPER JINX\"' /app/telegram_bot.py"
+          docker exec pompnet-smoke sh -c "grep -q 'Mohammad Pomp Net | SUPER JINX' /app/telegram_bot.py"
+          docker exec pompnet-smoke python -c "import json; n=json.load(open('/app/news.json')); assert 'POMP NET MOHAMMAD' in n['title']; assert '@NovaTunneli' in n['message']; print('BOT AND NEWS BRANDING: OK')"
 
       - name: Verify preserved subscription routes
         run: |

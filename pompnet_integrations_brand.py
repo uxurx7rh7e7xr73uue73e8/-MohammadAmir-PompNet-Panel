@@ -189,7 +189,7 @@ def random_config_name(existing=None):
         atomic_write(MAIN, source)
 
     saved = MAIN.read_text(encoding="utf-8")
-    if marker not in saved or 'prefix = "POMP-NET-MOHAMMAD-SUPER-JINX-"' not in saved:
+    if marker not in saved or 'prefix = "⚡👑 POMP-NET-MOHAMMAD-SUPER-JINX-"' not in saved:
         raise SystemExit("SAFE STOP: branded default config name validation failed")
     py_compile.compile(str(MAIN), doraise=True)
 

@@ -8,21 +8,17 @@ import tempfile
 target = Path("/app/main.py")
 if not target.is_file():
     raise SystemExit("POMP NET subscription UI: /app/main.py not found")
-
 source = target.read_text(encoding="utf-8")
-pattern = re.compile(r'(?m)^    info_html = f"""')
-match = pattern.search(source)
+
+match = re.search(r'(?m)^    info_html = f"""', source)
 if not match:
     raise SystemExit("POMP NET subscription UI: info_html template not found")
-
 start = match.end()
 end = source.find('"""', start)
 if end < 0:
     raise SystemExit("POMP NET subscription UI: info_html closing delimiter not found")
 
 html = source[start:end]
-original_html = html
-
 replacements = {
     '<div class="brand-mark">AHB</div>': '<div class="brand-mark">POMP</div>',
     '<div class="brand-name">PANEL</div>': '<div class="brand-name">NET MOHAMMAD</div>',
@@ -35,10 +31,16 @@ for old, new in replacements.items():
     elif new not in html:
         raise SystemExit(f"POMP NET subscription UI: expected brand target missing: {old}")
 
+# Vazirmatn is already loaded by the original page; add Space Grotesk for Latin branding.
+if "family=Space+Grotesk" not in html:
+    font_link = '<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">\\n'
+    if "</head>" not in html:
+        raise SystemExit("POMP NET subscription UI: head element missing")
+    html = html.replace("</head>", font_link + "</head>", 1)
+
 style_marker = "</style>"
 style_addition = """
 /* POMP NET NEXUS — premium subscription identity */
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap');
 :root {{ --pn-violet:#963cff; --pn-blue:#168cff; --pn-ink:#070510; }}
 html,body {{ font-family:'Vazirmatn','Space Grotesk',sans-serif !important; }}
 body {{ background:radial-gradient(ellipse at 12% 0%,rgba(117,48,210,.22),transparent 38%),radial-gradient(ellipse at 92% 8%,rgba(22,140,255,.16),transparent 34%),#050509 !important; }}

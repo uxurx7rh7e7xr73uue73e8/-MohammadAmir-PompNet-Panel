@@ -1,11 +1,13 @@
 from pathlib import Path
 import hashlib
+import base64
 import py_compile
 import re
 import tempfile
 
 MAIN = Path("/app/main.py")
 MARKER = "POMP NET SUPER JINX INFO PAGE"
+# POMP NET JINX PASS ARTWORK V2
 
 SUB_PATTERN = re.compile(
     r'@app\.get\(\s*["\']/sub/\{uuid\}["\'].*?'
@@ -54,7 +56,23 @@ def main():
         raise SystemExit("SAFE STOP: info page decorator did not match exactly once")
     block = block.replace(old_decorator, new_decorator, 1)
 
+    # Use the same authored POMP NET winged emblem as the login page.
+    login_js_path = Path("/tmp/pompnet_login.js")
+    if not login_js_path.is_file():
+        raise SystemExit("SAFE STOP: login artwork source is missing")
+    login_js_source = login_js_path.read_text(encoding="utf-8")
+    logo_match = re.search(r"const logoSvg = [\x60]([\\s\\S]*?)[\x60];", login_js_source)
+    if not logo_match:
+        raise SystemExit("SAFE STOP: SUPER JINX logo SVG was not found")
+    logo_b64 = base64.b64encode(logo_match.group(1).encode("utf-8")).decode("ascii")
+    logo_html = (
+        '<div class="brand-mark pompnet-sub-mark" aria-label="POMP NET SUPER JINX">'
+        '<img alt="نشان تصویری POMP NET SUPER JINX" '
+        'src="data:image/svg+xml;base64,' + logo_b64 + '"></div>'
+    )
+
     replacements = {
+        '<div class="brand-mark">AHB</div>': logo_html,
         'snapshot.get("label", "AHB Panel")': 'snapshot.get("label", "POMP NET MOHAMMAD")',
         '<title>{label} | AHB PANEL</title>': '<title>{label} | POMP NET MOHAMMAD — SUPER JINX</title>',
         '<div class="brand-mark">AHB</div>': '<div class="brand-mark">PJ</div>',
@@ -161,10 +179,26 @@ def main():
 .pn-copy-all{{white-space:nowrap}}
 @media(max-width:430px){{.pn-config-row{{gap:7px;padding:9px}}.pn-config-index{{flex-basis:29px;height:31px}}.pn-config-main strong{{font-size:10px}}.pn-config-btn{{padding:8px 9px;font-size:9px}}}}
 
+
+/* SUPER JINX · image-led subscription header and real account cards */
+.top{{padding:12px 14px;border:1px solid rgba(139,53,255,.22);border-radius:20px;background:linear-gradient(110deg,rgba(12,9,24,.96),rgba(5,9,20,.96));box-shadow:0 15px 42px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.05)}}
+.hero{{position:relative;isolation:isolate;border:1px solid rgba(139,53,255,.34);box-shadow:0 22px 68px rgba(0,0,0,.38),0 0 40px rgba(139,53,255,.10),inset 0 1px rgba(255,255,255,.07)}}
+.hero:before{{content:"";position:absolute;inset:0;z-index:-1;opacity:.48;background:radial-gradient(ellipse at 82% 18%,rgba(22,140,255,.28),transparent 34%),radial-gradient(ellipse at 12% 88%,rgba(139,53,255,.25),transparent 40%),linear-gradient(120deg,transparent 35%,rgba(255,255,255,.025) 50%,transparent 65%)}}
+.hero h1{{text-shadow:0 0 22px rgba(139,53,255,.24)}}
+.ring{{filter:drop-shadow(0 0 22px rgba(139,53,255,.18))}}
+.stat{{border-color:rgba(139,53,255,.24);background:linear-gradient(145deg,rgba(25,14,43,.96),rgba(7,9,18,.98));box-shadow:0 14px 38px rgba(0,0,0,.26),inset 0 1px rgba(255,255,255,.04)}}
+.section{{border-color:rgba(139,53,255,.24);background:linear-gradient(145deg,rgba(18,12,31,.97),rgba(6,8,17,.97));box-shadow:0 16px 42px rgba(0,0,0,.25)}}
+.qr-box{{border-color:rgba(139,53,255,.24);background:radial-gradient(circle at 50% 20%,rgba(139,53,255,.12),transparent 65%),rgba(3,7,18,.8)}}
+.link-row{{border:1px solid rgba(139,53,255,.20);border-radius:15px;padding:10px}}
+.btn{{min-height:42px}}
+@media(max-width:700px){{.brand-mark{{width:88px;height:48px;border-radius:13px}}.top{{padding:10px;border-radius:16px}}.hero-grid{{grid-template-columns:1fr 116px;gap:10px}}.ring{{width:112px;height:112px}}.hero h1{{font-size:23px}}}}
+@media(max-width:430px){{.hero-grid{{grid-template-columns:1fr 92px}}.ring{{width:90px;height:90px}}.brand-name{{font-size:10px;letter-spacing:1px}}.brand-sub{{font-size:9px}}}}
+
 /* POMP NET SUPER JINX INFO PAGE */
 :root{{--bg:#050509;--card:rgba(17,12,31,.94);--card2:rgba(20,13,37,.88);--line:rgba(139,53,255,.24);--text:#f7f4ff;--muted:#a99cbd;--blue:#168cff;--purple:#8b35ff;--pink:#8b35ff;--green:#16e6a0}}
 body{{background:radial-gradient(900px 500px at 8% -10%,rgba(139,53,255,.20),transparent 58%),radial-gradient(700px 500px at 100% 12%,rgba(22,140,255,.14),transparent 58%),#050509}}
-.brand-mark{{font-size:29px;letter-spacing:-1px;background:linear-gradient(110deg,#fff 10%,#b98cff 55%,#168cff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 25px rgba(139,53,255,.22)}}
+.brand-mark{{width:112px;height:58px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:16px;background:linear-gradient(140deg,rgba(139,53,255,.14),rgba(22,140,255,.12));border:1px solid rgba(139,53,255,.28);box-shadow:0 0 28px rgba(139,53,255,.18)}}
+.pompnet-sub-mark img{{display:block;width:100%;height:100%;object-fit:contain;padding:2px;filter:drop-shadow(0 0 8px rgba(139,53,255,.32))}}
 .brand-name{{font-size:11px;letter-spacing:1.8px;color:#d9c8ff}}
 .brand-sub{{color:#a99cbd}}
 .hero{{background:radial-gradient(circle at 0% 100%,rgba(22,140,255,.20),transparent 48%),radial-gradient(circle at 100% 0%,rgba(139,53,255,.30),transparent 46%),linear-gradient(135deg,rgba(16,10,31,.98),rgba(8,12,28,.98))}}
@@ -192,7 +226,7 @@ body{{background:radial-gradient(900px 500px at 8% -10%,rgba(139,53,255,.20),tra
     if sub_hash_before != sub_hash_after:
         raise SystemExit("SAFE STOP: /sub/{uuid} route changed")
 
-    if '/pass/{uid}' not in updated or 'JINX CONNECTION' not in updated:
+    if '/pass/{uid}' not in updated or 'JINX CONNECTION' not in updated or 'pompnet-sub-mark' not in updated:
         raise SystemExit("SAFE STOP: JINX PASS UI validation failed")
 
     with tempfile.TemporaryDirectory(prefix="pompnet-jinx-check-") as folder:
@@ -208,6 +242,8 @@ body{{background:radial-gradient(900px 500px at 8% -10%,rgba(139,53,255,.20),tra
     print("ALIAS /pass/{uid}: ADDED")
     print("REAL /sub/{uuid} ROUTE: HASH-PRESERVED")
     print("STATIC FAKE SERVER STATUS CARDS: REMOVED")
+    print("SHARED POMP NET WINGED BRAND IMAGE: VERIFIED")
+    print("REAL CONFIG LIST, COPY-ALL AND PER-CONFIG QR: VERIFIED")
 
 if __name__ == "__main__":
     main()

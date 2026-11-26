@@ -46,7 +46,7 @@ h1,.section-title h2 {{ font-family:'Vazirmatn',sans-serif !important; }}
 if updated.count(style_marker) != 1:
     raise SystemExit("POMP NET subscription UI: expected one style closing tag")
 if "POMP NET NEXUS — premium subscription identity" not in updated:
-    updated = updated.replace(style_marker, style_addition + "\\n" + style_marker, 1)
+    updated = updated.replace(style_marker, style_addition + "\n" + style_marker, 1)
 
 if updated != source:
     target.write_text(updated, encoding="utf-8")

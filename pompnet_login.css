@@ -423,3 +423,112 @@ body:after{width:300px;height:300px;bottom:-130px;left:-100px;background:rgba(13
 @keyframes pnLogoAura{50%{opacity:.65;transform:scale(1.08)}}
 @media(max-width:600px){body{padding:10px!important}.card{padding:22px 17px 20px!important;margin:10px auto!important;border-radius:25px!important}#pompnet-login-brand{margin-bottom:19px}.pompnet-logo-stage{margin-top:1px;margin-bottom:12px}#loginBox,#setupBox{padding:20px 16px!important;border-radius:19px!important}#loginBox input,#setupBox input{min-height:55px!important}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* SUPER JINX SIGNATURE LOGIN — full-width artwork and premium glass form */
+body{
+  overflow-x:hidden!important;overflow-y:auto!important;
+  min-height:100svh!important;align-items:flex-start!important;
+  padding:18px 12px 42px!important;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(76,35,170,.24),transparent 44%),
+    radial-gradient(ellipse at 100% 34%,rgba(0,120,255,.16),transparent 38%),
+    radial-gradient(ellipse at 0% 82%,rgba(130,30,255,.18),transparent 40%),
+    #05040c!important;
+}
+body::before{
+  background:
+    radial-gradient(38% 34% at 82% 10%,rgba(22,140,255,.18),transparent 70%),
+    radial-gradient(34% 32% at 12% 84%,rgba(139,53,255,.2),transparent 70%),
+    radial-gradient(40% 36% at 50% 50%,rgba(82,46,190,.13),transparent 72%)!important;
+}
+body>.card{
+  width:min(100%,640px)!important;max-width:640px!important;
+  margin:0 auto!important;padding:16px!important;
+  border-radius:27px!important;
+  border:1px solid rgba(142,93,255,.36)!important;
+  background:linear-gradient(155deg,rgba(16,12,31,.97),rgba(5,7,17,.98))!important;
+  box-shadow:0 28px 90px rgba(0,0,0,.62),0 0 55px rgba(105,50,255,.17),inset 0 1px rgba(255,255,255,.08)!important;
+  backdrop-filter:blur(24px) saturate(145%)!important;
+}
+body>.card>h1{display:none!important}
+#pompnet-login-brand{
+  width:100%;margin:0 auto 16px!important;padding:0!important;
+  position:relative;z-index:2;text-align:center;direction:rtl;
+}
+.pompnet-logo-circle{
+  width:100%!important;height:auto!important;aspect-ratio:1200/520!important;
+  max-height:280px!important;margin:0 auto 14px!important;padding:0!important;
+  display:block!important;overflow:hidden!important;border-radius:21px!important;
+  background:#070817!important;border:1px solid rgba(150,104,255,.6)!important;
+  box-shadow:0 0 0 4px rgba(139,53,255,.07),0 14px 42px rgba(53,30,130,.3),0 0 35px rgba(22,140,255,.12)!important;
+  animation:none!important;
+}
+.pompnet-logo-circle img{
+  display:block!important;width:100%!important;height:100%!important;
+  object-fit:cover!important;object-position:center!important;border-radius:20px!important;
+}
+.pompnet-login-title{
+  display:flex!important;flex-wrap:wrap!important;justify-content:center!important;
+  align-items:center!important;gap:3px 9px!important;padding:0 4px!important;
+  font-size:clamp(17px,4.2vw,25px)!important;line-height:1.55!important;
+  letter-spacing:.1px!important;white-space:normal!important;
+}
+.pompnet-title-main{color:#fff!important;text-shadow:0 0 12px rgba(255,255,255,.18),0 0 22px rgba(22,140,255,.35)!important}
+.pompnet-title-brand{
+  display:inline-block!important;
+  background:linear-gradient(90deg,#168cff,#9b55ff,#d05cff)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;
+}
+.pompnet-login-credit{margin:7px auto 0!important;color:#ded5f4!important;font-size:12px!important;line-height:2!important;text-shadow:0 0 14px rgba(139,53,255,.25)}
+.pompnet-login-caption{margin:3px auto 0!important;color:#9186ad!important;font-size:10px!important;line-height:1.9!important}
+.pompnet-login-divider{display:flex;align-items:center;justify-content:center;gap:10px;margin:11px auto 0;max-width:260px;color:#bd85ff;text-shadow:0 0 14px #8b35ff}
+.pompnet-login-divider i{height:1px;flex:1;background:linear-gradient(90deg,transparent,#8b35ff,transparent)}
+#loginBox,#setupBox{
+  width:100%!important;margin:0!important;padding:19px 17px 17px!important;
+  border:1px solid rgba(139,53,255,.28)!important;border-radius:22px!important;
+  background:linear-gradient(145deg,rgba(12,10,25,.97),rgba(5,6,15,.97))!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.055),0 12px 34px rgba(0,0,0,.24)!important;
+  position:relative;
+}
+#loginBox:before,#setupBox:before{
+  content:"";position:absolute;top:0;left:16%;right:16%;height:1px;
+  background:linear-gradient(90deg,transparent,#168cff,#9b55ff,transparent);
+  box-shadow:0 0 16px rgba(139,53,255,.65);
+}
+#loginBox label,#setupBox label{display:block;text-align:right;color:#bdb3d2!important;font-size:12px!important;margin:0 2px 7px!important}
+#loginBox input:not([type=checkbox]):not([type=radio]),#setupBox input{
+  width:100%!important;min-height:58px!important;margin:0 0 17px!important;
+  padding:14px 17px!important;border-radius:16px!important;
+  border:1px solid rgba(122,94,180,.28)!important;
+  background:rgba(3,4,12,.92)!important;color:#fff!important;
+  font-size:16px!important;outline:none!important;
+  box-shadow:inset 0 2px 9px rgba(0,0,0,.28)!important;
+}
+#loginBox input:focus,#setupBox input:focus{
+  border-color:#368cff!important;
+  box-shadow:0 0 0 3px rgba(22,140,255,.13),0 0 24px rgba(22,140,255,.13)!important;
+}
+#loginBox button[type=submit],#loginBox button,#setupBox button{
+  width:100%!important;min-height:60px!important;margin-top:3px!important;
+  border:1px solid rgba(255,255,255,.12)!important;border-radius:17px!important;
+  background:linear-gradient(105deg,#087ff0 0%,#5a3cff 52%,#9b2dff 100%)!important;
+  color:#fff!important;font-size:16px!important;font-weight:900!important;
+  box-shadow:0 10px 30px rgba(86,54,255,.3),inset 0 1px rgba(255,255,255,.22)!important;
+  transition:transform .18s ease,filter .18s ease!important;
+}
+#loginBox button:active,#setupBox button:active{transform:scale(.985)}
+#loginBox .err,#setupBox .err{margin:0 0 14px!important}
+@media(max-width:600px){
+  body{padding:12px 9px 32px!important}
+  body>.card{padding:11px!important;border-radius:22px!important}
+  .pompnet-logo-circle{aspect-ratio:1200/560!important;max-height:230px!important;border-radius:16px!important}
+  .pompnet-logo-circle img{border-radius:15px!important}
+  #pompnet-login-brand{margin-bottom:12px!important}
+  .pompnet-login-title{font-size:clamp(16px,4.6vw,21px)!important;gap:2px 7px!important}
+  .pompnet-login-credit{font-size:11px!important}
+  #loginBox,#setupBox{padding:17px 13px 14px!important;border-radius:18px!important}
+  #loginBox input:not([type=checkbox]):not([type=radio]),#setupBox input{min-height:55px!important}
+  #loginBox button[type=submit],#loginBox button,#setupBox button{min-height:56px!important}
+}
+@media(prefers-reduced-motion:reduce){body::before{animation:none!important}}

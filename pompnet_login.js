@@ -1,30 +1,79 @@
-/* POMP NET MOHAMMAD — SUPER JINX premium visual identity */
+/* POMP NET MOHAMMAD — SUPER JINX
+   Premium login artwork. Authentication and setup requests remain untouched.
+*/
 (function () {
-  const logoImage = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%0A%3Cdefs%3E%0A%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20stop-color%3D%22%2307152b%22%2F%3E%3Cstop%20offset%3D%22.52%22%20stop-color%3D%22%23100a2a%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23210b3b%22%2F%3E%3C%2FlinearGradient%3E%0A%20%3ClinearGradient%20id%3D%22wing%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20stop-color%3D%22%2325baff%22%2F%3E%3Cstop%20offset%3D%22.48%22%20stop-color%3D%22%237552ff%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23d45bff%22%2F%3E%3C%2FlinearGradient%3E%0A%20%3ClinearGradient%20id%3D%22metal%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20stop-color%3D%22%23fff%22%2F%3E%3Cstop%20offset%3D%22.4%22%20stop-color%3D%22%23c9d9ff%22%2F%3E%3Cstop%20offset%3D%22.72%22%20stop-color%3D%22%238b63ff%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%2F%3E%3C%2FlinearGradient%3E%0A%20%3CradialGradient%20id%3D%22core%22%3E%3Cstop%20stop-color%3D%22%23ffffff%22%2F%3E%3Cstop%20offset%3D%22.25%22%20stop-color%3D%22%237de4ff%22%2F%3E%3Cstop%20offset%3D%22.62%22%20stop-color%3D%22%235e48ff%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23170b35%22%2F%3E%3C%2FradialGradient%3E%0A%20%3Cfilter%20id%3D%22glow%22%3E%3CfeGaussianBlur%20stdDeviation%3D%2210%22%20result%3D%22b%22%2F%3E%3CfeMerge%3E%3CfeMergeNode%20in%3D%22b%22%2F%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22%2F%3E%3C%2FfeMerge%3E%3C%2Ffilter%3E%0A%3C%2Fdefs%3E%0A%3Crect%20x%3D%2212%22%20y%3D%2212%22%20width%3D%22488%22%20height%3D%22488%22%20rx%3D%22112%22%20fill%3D%22url(%23bg)%22%20stroke%3D%22url(%23wing)%22%20stroke-width%3D%2210%22%2F%3E%0A%3Ccircle%20cx%3D%22256%22%20cy%3D%22256%22%20r%3D%22205%22%20fill%3D%22none%22%20stroke%3D%22%238a63ff%22%20stroke-opacity%3D%22.22%22%20stroke-width%3D%223%22%2F%3E%0A%3Cg%20filter%3D%22url(%23glow)%22%20fill%3D%22url(%23wing)%22%20stroke%3D%22%23a6dfff%22%20stroke-opacity%3D%22.45%22%20stroke-width%3D%223%22%3E%0A%20%3Cpath%20d%3D%22M230%20248C174%20191%20119%20145%2053%20127c32%2050%2057%2085%2099%20117-45-22-83-31-124-30%2049%2038%2091%2063%20145%2075-37-4-70%201-103%2013%2061%2023%20111%2031%20166%2015z%22%2F%3E%0A%20%3Cpath%20d%3D%22M282%20248c56-57%20111-103%20177-121-32%2050-57%2085-99%20117%2045-22%2083-31%20124-30-49%2038-91%2063-145%2075%2037-4%2070%201%20103%2013-61%2023-111%2031-166%2015z%22%2F%3E%0A%20%3Cpath%20d%3D%22M221%20267c-56%201-111%2018-164%2053%2050%205%2088%203%20132-7-37%2021-63%2045-85%2075%2064-18%20112-41%20155-82z%22%2F%3E%0A%20%3Cpath%20d%3D%22M291%20267c56%201%20111%2018%20164%2053-50%205-88%203-132-7%2037%2021%2063%2045%2085%2075-64-18-112-41-155-82z%22%2F%3E%0A%3C%2Fg%3E%0A%3Cg%20filter%3D%22url(%23glow)%22%3E%0A%20%3Cpath%20d%3D%22M180%20153l25-59%2051%2044%2051-44%2025%2059-25%2022H205z%22%20fill%3D%22url(%23metal)%22%20stroke%3D%22%239feaff%22%20stroke-width%3D%225%22%2F%3E%0A%20%3Ccircle%20cx%3D%22205%22%20cy%3D%22105%22%20r%3D%2210%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%22256%22%20cy%3D%22137%22%20r%3D%2212%22%20fill%3D%22%23fff%22%2F%3E%3Ccircle%20cx%3D%22307%22%20cy%3D%22105%22%20r%3D%2210%22%20fill%3D%22%23fff%22%2F%3E%0A%20%3Cpath%20d%3D%22M256%20165l89%2082-29%20125-60%2050-60-50-29-125z%22%20fill%3D%22url(%23core)%22%20stroke%3D%22url(%23metal)%22%20stroke-width%3D%229%22%2F%3E%0A%20%3Cpath%20d%3D%22M256%20202l-24%2062%2031-8-12%2070%2042-82-32%208%2018-50z%22%20fill%3D%22%23fff%22%20filter%3D%22url(%23glow)%22%2F%3E%0A%3C%2Fg%3E%0A%3Cpath%20d%3D%22M256%2034v34M239%2051h34M62%20256h34M416%20256h34M256%20416v34%22%20stroke%3D%22%23b7eaff%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.7%22%2F%3E%0A%3C%2Fsvg%3E";
-  function installBrand() {
+  const logoSvg = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520">
+    <defs>
+      <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#050713"/><stop offset=".52" stop-color="#100829"/><stop offset="1" stop-color="#020b19"/></linearGradient>
+      <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b64dff"/><stop offset=".48" stop-color="#6935ff"/><stop offset="1" stop-color="#168cff"/></linearGradient>
+      <linearGradient id="silver" x1="0" y1="0" x2="0.8" y2="1"><stop stop-color="#fff"/><stop offset=".38" stop-color="#c7c8f8"/><stop offset=".7" stop-color="#7654d9"/><stop offset="1" stop-color="#f3eaff"/></linearGradient>
+      <radialGradient id="halo"><stop stop-color="#5631ff" stop-opacity=".5"/><stop offset="1" stop-color="#09051b" stop-opacity="0"/></radialGradient>
+      <filter id="glow"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="soft"><feGaussianBlur stdDeviation="24"/></filter>
+    </defs>
+    <rect width="1200" height="520" rx="34" fill="url(#bg)"/>
+    <circle cx="520" cy="235" r="360" fill="url(#halo)"/>
+    <circle cx="1000" cy="40" r="190" fill="#147bff" opacity=".10" filter="url(#soft)"/>
+    <g fill="#b8baff" opacity=".8">
+      <circle cx="70" cy="70" r="2"/><circle cx="170" cy="160" r="2"/><circle cx="285" cy="42" r="2"/><circle cx="420" cy="80" r="2"/><circle cx="620" cy="42" r="2"/><circle cx="760" cy="110" r="2"/><circle cx="1090" cy="125" r="2"/><circle cx="1140" cy="340" r="2"/><circle cx="90" cy="390" r="2"/><circle cx="310" cy="450" r="2"/>
+    </g>
+    <path d="M0 430 Q180 330 330 440 T650 420 T1200 400 V520 H0Z" fill="#130b36" opacity=".75"/>
+    <path d="M0 330 L105 245 80 365 190 280 150 395 285 310 240 430 390 360" fill="none" stroke="#712cff" stroke-width="5" opacity=".65" filter="url(#glow)"/>
+    <path d="M1200 270 L1090 180 1125 310 1000 225 1045 360 900 280 950 420" fill="none" stroke="#168cff" stroke-width="5" opacity=".7" filter="url(#glow)"/>
+    <!-- left wing feathers -->
+    <g fill="url(#violet)" stroke="#a58cff" stroke-width="2" filter="url(#glow)">
+      <path d="M470 250 Q260 12 65 95 Q210 110 330 235 Q190 145 45 180 Q220 210 355 300 Q230 260 100 300 Q275 330 440 355Z"/>
+      <path d="M460 270 Q300 115 125 130 Q270 185 390 285Z" opacity=".8"/>
+      <path d="M445 300 Q285 225 155 250 Q300 275 425 340Z" opacity=".9"/>
+    </g>
+    <!-- right phoenix wings -->
+    <g fill="url(#violet)" stroke="#63aaff" stroke-width="2" filter="url(#glow)">
+      <path d="M720 260 Q900 8 1135 60 Q1000 130 860 245 Q1010 170 1170 185 Q1010 240 870 310 Q1010 285 1150 335 Q970 350 760 380Z"/>
+      <path d="M745 280 Q925 120 1080 115 Q950 190 810 295Z" opacity=".82"/>
+      <path d="M760 315 Q960 230 1110 260 Q960 295 790 355Z" opacity=".9"/>
+    </g>
+    <!-- crest -->
+    <g filter="url(#glow)">
+      <circle cx="600" cy="245" r="178" fill="#08091a" stroke="url(#violet)" stroke-width="8"/>
+      <circle cx="600" cy="245" r="158" fill="none" stroke="#b77bff" stroke-opacity=".65" stroke-width="3"/>
+      <path d="M490 110 L515 48 550 98 600 20 650 98 685 48 710 110" fill="none" stroke="url(#silver)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M485 112 Q600 150 715 112 L700 145 Q600 175 500 145Z" fill="url(#violet)" stroke="#e6d7ff" stroke-width="3"/>
+      <text x="600" y="310" text-anchor="middle" font-family="Arial,sans-serif" font-size="205" font-weight="900" font-style="italic" letter-spacing="-20" fill="url(#silver)" stroke="#24134d" stroke-width="5" paint-order="stroke">PJ</text>
+      <path d="M510 355 Q600 400 690 355" fill="none" stroke="#a77aff" stroke-width="7" stroke-linecap="round"/>
+      <path d="M600 365 l18 24 -18 24 -18 -24Z" fill="#168cff" stroke="#fff" stroke-width="2"/>
+    </g>
+    <!-- energy arcs -->
+    <path d="M90 470 Q600 510 1110 460" fill="none" stroke="url(#violet)" stroke-width="4" opacity=".9" filter="url(#glow)"/>
+    <path d="M130 35 Q600 -15 1070 35" fill="none" stroke="#168cff" stroke-width="2" opacity=".65"/>
+  </svg>`;
+  const logoImage = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(logoSvg);
+  function addPompNetLoginBrand() {
     if (document.getElementById("pompnet-login-brand")) return;
-    const card = document.querySelector(".card");
     const loginBox = document.getElementById("loginBox");
-    if (!card || !loginBox) return;
-    const brand = document.createElement("header");
+    const setupBox = document.getElementById("setupBox");
+    const anchor = setupBox || loginBox;
+    if (!anchor || !anchor.parentNode) return;
+    const brand = document.createElement("section");
     brand.id = "pompnet-login-brand";
     brand.setAttribute("aria-label", "POMP NET MOHAMMAD SUPER JINX");
     brand.innerHTML = `
-      <div class="pompnet-logo-stage">
-        <span class="pompnet-logo-orbit pompnet-orbit-one"></span>
-        <span class="pompnet-logo-orbit pompnet-orbit-two"></span>
-        <img class="pompnet-brand-image" src="${logoImage}" alt="نشان اختصاصی POMP NET SUPER JINX">
+      <div class="pompnet-logo-circle">
+        <img src="${logoImage}" alt="نشان تصویری اختصاصی POMP NET SUPER JINX">
       </div>
       <div class="pompnet-login-title">
         <span class="pompnet-title-main">POMP NET MOHAMMAD</span>
         <span class="pompnet-title-brand">SUPER JINX</span>
       </div>
       <div class="pompnet-login-credit">قدرت ساخت، آزادی انتخاب، کنترل در دستان تو</div>
-      <div class="pompnet-login-caption">درگاه امن مدیریت کاربران، کانفیگ‌ها و اشتراک‌های اختصاصی</div>
-      <div class="pompnet-login-secure"><i></i><span>SUPER JINX SECURE ACCESS</span><b>محیط مدیریت اختصاصی</b></div>
+      <div class="pompnet-login-caption">درگاه امن مدیریت کاربران، کانفیگ‌ها و اشتراک‌ها</div>
+      <div class="pompnet-login-divider"><i></i><b>✦</b><i></i></div>
     `;
-    card.insertBefore(brand, card.firstChild);
+    anchor.parentNode.insertBefore(brand, anchor);
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installBrand, {once:true});
-  else installBrand();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", addPompNetLoginBrand, {once:true});
+  } else {
+    addPompNetLoginBrand();
+  }
 })();

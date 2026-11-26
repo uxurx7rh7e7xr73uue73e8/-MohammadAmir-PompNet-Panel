@@ -60,6 +60,7 @@ COPY pompnet_login_patch.py /tmp/pompnet_login_patch.py
 COPY pompnet_login_credit.py /tmp/pompnet_login_credit.py
 COPY pompnet_jinx_ui.py /tmp/pompnet_jinx_ui.py
 COPY pompnet_integrations_brand.py /tmp/pompnet_integrations_brand.py
+COPY pompnet_subscription_patch.py /tmp/pompnet_subscription_patch.py
 
 # ماژول‌های موجود پروژه
 COPY pompnet_security.py /app/pompnet_security.py
@@ -80,6 +81,7 @@ RUN test -f /app/main.py \
     && test -f /tmp/pompnet_login_credit.py \
     && test -f /tmp/pompnet_jinx_ui.py \
     && test -f /tmp/pompnet_integrations_brand.py \
+    && test -f /tmp/pompnet_subscription_patch.py \
     && test -f /app/pompnet_security.py \
     && test -f /app/pompnet_xray.py \
     && test -f /app/xray_manager.py \
@@ -93,7 +95,8 @@ RUN python /tmp/pompnet_brand.py \
     && python /tmp/pompnet_login_patch.py \
     && python /tmp/pompnet_login_credit.py \
     && python /tmp/pompnet_jinx_ui.py \
-    && python /tmp/pompnet_integrations_brand.py
+    && python /tmp/pompnet_integrations_brand.py \
+    && python /tmp/pompnet_subscription_patch.py
 
 # نصب وابستگی‌ها
 RUN python -m pip install --upgrade pip \
@@ -112,7 +115,8 @@ RUN python -m py_compile \
     /tmp/pompnet_login_patch.py \
     /tmp/pompnet_login_credit.py \
     /tmp/pompnet_jinx_ui.py \
-    /tmp/pompnet_integrations_brand.py
+    /tmp/pompnet_integrations_brand.py \
+    /tmp/pompnet_subscription_patch.py
 
 RUN mkdir -p /data \
     && chmod 700 /data

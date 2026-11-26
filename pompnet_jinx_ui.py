@@ -57,7 +57,7 @@ def main():
     replacements = {
         'snapshot.get("label", "AHB Panel")': 'snapshot.get("label", "POMP NET MOHAMMAD")',
         '<title>{label} | AHB PANEL</title>': '<title>{label} | POMP NET MOHAMMAD — SUPER JINX</title>',
-        '<div class="brand-mark">AHB</div>': '<div class="brand-mark">POMP</div>',
+        '<div class="brand-mark">AHB</div>': '<div class="brand-mark">PJ</div>',
         '<div class="brand-name">PANEL</div>': '<div class="brand-name">NET · SUPER JINX</div>',
         '<div class="brand-sub">اتصال سریع، بدون محدودیت</div>': '<div class="brand-sub">POMP NET MOHAMMAD</div>',
         '<h1>طرح ویژه</h1>': '<h1>اشتراک SUPER JINX</h1>',

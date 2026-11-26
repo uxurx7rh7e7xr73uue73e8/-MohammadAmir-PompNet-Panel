@@ -234,8 +234,14 @@ def patch_dashboard_protocol_picker():
     <button type="button" class="pn-protocol-close" onclick="closeJinxProtocols()" aria-label="بستن">×</button>
     <span class="pn-protocol-kicker">POMP NET · SUPER JINX</span>
     <h3 id="pnProtocolTitle">پروتکل اتصال را انتخاب کن</h3>
-    <p>گزینه‌ها مستقیماً از API احراز هویت‌شدهٔ پنل دریافت می‌شوند.</p>
+    <p>پروتکل‌های فعال از API پنل خوانده می‌شوند. با انتخاب چند مورد، برای هر پروتکل یک اشتراک مستقل و واقعی ساخته می‌شود.</p>
+    <div class="pn-protocol-actions">
+      <button type="button" class="pn-protocol-select-all" onclick="selectAllJinxProtocols()">انتخاب همه</button>
+      <button type="button" class="pn-protocol-clear" onclick="clearJinxProtocols()">پاک کردن انتخاب</button>
+    </div>
     <div id="pnProtocolOptions" class="pn-protocol-options"><div class="pn-protocol-loading">در حال دریافت پروتکل‌ها…</div></div>
+    <button type="button" class="pn-protocol-create-all" onclick="createSelectedJinxProtocols()">⚡ ساخت اشتراک برای پروتکل‌های انتخاب‌شده</button>
+    <small class="pn-protocol-note">هر پروتکل در کانفیگ/اشتراک جدا ساخته می‌شود؛ همهٔ پروتکل‌ها داخل یک URI واحد ادغام نمی‌شوند.</small>
   </section>
 </div>
 """
@@ -264,6 +270,12 @@ def patch_dashboard_protocol_picker():
 .pn-protocol-option small{display:block;margin-top:3px;color:#a99cbd;font-size:9px;overflow-wrap:anywhere}
 .pn-protocol-option i{color:#b98cff;font-style:normal;font-weight:900}
 .pn-protocol-loading{grid-column:1/-1;padding:22px;text-align:center;color:#b98cff;border:1px dashed rgba(139,53,255,.25);border-radius:14px;font-size:12px}
+.pn-protocol-actions{display:flex;gap:8px;margin:0 0 12px}
+.pn-protocol-select-all,.pn-protocol-clear{flex:1;padding:10px 12px;border-radius:11px;border:1px solid rgba(139,53,255,.3);background:#100c1d;color:#e9ddff;font:800 11px Vazirmatn,sans-serif}
+.pn-protocol-create-all{width:100%;margin-top:14px;padding:13px;border:0;border-radius:13px;background:linear-gradient(100deg,#168cff,#8b35ff);color:#fff;font:900 12px Vazirmatn,sans-serif;box-shadow:0 10px 26px rgba(139,53,255,.2)}
+.pn-protocol-note{display:block;margin-top:9px;color:#9d91b2;font-size:10px;line-height:1.8}
+.pn-protocol-option.selected i{color:#4be6a5}
+
 @media(max-width:600px){.pn-protocol-toolbar{align-items:flex-start;flex-direction:column}.pn-protocol-open{width:100%}.pn-protocol-options{grid-template-columns:1fr}.pn-protocol-dialog{padding:20px 14px}}
 """
         if "</head>" not in html or "</body>" not in html:
@@ -272,6 +284,8 @@ def patch_dashboard_protocol_picker():
 
         script = """
 <script id="pn-super-jinx-protocol-script">
+window.__pnJinxProtocolList=[];
+window.__pnJinxSelectedProtocols=new Set();
 async function openJinxProtocols(){
   const modal=document.getElementById('pnProtocolModal');
   const box=document.getElementById('pnProtocolOptions');
@@ -279,32 +293,67 @@ async function openJinxProtocols(){
   modal.classList.add('open');modal.setAttribute('aria-hidden','false');
   box.innerHTML='<div class="pn-protocol-loading">در حال دریافت فهرست واقعی پروتکل‌ها…</div>';
   const result=await api('/api/protocols');
-  const list=(result&&Array.isArray(result.protocols))?result.protocols:[];
-  if(!list.length){box.innerHTML='<div class="pn-protocol-loading">فهرست پروتکل‌ها دریافت نشد؛ ورود پنل را بررسی کن.</div>';return;}
+  const list=(result&&Array.isArray(result.protocols))?result.protocols.filter(p=>p&&p.id&&!String(p.id).endsWith('-demo')):[];
+  window.__pnJinxProtocolList=list;
+  if(!list.length){box.innerHTML='<div class="pn-protocol-loading">هیچ پروتکل قابل استفاده‌ای از هسته دریافت نشد.</div>';return;}
   const current=document.getElementById('cProto')?.value||document.getElementById('aProto')?.value||'';
+  if(!window.__pnJinxSelectedProtocols.size&&current)window.__pnJinxSelectedProtocols.add(current);
   ['cProto','aProto'].forEach(id=>{
     const select=document.getElementById(id);
-    if(select){
-      list.forEach(p=>{
-        if(![...select.options].some(o=>o.value===p.id))select.add(new Option(p.label||p.id,p.id));
-      });
-    }
+    if(select)list.forEach(p=>{if(![...select.options].some(o=>o.value===p.id))select.add(new Option(p.label||p.id,p.id));});
   });
-  box.innerHTML=list.map(p=>{
-    const id=String(p.id||'');const label=String(p.label||id);
-    return '<button type="button" class="pn-protocol-option '+(id===current?'selected':'')+'" data-protocol="'+esc(id)+'" onclick="selectJinxProtocol(this.dataset.protocol)"><span class="pn-protocol-option-icon">◇</span><span><b>'+esc(label)+'</b><small>'+esc(id)+'</small></span><i>'+(id===current?'✓':'＋')+'</i></button>';
+  renderJinxProtocolOptions();
+}
+function renderJinxProtocolOptions(){
+  const box=document.getElementById('pnProtocolOptions');
+  if(!box)return;
+  box.innerHTML=window.__pnJinxProtocolList.map(p=>{
+    const id=String(p.id);const label=String(p.label||id);const selected=window.__pnJinxSelectedProtocols.has(id);
+    return '<button type="button" class="pn-protocol-option '+(selected?'selected':'')+'" data-protocol="'+esc(id)+'" onclick="toggleJinxProtocol(this.dataset.protocol)" aria-pressed="'+(selected?'true':'false')+'"><span class="pn-protocol-option-icon">◇</span><span><b>'+esc(label)+'</b><small>'+esc(id)+'</small></span><i>'+(selected?'✓':'＋')+'</i></button>';
   }).join('');
 }
-function selectJinxProtocol(protocol){
-  let applied=0;
-  ['cProto','aProto'].forEach(id=>{
-    const select=document.getElementById(id);
-    if(select&&[...select.options].some(o=>o.value===protocol)){
-      select.value=protocol;select.dispatchEvent(new Event('change',{bubbles:true}));applied++;
-    }
-  });
-  closeJinxProtocols();
-  if(typeof toast==='function')toast(applied?'پروتکل برای ساخت دستی و خودکار انتخاب شد':'پروتکل در فرم‌ها اعمال نشد');
+function toggleJinxProtocol(protocol){
+  const selected=window.__pnJinxSelectedProtocols;
+  if(selected.has(protocol))selected.delete(protocol);else selected.add(protocol);
+  const select=document.getElementById('cProto');
+  if(select&&[...select.options].some(o=>o.value===protocol)){select.value=protocol;select.dispatchEvent(new Event('change',{bubbles:true}));}
+  renderJinxProtocolOptions();
+}
+function selectAllJinxProtocols(){
+  window.__pnJinxSelectedProtocols=new Set(window.__pnJinxProtocolList.map(p=>String(p.id)));
+  renderJinxProtocolOptions();
+  if(typeof toast==='function')toast('همهٔ پروتکل‌های قابل استفاده انتخاب شدند');
+}
+function clearJinxProtocols(){
+  window.__pnJinxSelectedProtocols.clear();
+  renderJinxProtocolOptions();
+}
+async function createSelectedJinxProtocols(){
+  const protocols=[...window.__pnJinxSelectedProtocols];
+  if(!protocols.length){if(typeof toast==='function')toast('ابتدا حداقل یک پروتکل انتخاب کن');return;}
+  const count=Math.max(1,Math.min(40,Number(document.getElementById('cCount')?.value)||1));
+  const base={
+    category_id:document.getElementById('cGroup')?.value||'0',
+    config_count:count,
+    limit_value:Number(document.getElementById('cLimit')?.value)||0,
+    limit_unit:document.getElementById('cUnit')?.value||'GB',
+    expires_days:Number(document.getElementById('cDays')?.value)||0,
+    ip_limit:Number(document.getElementById('cIp')?.value)||0,
+    speed_limit_value:Number(document.getElementById('cSpeed')?.value)||0,
+    speed_limit_unit:'MBIT'
+  };
+  const name=(document.getElementById('cName')?.value||'').trim();
+  const created=[];let last=null;
+  if(typeof toast==='function')toast('در حال ساخت اشتراک‌های چندپروتکلی…');
+  for(const protocol of protocols){
+    const label=(name?name+'-':'')+'POMP-NET-MOHAMMAD-SUPER-JINX-'+protocol.toUpperCase().replace(/[^A-Z0-9-]/g,'-');
+    const result=await api('/api/links',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...base,label,protocol})});
+    if(result){created.push(protocol);last=result;}
+  }
+  if(last&&typeof showResult==='function')showResult(last);
+  if(typeof refreshAll==='function')await refreshAll();
+  if(typeof toast==='function')toast('ساخته‌شده: '+created.length+' از '+protocols.length+' پروتکل. هرکدام اشتراک جدا دارد.');
+  if(created.length)closeJinxProtocols();
 }
 function closeJinxProtocols(){
   const modal=document.getElementById('pnProtocolModal');

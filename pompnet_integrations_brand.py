@@ -54,6 +54,10 @@ def patch_bot():
                 'description=f"{BOT_NAME} — {BOT_NAME_EN} | مدیریت پنل اختصاصی محمد از تلگرام | @pompnet",',
             ),
             (
+                'desc="از ای اچ بی بات"',
+                'desc="از POMP NET MOHAMMAD — SUPER JINX"',
+            ),
+            (
                 'label = data.get("label") or "px-" + os.urandom(3).hex()',
                 'label = data.get("label") or "POMP-NET-MOHAMMAD-SUPER-JINX-" + os.urandom(3).hex().upper()',
             ),

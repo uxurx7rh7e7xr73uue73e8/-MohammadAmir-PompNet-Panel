@@ -712,3 +712,15 @@ body { padding:0 !important; }
 .pompnet-entry-card .secondary{border-color:rgba(139,53,255,.22)!important;background:rgba(255,255,255,.035)!important}
 .pompnet-entry-card .footer{border-top-color:rgba(139,53,255,.18)!important;color:#8d82a4!important}
 @media(max-width:600px){.pompnet-entry-card{padding:24px 19px!important}.pompnet-entry-logo{width:68px!important;height:68px!important}.pompnet-entry-card h1{font-size:23px!important}}
+
+/* SUPER JINX image mark and dashboard mobile layout recovery */
+#pompnet-super-jinx-banner .pn-jinx-mark{padding:0;overflow:hidden}
+#pompnet-super-jinx-banner .pn-jinx-mark img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+@media(max-width:900px){
+  body{display:block!important;width:100%!important;max-width:100vw!important;overflow-x:hidden!important}
+  .main,.main.expanded{display:block!important;position:relative!important;right:auto!important;left:auto!important;width:100%!important;max-width:100vw!important;min-width:0!important;margin:0!important;padding:72px 12px 44px!important;overflow-x:hidden!important}
+  .sidebar{right:0!important;left:auto!important;transform:translateX(110%)!important}
+  .sidebar.open{transform:translateX(0)!important}
+  .mob-bar{display:flex!important}
+  #pompnet-super-jinx-banner{width:100%!important;margin:0 auto 14px!important}
+}

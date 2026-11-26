@@ -59,7 +59,7 @@ jobs:
           fi
           docker exec pompnet-smoke sh -c "grep -q 'BOT_NAME = \"POMP NET MOHAMMAD\"' /app/telegram_bot.py"
           docker exec pompnet-smoke sh -c "grep -q 'BOT_NAME_EN = \"POMP NET SUPER JINX\"' /app/telegram_bot.py"
-          docker exec pompnet-smoke sh -c "grep -q 'Mohammad Pomp Net | SUPER JINX' /app/telegram_bot.py"
+          docker exec pompnet-smoke sh -c "grep -q 'POMP-NET-MOHAMMAD-SUPER-JINX-' /app/telegram_bot.py"
           docker exec pompnet-smoke python -c "import json; n=json.load(open('/app/news.json')); assert 'POMP NET MOHAMMAD' in n['title']; assert '@NovaTunneli' in n['message']; print('BOT AND NEWS BRANDING: OK')"
 
       - name: Verify preserved subscription routes

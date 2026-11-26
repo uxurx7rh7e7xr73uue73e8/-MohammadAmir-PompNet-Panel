@@ -696,3 +696,19 @@ body { padding:0 !important; }
   .metrics { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:9px !important; }
   .metric,.card,.panel { min-width:0 !important; }
 }
+
+/* SUPER JINX — public entry portal, separate from the authenticated dashboard */
+.pompnet-entry-card{position:relative;overflow:hidden;border:1px solid rgba(139,53,255,.34)!important;background:radial-gradient(ellipse at 95% 0%,rgba(22,140,255,.17),transparent 48%),linear-gradient(145deg,rgba(23,14,39,.98),rgba(7,8,17,.98))!important;box-shadow:0 28px 90px rgba(0,0,0,.48),0 0 55px rgba(139,53,255,.12),inset 0 1px rgba(255,255,255,.06)!important}
+.pompnet-entry-card:before{content:"";position:absolute;top:0;left:12%;right:12%;height:2px;background:linear-gradient(90deg,transparent,#168cff,#8b35ff,transparent);box-shadow:0 0 18px #8b35ff}
+.pompnet-entry-logo{width:76px!important;height:76px!important;padding:0!important;border-radius:23px!important;overflow:hidden;box-shadow:0 0 0 5px rgba(139,53,255,.08),0 12px 32px rgba(139,53,255,.28)!important;background:transparent!important}
+.pompnet-entry-logo img{width:100%;height:100%;display:block;object-fit:cover;border-radius:inherit}
+.pompnet-entry-card .brand-name{font-size:18px!important;letter-spacing:.2px}
+.pompnet-entry-card .version{font:800 10px/1.8 system-ui,sans-serif!important;letter-spacing:1.2px;color:#b98cff!important}
+.pompnet-entry-card .status{border-color:rgba(22,140,255,.28)!important;background:rgba(22,140,255,.08)!important;color:#b9dcff!important}
+.pompnet-entry-card h1{font-size:clamp(23px,5vw,32px)!important;line-height:1.65!important;text-shadow:0 0 24px rgba(139,53,255,.2)}
+.pompnet-entry-card .desc{color:#b7adc9!important;font-size:13px!important;line-height:2.15!important}
+.pompnet-entry-card .path{border-color:rgba(139,53,255,.2)!important;background:rgba(139,53,255,.07)!important;color:#cbb3ff!important;text-align:center!important;font:800 11px/1.8 system-ui,sans-serif!important;letter-spacing:.7px}
+.pompnet-entry-card .primary{background:linear-gradient(105deg,#168cff,#653cff,#8b35ff)!important;box-shadow:0 12px 30px rgba(102,55,255,.28)}
+.pompnet-entry-card .secondary{border-color:rgba(139,53,255,.22)!important;background:rgba(255,255,255,.035)!important}
+.pompnet-entry-card .footer{border-top-color:rgba(139,53,255,.18)!important;color:#8d82a4!important}
+@media(max-width:600px){.pompnet-entry-card{padding:24px 19px!important}.pompnet-entry-logo{width:68px!important;height:68px!important}.pompnet-entry-card h1{font-size:23px!important}}

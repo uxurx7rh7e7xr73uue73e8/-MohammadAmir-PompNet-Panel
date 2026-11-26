@@ -1,26 +1,62 @@
 <div align="center">
 
 # ⚡ POMP NET MOHAMMAD
-## SUPER JINX · CONTROL CENTER
+### SUPER JINX · NEXUS CONTROL EXPERIENCE
 
-**پنل مدیریت، ساخت کانفیگ و اشتراک با هویت اختصاصی POMP NET**
+**یک هویت اختصاصی؛ یک پنل واقعی؛ یک تجربهٔ یکپارچه.**
 
 قدرت ساخت، آزادی انتخاب، کنترل در دستان تو
 
-[![Railway](https://img.shields.io/badge/Deploy-Railway-7B2CF5?style=for-the-badge&logo=railway&logoColor=white)](https://railway.com)
-[![Docker](https://img.shields.io/badge/Container-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
-[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Brand](https://img.shields.io/badge/Brand-POMP%20NET%20%7C%20SUPER%20JINX-8B35FF?style=for-the-badge)](#هویت-و-برند)
+<p>
+  <img src="https://img.shields.io/badge/PROJECT-SUPER%20JINX-8B35FF?style=for-the-badge&logo=github&logoColor=white" alt="Super Jinx">
+  <img src="https://img.shields.io/badge/INTERFACE-PERSIAN%20RTL-168CFF?style=for-the-badge" alt="Persian RTL">
+  <img src="https://img.shields.io/badge/DEPLOY-RAILWAY-7B2CF5?style=for-the-badge&logo=railway&logoColor=white" alt="Railway">
+  <img src="https://img.shields.io/badge/CONTAINER-DOCKER-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+</p>
 
-[کانال رسمی](https://t.me/pompnet) · [گروه](https://t.me/PompNett) · [پشتیبانی](https://t.me/NovaTunneli) · [وب‌سایت](https://pomp-net.botpool.ai/)
+[![Build](https://img.shields.io/github/actions/workflow/status/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/docker-build.yml?branch=main&style=flat-square&label=build)](https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/main?style=flat-square)](https://github.com/uxurx7rh7e7xr73uue73e8/-MohammadAmir-PompNet-Panel/commits/main)
+[![License](https://img.shields.io/badge/license-see%20LICENSE-lightgrey?style=flat-square)](./LICENSE)
+
+[🌐 وب‌سایت](https://pomp-net.botpool.ai/) · [📢 کانال](https://t.me/pompnet) · [💬 گروه](https://t.me/PompNett) · [🛟 پشتیبانی](https://t.me/NovaTunneli)
 
 <br>
 
-<img src="assets/pompnet-super-jinx-showcase.svg" width="100%" alt="پیش‌نمایش طراحی POMP NET MOHAMMAD SUPER JINX">
+<img src="assets/pompnet-super-jinx-showcase.svg" width="100%" alt="POMP NET MOHAMMAD SUPER JINX — interface showcase">
 
-<sub>پیش‌نمایش گرافیکی رابط ورود و داشبورد؛ مقادیر داخل تصویر نمونهٔ طراحی هستند و آمار نسخهٔ اجرایی از هستهٔ فعال خوانده می‌شود.</sub>
+<sub>تصویر معرفی رابط کاربری است؛ اعداد و داده‌های داخل تصویر نمونهٔ بصری‌اند، نه وضعیت زندهٔ سرور.</sub>
 
 </div>
+
+> [!IMPORTANT]
+> **اصل توسعهٔ POMP NET:** ارتقای ظاهر و تجربهٔ کاربری بدون جایگزین‌کردن هسته، حذف کاربران، دست‌کاری UUIDها، پاک‌کردن inboundها یا آسیب‌زدن به دیتابیس. هر قابلیت عملیاتی باید به داده و منطق واقعی هسته متصل باشد.
+
+## 🧭 راهنمای سریع
+
+| بخش | دسترسی |
+|---|---|
+| معرفی و قابلیت‌ها | [دربارهٔ پروژه](#-دربارهٔ-پروژه) |
+| مسیرهای پنل و اشتراک | [مسیرهای مهم](#-مسیرهای-مهم) |
+| لینک اشتراک کاربران | [اشتراک واقعی](#-لینک-اشتراک-واقعی-هر-کاربر) |
+| صفحهٔ اختصاصی JINX PASS | [JINX PASS](#-صفحهٔ-اشتراک-jinx-pass) |
+| معماری و پروژه‌های مرجع | [معماری](#-معماری-و-مرز-ادغام) |
+| نصب و استقرار | [Railway](#-استقرار-روی-railway) |
+| امنیت و حفظ اطلاعات | [حفظ داده](#-حفظ-داده-و-امنیت) |
+| وضعیت تست | [چک‌لیست تست](#-وضعیت-تست) |
+| ارتباط | [پشتیبانی](#-پشتیبانی-و-ارتباط) |
+
+## ✦ نمای کلی محصول
+
+<div align="center">
+
+| 🖤 CORE | 💜 IDENTITY | 🔵 ACCESS |
+|:---:|:---:|:---:|
+| حفظ هستهٔ اصلی | برند POMP NET | اشتراک کاربر |
+| مسیرهای اصلی پنل | رابط فارسی و RTL | لینک شخصی UUID |
+| داده‌های موجود | تم نئونی اختصاصی | QR و کپی کانفیگ |
+
+</div>
+
 
 ---
 

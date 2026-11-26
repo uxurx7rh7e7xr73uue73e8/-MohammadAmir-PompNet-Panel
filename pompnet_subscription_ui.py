@@ -1,29 +1,39 @@
 #!/usr/bin/env python3
-"""POMP NET subscription info-page visual polish; preserves all link data/routes."""
+"""Safely restyle only the existing /info/{uid} subscription page."""
 from pathlib import Path
+import re
+import py_compile
+import tempfile
 
 target = Path("/app/main.py")
 if not target.is_file():
     raise SystemExit("POMP NET subscription UI: /app/main.py not found")
 
 source = target.read_text(encoding="utf-8")
-updated = source
+pattern = re.compile(r'(?m)^    info_html = f"""')
+match = pattern.search(source)
+if not match:
+    raise SystemExit("POMP NET subscription UI: info_html template not found")
 
-# Change only visible identity in the existing subscription information page.
+start = match.end()
+end = source.find('"""', start)
+if end < 0:
+    raise SystemExit("POMP NET subscription UI: info_html closing delimiter not found")
+
+html = source[start:end]
+original_html = html
+
 replacements = {
     '<div class="brand-mark">AHB</div>': '<div class="brand-mark">POMP</div>',
     '<div class="brand-name">PANEL</div>': '<div class="brand-name">NET MOHAMMAD</div>',
     '<b>AHB PANEL</b>': '<b>POMP NET MOHAMMAD</b>',
-    'snapshot.get("label", "AHB Panel")': 'snapshot.get("label", "POMP NET")',
+    '<title>{label} | AHB PANEL</title>': '<title>{label} | POMP NET MOHAMMAD</title>',
 }
 for old, new in replacements.items():
-    count = updated.count(old)
-    if count == 1:
-        updated = updated.replace(old, new, 1)
-    elif count == 0 and new in updated:
-        pass
-    else:
-        raise SystemExit(f"POMP NET subscription UI: expected one source or already-patched target: {old}")
+    if old in html:
+        html = html.replace(old, new, 1)
+    elif new not in html:
+        raise SystemExit(f"POMP NET subscription UI: expected brand target missing: {old}")
 
 style_marker = "</style>"
 style_addition = """
@@ -43,13 +53,19 @@ h1,.section-title h2 {{ font-family:'Vazirmatn',sans-serif !important; }}
 .field,.link-row,.qr-box,.server {{ border-color:rgba(150,60,255,.16) !important; }}
 .footer b {{ color:#b995ff !important; }}
 """
-if updated.count(style_marker) != 1:
-    raise SystemExit("POMP NET subscription UI: expected one style closing tag")
-if "POMP NET NEXUS — premium subscription identity" not in updated:
-    updated = updated.replace(style_marker, style_addition + "\n" + style_marker, 1)
+marker = "POMP NET NEXUS — premium subscription identity"
+if marker not in html:
+    if html.count(style_marker) != 1:
+        raise SystemExit("POMP NET subscription UI: expected exactly one style close in info page")
+    html = html.replace(style_marker, style_addition + "\\n" + style_marker, 1)
 
+updated = source[:start] + html + source[end:]
 if updated != source:
+    with tempfile.TemporaryDirectory(prefix="pompnet-sub-ui-") as folder:
+        candidate = Path(folder) / "main.py"
+        candidate.write_text(updated, encoding="utf-8")
+        py_compile.compile(str(candidate), doraise=True)
     target.write_text(updated, encoding="utf-8")
-    print("POMP NET subscription info page branded and restyled.")
-else:
-    print("POMP NET subscription UI already applied.")
+
+py_compile.compile(str(target), doraise=True)
+print("POMP NET subscription info page branded and syntax-checked.")
